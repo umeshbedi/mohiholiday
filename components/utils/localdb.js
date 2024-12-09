@@ -22,18 +22,30 @@ export const menu = {
 
     ],
     "popularIslands": [
-        // {
-        //     "name": "Destination",
-        //     "slug": "/destination"
-        // },
-        // {
-        //     "name": "Attraction",
-        //     "slug": "/attraction"
-        // },
-        // {
-        //     "name": "Events",
-        //     "slug": "/events"
-        // }
+        {
+            "name": "Port Blair",
+            "slug": "/Portblair"
+        },
+        {
+            "name": "Havelock",
+            "slug": "/Havelock"
+        },
+        {
+            "name": "Neil",
+            "slug": "/Neil"
+        },
+        {
+            "name": "Baratang",
+            "slug": "/Baratang"
+        },
+        {
+            "name": "MayaBunder",
+            "slug": "/MayaBunder"
+        },
+        {
+            "name": "Rangat Diglipur",
+            "slug": "/RangatDiglipur"
+        }
         
     ],
     "packages": [
@@ -63,6 +75,22 @@ export const menu = {
         }
     ],
 
+    "daytrips": [
+        {
+            "name": "Car",
+            "slug": "/car"
+        },
+        {
+            "name": "Boat",
+            "slug": "/boats"
+        },
+        {
+            "name": "Combo",
+            "slug": "/combo"
+        }
+    ],
+
+
     "hotels": [
         {
             "name": "Budget",
@@ -81,6 +109,7 @@ export const menu = {
             "slug": "/hotels/Luxury"
         }
     ],
+
     "activity": [
         { name: "Andaman", slug: "/activity/Andaman" }, 
         { name: "Bali", slug: "/activity/Bali" }

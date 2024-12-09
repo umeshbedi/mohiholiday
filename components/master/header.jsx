@@ -10,6 +10,7 @@ import Link from 'next/link'
 import { db } from '@/firebase'
 import { mobile } from '../utils/variables'
 import { FacebookFilled, InstagramOutlined, TwitterOutlined, YoutubeFilled } from '@ant-design/icons'
+import MegaMenu from './MegaMenu'
 
 export default function Header() {
 
@@ -64,23 +65,28 @@ export default function Header() {
     }, [])
 
 
-    function Dropdown({ heading = "", content = [{ name: null, slug: null }] }) {
+    function Dropdown({ heading = "", content = [{ name: null, slug: null }], isMega = false }) {
         return (
             <li>
                 <Link href="javascript:void(0)">{heading} ▾</Link>
                 <ul className={style.dropdown}>
-                    {content.map((item, index) => (
-                        <li key={index}><Link target='blank' href={item.slug}>{item.name}</Link></li>
+                    {isMega
+                        ?
+                        (<MegaMenu />)
+                        :
+                        (
+                            content.map((item, index) => (
+                                <li key={index}><Link target='blank' href={item.slug}>{item.name}</Link></li>
 
-                    ))}
+                            ))
+                        )
+                    }
                 </ul>
             </li>
         )
     }
 
-    function MegaMenu() {
 
-    }
 
     function RespMenu() {
         return (
@@ -226,10 +232,11 @@ export default function Header() {
                             <Dropdown heading='Popular Islands' content={menu.popularIslands} />
                             <li><Link href="/cabs">Rentals</Link></li>
                             <li><Link href="/package/Andaman">Packages</Link></li>
-                            <li><Link href="/activity/Andaman">Activities</Link></li>
+                            <Dropdown heading='Activities' isMega/>
                             {/* <Dropdown heading='Packages' content={menu.packages} /> */}
                             {/* <Dropdown heading='Activities' content={menu.activity} /> */}
                             <Dropdown heading='Ferry' content={ferryList} />
+                            <Dropdown heading='Day Trips' content={menu.daytrips} />
                             <li><Link href="/contact-us">Contact Us</Link></li>
                         </ul>
                     )

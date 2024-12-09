@@ -1,7 +1,7 @@
 import React from "react";
 
 
-export default function AutoColumns () {
+export default function MegaMenu () {
     return (
       <div className="auto-columns">
         <div className="content">

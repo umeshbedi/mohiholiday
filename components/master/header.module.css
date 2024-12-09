@@ -1,0 +1,86 @@
+.menuContainer{
+    z-index: 999;
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    transition: padding .5s ease, background .5s ease;
+}
+.RespMenu p{
+font-weight: bold;
+}
+
+.menuContainer:hover{
+    background: rgba(0,0,0,.5) !important;
+    padding: .5rem 5% !important;
+}
+
+.menu{
+    transition:all .5s ease;
+    /* background-color: blueviolet; */
+}
+
+.menu ul {
+    list-style: none;
+    
+}
+
+
+.menu ul li {
+    display: inline-block;
+    position: relative;
+}
+
+.menu ul li a {
+    display: block;
+    padding: 10px 15px;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    font-size: 17px;
+    
+}
+
+.dropdown li {
+    display: inline;
+    white-space: nowrap;
+}
+
+.dropdown a{
+    color: black !important;
+}
+
+.dropdown {
+    position: absolute;
+    width: fit-content;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s linear, margin-top .3s linear;
+    /* display: none; */
+    background-color: #ffffff;
+    margin-top: 15px;
+    box-shadow:3px 5px 10px 2px rgba(0,  0 , 0, .1);
+    border-radius: 10px;
+    z-index: 999;
+}
+
+
+
+
+
+.menu ul li:hover .dropdown {
+    visibility: visible;
+    opacity: 1;
+    /* display: block; */
+    margin-top:0;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+
+}
+
+/* Tablet and Smaller Desktop */
+@media (min-width: 701px) and (max-width: 1120px) {
+
+}

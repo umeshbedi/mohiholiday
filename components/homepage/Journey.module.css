@@ -1,0 +1,8 @@
+.journeySwiper{
+    padding: 0 20%
+}
+@media(max-width:700px){
+    .journeySwiper{
+        padding: 0
+    }
+}

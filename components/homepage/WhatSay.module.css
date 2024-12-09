@@ -1,0 +1,76 @@
+.SayContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    width: 100%;
+    height: 400px;
+    padding: 0 5%;
+    margin-bottom: 3rem;
+
+}
+
+.SayBox,
+.SayImage {
+    height: 100%;
+    border-radius: 20px;
+    padding: 3%;
+}
+
+.SayBox {
+    background-color: #f5f5f5;
+    width: 30%;
+    position: relative;
+}
+
+.SayImage {
+    background-color: aqua;
+    width: 60%;
+    position: relative;
+    overflow: hidden;
+}
+
+.SayBox p {
+    font-size: 16px;
+}
+
+.SayAuthor {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.arrowBox {
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    background-color: #f5f5f5;
+    left: -15px;
+    transform: rotate(135deg);
+    top: 50px;
+}
+
+@media(max-width:700px) {
+    .SayContainer {
+        display: block;
+        height: 100%;
+    }
+
+    .SayBox {
+        width: 100%;
+        margin-top: 30px;
+    }
+
+    .SayImage {
+        width: 100%;
+        height: 200px;
+    }
+
+    .arrowBox {
+        left: 25px;
+        top: -15px;
+        height: 20px;
+        width: 20px;
+    }
+}

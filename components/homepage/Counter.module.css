@@ -1,0 +1,10 @@
+@media (min-width:991px) {
+    .counterDiv::before{
+      position: absolute;
+      bottom: -47;
+      left: auto;
+      right: 0;
+      content: url(/images/1UKB.webp);
+      z-index: -2;
+    }
+  }

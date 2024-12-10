@@ -113,6 +113,139 @@ export const menu = {
     "activity": [
         { name: "Andaman", slug: "/activity/Andaman" }, 
         { name: "Bali", slug: "/activity/Bali" }
+    ],
+
+    "activity": [
+        {
+            "name": "Scuba Diving",
+            "icon": "/activities/scuba-diving.png",
+            "items": [
+                {
+                    "name": "abcd go there",
+                    "icon": "/activities/Boat dive hd.jpg",
+                    "slug": "/abcd-go-there"
+                },
+                {
+                    "name": "abcd go there",
+                    "icon": "/activities/Boat dive hd.jpg",
+                    "slug": "/abcd-go-there"
+                },
+                {
+                    "name": "abcd go there",
+                    "icon": "/activities/Boat dive hd.jpg",
+                    "slug": "/abcd-go-there"
+                },
+                {
+                    "name": "abcd go there",
+                    "icon": "/activities/Boat dive hd.jpg",
+                    "slug": "/abcd-go-there"
+                }
+            ]
+        },
+        {
+            "name": "Scuba Diving",
+            "icon": "/activities/scuba-diving.png",
+            "items": [
+                {
+                    "name": "abcd go there",
+                    "icon": "/activities/Boat dive hd.jpg",
+                    "slug": "/abcd-go-there"
+                },
+                {
+                    "name": "abcd go there",
+                    "icon": "/activities/Boat dive hd.jpg",
+                    "slug": "/abcd-go-there"
+                },
+                {
+                    "name": "abcd go there",
+                    "icon": "/activities/Boat dive hd.jpg",
+                    "slug": "/abcd-go-there"
+                },
+                {
+                    "name": "abcd go there",
+                    "icon": "/activities/Boat dive hd.jpg",
+                    "slug": "/abcd-go-there"
+                }
+            ]
+        },
+        {
+            "name": "Scuba Diving",
+            "icon": "/activities/scuba-diving.png",
+            "items": [
+                {
+                    "name": "abcd go there",
+                    "icon": "/activities/Boat dive hd.jpg",
+                    "slug": "/abcd-go-there"
+                },
+                {
+                    "name": "abcd go there",
+                    "icon": "/activities/Boat dive hd.jpg",
+                    "slug": "/abcd-go-there"
+                },
+                {
+                    "name": "abcd go there",
+                    "icon": "/activities/Boat dive hd.jpg",
+                    "slug": "/abcd-go-there"
+                },
+                {
+                    "name": "abcd go there",
+                    "icon": "/activities/Boat dive hd.jpg",
+                    "slug": "/abcd-go-there"
+                }
+            ]
+        },
+        {
+            "name": "Scuba Diving",
+            "icon": "/activities/scuba-diving.png",
+            "items": [
+                {
+                    "name": "abcd go there",
+                    "icon": "/activities/Boat dive hd.jpg",
+                    "slug": "/abcd-go-there"
+                },
+                {
+                    "name": "abcd go there",
+                    "icon": "/activities/Boat dive hd.jpg",
+                    "slug": "/abcd-go-there"
+                },
+                {
+                    "name": "abcd go there",
+                    "icon": "/activities/Boat dive hd.jpg",
+                    "slug": "/abcd-go-there"
+                },
+                {
+                    "name": "abcd go there",
+                    "icon": "/activities/Boat dive hd.jpg",
+                    "slug": "/abcd-go-there"
+                }
+            ]
+        },
+        {
+            "name": "Scuba Diving",
+            "icon": "/activities/scuba-diving.png",
+            "items": [
+                {
+                    "name": "abcd go there",
+                    "icon": "/activities/Boat dive hd.jpg",
+                    "slug": "/abcd-go-there"
+                },
+                {
+                    "name": "abcd go there",
+                    "icon": "/activities/Boat dive hd.jpg",
+                    "slug": "/abcd-go-there"
+                },
+                {
+                    "name": "abcd go there",
+                    "icon": "/activities/Boat dive hd.jpg",
+                    "slug": "/abcd-go-there"
+                },
+                {
+                    "name": "abcd go there",
+                    "icon": "/activities/Boat dive hd.jpg",
+                    "slug": "/abcd-go-there"
+                }
+            ]
+        },
     ]
 }
 

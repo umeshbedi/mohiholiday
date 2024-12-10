@@ -92,7 +92,7 @@ export default function Slider({ sliderData }) {
                                                 style={{
                                                     color: 'white',
                                                     fontWeight: 800,
-                                                    marginBottom: marginBottom,
+                                                    // marginBottom: marginBottom,
                                                     transition: 'all .5s ease',
                                                     opacity: opacity,
                                                     textShadow: textShadow
@@ -111,18 +111,7 @@ export default function Slider({ sliderData }) {
                                             >{item.subHeading}
                                             </p>
 
-                                            {/* <Link target='blank'
-                                                style={{
-                                                    background: "var(--primaryColor)",
-                                                    padding: "10px 20px",
-                                                    borderRadius: 50,
-                                                    color: 'white',
-                                                    fontWeight: 700,
-                                                    opacity: opacity,
-                                                    transition: 'all .5s ease'
-                                                }}
-                                                href={"/contact-us"}>Contact Us
-                                            </Link> */}
+                                            
                                         </div>
 
                                     </div>

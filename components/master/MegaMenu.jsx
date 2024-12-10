@@ -1,10 +1,25 @@
 import React from "react";
+import { menu } from "../utils/localdb";
 
 
 export default function MegaMenu () {
     return (
-      <div className="auto-columns">
-        <div className="content">
+      // <div className="auto-columns ml-[-500px]">
+      //   <div className="content">
+      //     {menu.activity.map((item, i)=>(
+      //       <>
+      //       <p>{item.name}</p>
+      //       <div >
+      //           {item.items.map((itm, i)=>(
+      //               <p>{itm.name}</p>
+      //           ))}
+      //       </div>
+      //       </>
+      //     ))}
+          <li className="auto-columns">
+            <div className="content">
+
+            
           <p>Item 1</p>
           <p>Item 2</p>
           <p>Item 3</p>
@@ -21,8 +36,10 @@ export default function MegaMenu () {
           <p>Item 14</p>
           <p>Item 15</p>
           <p>Item 16</p>
-        </div>
-      </div>
+          </div>
+          </li>
+      //   </div>
+      // </div>
     );
   };
   

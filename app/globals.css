@@ -9,6 +9,7 @@
   --primaryColor:#15aee8;
   --lightGreyColor:#f6f6f6;
   --lightBackground:#f1f1f1;
+  --light-blue: #ffe3e3;
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -200,14 +201,13 @@ width: 45px;
 
 .auto-columns {
   width: 100%;
-  height: 500px;
   background-color: #f0f0f0;
   padding: 1rem;
   overflow: hidden; /* No vertical scrollbar */
 }
 
 .content {
-  column-count: 5; /* Default number of columns */
+  column-count: 4; /* Default number of columns */
   column-gap: 20px; /* Space between columns */
   height: 100%;
 }

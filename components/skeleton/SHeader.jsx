@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import {Skeleton, Row, Col} from 'antd'
 import style from '@/styles/Home.module.css'

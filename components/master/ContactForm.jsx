@@ -1,3 +1,4 @@
+"use client"
 import { DeleteFilled, PlusOutlined } from '@ant-design/icons'
 import { Button, DatePicker, Form, Input, Modal, Select, Space } from 'antd'
 import React, { useEffect, useState } from 'react'

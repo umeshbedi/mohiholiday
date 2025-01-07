@@ -23,7 +23,7 @@ const AdminLogin = dynamic(() => import('../../components/admin/AdminLogin'), { 
 const AddPackage = dynamic(() => import('../../components/admin/packages/AddPackage'), { ssr: false, loading: () => <Skeleton /> })
 const PackagesDetails = dynamic(() => import('../../components/admin/packages/AddPackageDetail'), { ssr: false, loading: () => <Skeleton /> })
 const Ferry = dynamic(() => import('../../components/admin/ferry/Ferry'), { ssr: false, loading: () => <Skeleton /> })
-// const Island = dynamic(() => import('../../components/admin/Island'), { ssr: false, loading: () => <Skeleton /> })
+const Island = dynamic(() => import('../../components/admin/Island'), { ssr: false, loading: () => <Skeleton /> })
 const Media = dynamic(() => import('../../components/admin/media/Media'), { ssr: false, loading: () => <Skeleton /> })
 
 const Activity = dynamic(() => import('../../components/admin/activity/Activity'), { ssr: false, loading: () => <Skeleton /> })
@@ -107,6 +107,10 @@ export default function Admin() {
     }
     else if (e == "rentalAndaman" || e == "rentalBali") {
       setContent(<RentalList pageName={e} />)
+    }
+
+    else if (e == 'island') {
+      setContent(<Island />)
     }
 
     else if (e == 'media') {

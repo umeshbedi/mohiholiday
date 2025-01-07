@@ -1,13 +1,26 @@
 "use client"
-
-import { boxShadow } from "@/components/utils/variables";
-import {Divider, Modal } from "antd";
+import style from '@/styles/Home.module.css'
+import Image from 'next/image'
+import { FaMap, FaUser } from 'react-icons/fa'
+import { CarFilled } from '@ant-design/icons'
+import { boxShadow, mobile } from "@/components/utils/variables";
+import { Divider, Modal } from "antd";
 import React, { useState } from "react";
 import ContactForm from '@/components/master/ContactForm'
+
 
 export default function SingleCab({ thumbnail, title, price, distance }) {
 
     const [open, setOpen] = useState(false)
+
+    function Icons({ icon = <></>, title = "" }) {
+        return (
+            <div className='text-gray-500 bg-white border rounded-full flex gap-2 items-center px-3'>
+                {icon}
+                <p className=' text-base'>{title}</p>
+            </div>
+        )
+    }
 
     return (
         <div
@@ -15,7 +28,7 @@ export default function SingleCab({ thumbnail, title, price, distance }) {
             data-aos="fade-up"
             data-aos-duration="1000"
             style={{ backgroundColor: 'white', borderRadius: 30, boxShadow: boxShadow, margin: "0 20px 20px 20px" }}>
-            {/* <div
+            <div
                 style={{
                     width: "100%",
                     display: mobile() ? "block" : 'flex',
@@ -62,10 +75,12 @@ export default function SingleCab({ thumbnail, title, price, distance }) {
 
             <div style={{ width: mobile() ? "100%" : "75%", height: 1, background: '#e2e8ee', margin: "1rem 0" }} />
             <div style={{ display: "flex", gap: ".5rem", marginBottom: "1rem", marginLeft: "1rem", }}>
-                <p style={{ background: 'white', border: "1px solid #e2e8ee", borderRadius: 50, padding: "5px 15px", color: 'grey', fontSize: mobile() ? 12 : 16 }}><FaMap /> Pickup/Drop</p>
-                <p style={{ background: 'white', border: "1px solid #e2e8ee", borderRadius: 50, padding: "5px 15px", color: 'grey', fontSize: mobile() ? 12 : 16 }}><CarFilled /> Cab</p>
-                <p style={{ background: 'white', border: "1px solid #e2e8ee", borderRadius: 50, padding: "5px 15px", color: 'grey', fontSize: mobile() ? 12 : 16 }}><FaUser /> Travel Executive</p>
-            </div> */}
+                
+                <Icons icon={<FaMap />} title='Pickup'/>
+                <Icons icon={<CarFilled />} title='Cab'/>
+                <Icons icon={<FaUser />} title='Travel Executive'/>
+                
+            </div>
 
 
             {/* <Footer /> */}

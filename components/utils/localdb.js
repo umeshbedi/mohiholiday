@@ -78,15 +78,15 @@ export const menu = {
     "daytrips": [
         {
             "name": "Car",
-            "slug": "/car"
+            "slug": "/trip/Car"
         },
         {
             "name": "Boat",
-            "slug": "/boats"
+            "slug": "/trip/Boats"
         },
         {
             "name": "Combo",
-            "slug": "/combo"
+            "slug": "/trip/Combo"
         }
     ],
 

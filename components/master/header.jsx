@@ -16,10 +16,13 @@ export default function Header() {
 
     const [menuStyle, setMenuStyle] = useState({ padding: "1.5rem 5%", background: "none" })
     const [ferryList, setFerryList] = useState([])
+    const [island, setIsland] = useState([])
     const [open, setOpen] = useState(false);
     const [active, setActive] = useState('home')
     const [isMobile, setIsMobile] = useState(false)
     const [logoImage, setLogoImage] = useState("/MH Logo For Website.png")
+    const [megaMenuStyle, setMegaMenuStyle] = useState({visibility:"hidden", opacity:0})
+    const [megaContent, setMegaContent] = useState([])
 
     useEffect(() => {
         setIsMobile(mobile())
@@ -58,16 +61,39 @@ export default function Header() {
         db.collection('ferry').onSnapshot((snap) => {
             const tempFerry = []
             snap.forEach((sndata) => {
-                tempFerry.push({ name: sndata.data().name, slug: sndata.data().slug })
+                tempFerry.push({ name: sndata.data().name, slug: sndata.data().slug, image:sndata.data().image })
             })
             setFerryList(tempFerry)
         })
+
+        db.collection('island').onSnapshot((snap) => {
+            const tempIsland = []
+            snap.forEach((sndata) => {
+                tempIsland.push({ name: sndata.data().name, url: sndata.data().slug, icon:sndata.data().thumbnail, items:[] })
+            })
+            setIsland(tempIsland)
+        })
+
+
     }, [])
+
+    
+
+    function megaActive(megaFor){
+        if(megaFor=="acitivity") setMegaContent(menu.activity);
+        else if(megaFor=="ferry") setMegaContent(ferryList.map((item, i)=>{return{name:item.name, icon:item.image, items:[], url:item.slug}}))
+        else if (megaFor=="island") setMegaContent(island);
+        setMegaMenuStyle({visibility:"visible", opacity:1})
+    }
+
+    function megaInactive() {
+        setMegaMenuStyle({visibility:"hidden", opacity:0})
+    }
 
 
     function Dropdown({ heading = "", content = [{ name: null, slug: null }], isMega = false }) {
         return (
-            <li>
+            <li onMouseEnter={megaInactive}>
                 <Link href="javascript:void(0)">{heading} ▾</Link>
                 <ul className={style.dropdown}>
                     {isMega
@@ -191,7 +217,9 @@ export default function Header() {
     }
 
     return (
-        <div className={style.menuContainer} style={menuStyle}
+        <div
+            className={`relative ${style.menuContainer} bg-red-600`}
+            style={menuStyle}
             onMouseEnter={() => setLogoImage("/white-mohi-holidays-logo.png")}
             onMouseLeave={() => setLogoImage("/MH Logo For Website.png")}
         >
@@ -227,21 +255,33 @@ export default function Header() {
                     ) :
                     (
                         <ul >
-                            <li><Link href="/">Home</Link></li>
+                            <li onMouseEnter={megaInactive}><Link href="/">Home</Link></li>
                             <Dropdown heading='Know' content={menu.know} />
-                            <Dropdown heading='Popular Islands' content={menu.popularIslands} />
-                            <li><Link href="/cabs">Rentals</Link></li>
-                            <li><Link href="/package/Andaman">Packages</Link></li>
-                            <Dropdown heading='Activities' isMega/>
-                            {/* <Dropdown heading='Packages' content={menu.packages} /> */}
-                            {/* <Dropdown heading='Activities' content={menu.activity} /> */}
-                            <Dropdown heading='Ferry' content={ferryList} />
+                            <li onMouseEnter={()=>megaActive("island")}><Link href="javascript:void(0)">Popular Island ▾</Link></li>
+                            {/* <Dropdown heading='Popular Islands' content={menu.popularIslands} /> */}
+                            <li onMouseEnter={megaInactive}><Link href="/cabs">Rentals</Link></li>
+                            <li onMouseEnter={megaInactive}><Link href="/package">Packages</Link></li>
+                            <li onMouseEnter={()=>megaActive("acitivity")}><Link href="javascript:void(0)">Activities ▾</Link></li>
+                            <li onMouseEnter={()=>megaActive("ferry")}><Link href="javascript:void(0)">Cruise ▾</Link></li>
+                            {/* <Dropdown heading='Ferry' content={ferryList} /> */}
                             <Dropdown heading='Day Trips' content={menu.daytrips} />
-                            <li><Link href="/contact-us">Contact Us</Link></li>
+                            <li onMouseEnter={megaInactive}><Link href="/contact-us">Contact Us</Link></li>
                         </ul>
                     )
                 }
 
+            </div>
+
+
+            {/* Mega Menu */}
+            <div 
+            className={`w-[100%] left-0 absolute top-14 flex justify-center items-center ${style.activityItems}`}
+            style={megaMenuStyle}
+            
+            >
+                <div className='w-[80%] bg-white rounded-xl' onMouseLeave={megaInactive}>
+                <MegaMenu content={megaContent}/>
+                </div>
             </div>
         </div>
     )

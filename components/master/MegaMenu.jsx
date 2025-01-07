@@ -1,45 +1,29 @@
 import React from "react";
-import { menu } from "../utils/localdb";
+import Image from "next/image";
 
 
-export default function MegaMenu () {
-    return (
-      // <div className="auto-columns ml-[-500px]">
-      //   <div className="content">
-      //     {menu.activity.map((item, i)=>(
-      //       <>
-      //       <p>{item.name}</p>
-      //       <div >
-      //           {item.items.map((itm, i)=>(
-      //               <p>{itm.name}</p>
-      //           ))}
-      //       </div>
-      //       </>
-      //     ))}
-          <li className="auto-columns">
-            <div className="content">
+export default function MegaMenu({ content = [] }) {
 
-            
-          <p>Item 1</p>
-          <p>Item 2</p>
-          <p>Item 3</p>
-          <p>Item 4</p>
-          <p>Item 5</p>
-          <p>Item 6</p>
-          <p>Item 7</p>
-          <p>Item 8</p>
-          <p>Item 9</p>
-          <p>Item 10</p>
-          <p>Item 11</p>
-          <p>Item 12</p>
-          <p>Item 13</p>
-          <p>Item 14</p>
-          <p>Item 15</p>
-          <p>Item 16</p>
-          </div>
-          </li>
-      //   </div>
-      // </div>
-    );
-  };
-  
+  return (
+    <ul className=" list-none">
+      <li className="auto-columns">
+        <div className="content">
+          {content.map((item, i) => (
+            <div key={i} className="hover:bg-cyan-200">
+              <a href={item.url == undefined ? "javascript:void(0)" : item.url} className="flex gap-2 bg-slate-200 hover:bg-cyan-300 p-3">
+                <Image src={item.icon} width={30} height={30} />
+                <p className=" font-bold">{item.name}</p>
+              </a>
+              {item.items.map((itm, index) => (
+                <a href={itm.slug} key={index} className="flex gap-2 mb-2 hover:bg-cyan-100">
+                  <Image src={itm.icon} width={30} height={30} />
+                  {itm.name}</a>
+              ))}
+            </div>
+          ))}
+        </div>
+      </li>
+    </ul>
+  );
+};
+

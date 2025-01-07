@@ -75,6 +75,20 @@ font-weight: bold;
     margin-top:0;
 }
 
+img:hover .dropdown {
+    visibility: visible;
+    opacity: 1;
+    /* display: block; */
+    margin-top:0;
+}
+
+.activityItems{
+    transition: visibility 0s, opacity 0.5s linear, margin-top .3s linear;
+    z-index: 999;
+}
+
+
+
 /* Mobile */
 @media (max-width: 700px) {
 

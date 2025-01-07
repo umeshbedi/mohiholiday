@@ -35,5 +35,5 @@ export function mobile() {
     {name:"Tailor Made Packages", icon:"/icons/TAILOR MADE PACKAGES.png"},
     {name:"Water Sports", icon:"/icons/WATER SPORTS.png"},
     {name:"Accommodation", icon:"/icons/Accommodation Icon.png"},
-    
+    {name:"Two Wheeler Rental", icon:"/icons/Two Wheeler Rental.png"},
   ]

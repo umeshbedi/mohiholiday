@@ -78,6 +78,10 @@ h1{
   font-size: 2.7rem;
   font-weight: 900;
 }
+h2{
+  font-size: 1.5rem;
+  font-weight: 800;
+}
 p{
   font-size: 1.2rem ;
   font-weight: 400;
@@ -85,6 +89,7 @@ p{
 }
 h4{
   font-size: 1.1rem;
+  font-weight: bold;
 }
 h3{
   font-size: 1.2rem;
@@ -201,9 +206,9 @@ width: 45px;
 
 .auto-columns {
   width: 100%;
-  background-color: #f0f0f0;
   padding: 1rem;
   overflow: hidden; /* No vertical scrollbar */
+  
 }
 
 .content {
@@ -213,8 +218,9 @@ width: 45px;
 }
 
 .content p {
-  break-inside: avoid; /* Prevents breaking of individual items */
-  margin: 0 0 10px;
+  /* break-inside: avoid; Prevents breaking of individual items */
+  /* margin: 0 0 10px; */
+  /* background-color: #00b33e; */
 }
 
 

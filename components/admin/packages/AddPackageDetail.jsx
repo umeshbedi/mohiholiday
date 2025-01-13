@@ -1,9 +1,8 @@
+"use client"
 import { db } from '@/firebase'
 import { DeleteOutlined, PlusOutlined, SaveOutlined } from '@ant-design/icons'
 import { Button, Divider, Form, Input, Select, Space, Tabs, message } from 'antd'
 import React, { useEffect, useState } from 'react'
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import ImageUpload from '@/components/admin/media/ImageUpload';
 import TravelJourney from './TravelJourney';
 import { IncludesIconName } from '@/components/utils/variables';
@@ -11,6 +10,7 @@ import { FaCross } from 'react-icons/fa';
 import AddHotelPackage from './AddHotelPackage';
 import AddExHotelPackage from './AddExHotelPackage';
 
+import JoditEditor from 'jodit-react';
 
 
 export default function AddPackageDetail({ packageFor = "" }) {
@@ -152,29 +152,29 @@ export default function AddPackageDetail({ packageFor = "" }) {
                                 onChange={(e) => setIsOffer(e.target.checked)}
                             />
                         </Form.Item>
-                        
+
 
 
                         <div style={{ padding: '1%', border: "solid .3px rgba(0,0,0,.2)", marginBottom: '2rem' }}>
-                            {/* <Form.Item name={"isPrice"} label={"Is Price"}>
+                            <Form.Item name={"isPrice"} label={"Is Price"}>
                                 <Input type='checkbox' style={{ width: 'fit-content' }} checked={isPrice != undefined ? isPrice : null}
                                     onChange={(e) => setIsPrice(e.target.checked)}
                                 />
-                            </Form.Item> */}
-                            {/* {isPrice != undefined && isPrice && */}
+                            </Form.Item>
+                            {isPrice != undefined && isPrice &&
                                 <>
-                                    {/* <Form.Item name='price' initialValue={sSPD.price} label={"Price"}>
+                                    <Form.Item name='price' initialValue={sSPD.price} label={"Price"}>
                                         <Input type='number' required placeholder='Enter Price' />
-                                    </Form.Item> */}
+                                    </Form.Item>
                                     <Form.Item label={"Without Hotel"}>
                                         <AddExHotelPackage />
-                                    
+
                                     </Form.Item>
                                     <Form.Item label={"Inlclude Hotel"}>
                                         <AddHotelPackage />
                                     </Form.Item>
                                 </>
-                            {/* } */}
+                            }
 
                         </div>
 
@@ -205,21 +205,21 @@ export default function AddPackageDetail({ packageFor = "" }) {
                             />
                         </Form.Item>
 
-
+                        
                         <Form.Item name='overview' initialValue={sSPD.overview} label={"OverView"} >
-                            <ReactQuill theme='snow' style={{ height: 100, marginBottom: 50 }} />
+                        <JoditEditor />
                         </Form.Item>
 
                         <TravelJourney data={sSPD.travelJourney} groupId={selectedGroup} packageId={selectedSinglePackage} packageFor={packageFor} />
 
                         <Form.Item name='highlights' initialValue={sSPD.highlights} label={"Highlights"} >
-                            <ReactQuill theme='snow' style={{ height: 100, marginBottom: 50 }} />
+                        <JoditEditor />
                         </Form.Item>
                         <Form.Item name='inclusion' initialValue={sSPD.inclusion} label={"Inclusion"} >
-                            <ReactQuill theme='snow' style={{ height: 100, marginBottom: 50 }} />
+                        <JoditEditor />
                         </Form.Item>
                         <Form.Item name='exclusion' initialValue={sSPD.exclusion} label={"Exclusion"} >
-                            <ReactQuill theme='snow' style={{ height: 100, marginBottom: 50 }} />
+                        <JoditEditor />
                         </Form.Item>
 
 
@@ -245,6 +245,8 @@ export default function AddPackageDetail({ packageFor = "" }) {
             </div>
         )
     }
+
+    console.log(selectedSinglePackage)
 
     return (
         <div>
@@ -272,7 +274,7 @@ export default function AddPackageDetail({ packageFor = "" }) {
                             })}
                         />
                         {selectedGroup != null &&
-                            <>
+                            <Space>
                                 <p>Select Package Name: </p>
                                 <Select
                                     placeholder={"select Package Name"}
@@ -285,7 +287,7 @@ export default function AddPackageDetail({ packageFor = "" }) {
                                         })
                                     })}
                                 />
-                            </>
+                            </Space>
                         }
                     </Space>
 

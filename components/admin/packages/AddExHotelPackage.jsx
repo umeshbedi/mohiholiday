@@ -1,3 +1,4 @@
+"use client"
 import { CloseCircleFilled, PlusOutlined } from '@ant-design/icons'
 import { Button, Input } from 'antd'
 import React, { useState } from 'react'

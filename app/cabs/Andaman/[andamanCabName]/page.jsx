@@ -143,7 +143,7 @@ export default async function AndamanCab({ params, searchParams }) {
     return ({ id: entry.id, ...entry.data() })
   });
 
-  console.log(cabsList)
+  // console.log(cabsList)
 
   const data = entry[0]
 

@@ -32,7 +32,7 @@ export default async function SinglePackage({ params, searchParams }) {
 
     const { singlePackage } = params
 
-    console.log(singlePackage)
+    // console.log(singlePackage)
 
     const res = await db.collection(`packageAndaman`).get()
     const entry = res.docs.map((entry) => {

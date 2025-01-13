@@ -9,7 +9,7 @@ export default function TicketQuery({open, data, cancel, to}) {
   const [ferryDetails, setFerryDetails] = useState(null)
 
     useEffect(()=>{
-        console.log(data)
+        // console.log(data)
         const details = `
         <p>Class : ${data.className}</p>
         <p>Price : ₹${data.price}</p>

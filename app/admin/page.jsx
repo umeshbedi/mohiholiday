@@ -26,7 +26,8 @@ const Ferry = dynamic(() => import('../../components/admin/ferry/Ferry'), { ssr:
 const Island = dynamic(() => import('../../components/admin/Island'), { ssr: false, loading: () => <Skeleton /> })
 const Media = dynamic(() => import('../../components/admin/media/Media'), { ssr: false, loading: () => <Skeleton /> })
 
-const Activity = dynamic(() => import('../../components/admin/activity/Activity'), { ssr: false, loading: () => <Skeleton /> })
+const Activity = dynamic(() => import('../../components/admin/activity/Activities'), { ssr: false, loading: () => <Skeleton /> })
+
 const TestiMonials = dynamic(() => import('../../components/admin/AddTestimonials'), { ssr: false, loading: () => <Skeleton /> })
 
 

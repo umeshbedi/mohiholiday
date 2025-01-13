@@ -89,7 +89,7 @@ const items = [
   ]
 
   return (
-    <div style={{ width: 256 }}>
+    <div style={{ width: 256 }} className='relative'>
       <Menu
         defaultSelectedKeys={['homepage']}
         defaultOpenKeys={['packages']}

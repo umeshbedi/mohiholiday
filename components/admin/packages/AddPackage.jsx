@@ -1,3 +1,4 @@
+"use client"
 import { db } from '@/firebase'
 import { DeleteOutlined, EditOutlined, PlusOutlined, SaveOutlined } from '@ant-design/icons'
 import { Button, Divider, Form, Input, Modal, Select, Space, Tabs, message } from 'antd'

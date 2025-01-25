@@ -33,7 +33,7 @@ export default async function PackageName() {
 
     const bannerAndaman = (await db.doc(`pages/allPageBanner`).get()).data().PackageAndamanPage;
 
-    // console.log(allData)
+    console.log(allData)
 
     return (
         <div>

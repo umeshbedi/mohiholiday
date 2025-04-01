@@ -150,7 +150,7 @@ export default function DivCarousel({ lightHead, darkHead, backgroundImage, slid
                       textShadow: textShadow
                     }}
                     >
-                      {category=='destination'?item.title: item.name}
+                      {item.name}
                     </h1>
 
                   </div>

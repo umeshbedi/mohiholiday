@@ -1,6 +1,6 @@
 import React from 'react'
 import style from '@/styles/Home.module.css'
-import { Col, Divider, Modal, Row } from 'antd'
+import { Col, Divider, Empty, Modal, Row } from 'antd'
 import Image from 'next/image'
 import { FaMap, FaUser } from 'react-icons/fa'
 import { CarFilled } from '@ant-design/icons'
@@ -13,125 +13,29 @@ import HeadImage from '@/components/master/HeadImage';
 import Tile from '@/components/master/SingleTile'
 import ContactForm from '@/components/master/ContactForm'
 import SingleCab from './SingleCabl'
+import { notFound } from 'next/navigation'
 
 
 const Menu = dynamic(() => import("@/components/master/header"))
 const Footer = dynamic(() => import('@/components/master/Footer'))
 
-// { data, sortedActivity, sortedFerryData }
-
-
-// export default async function Cab({ params, searchParams }) {
-
-// const [isMobile, setIsMobile] = useState(false)
-// const [height, setHeight] = useState(null)
-// const [cabsList, setCabsList] = useState([])
-
-// const [activityDetails, setActivityDetails] = useState({})
-// const [open, setOpen] = useState(false)
-
-// useEffect(() => {
-//     setIsMobile(mobile())
-
-// }, [isMobile])
-
-// useEffect(() => {
-//     if (data != undefined) {
-//         db.doc(`rentalAndaman/${data.id}`).collection('cabs').get().then((snap) => {
-//             const dataTemp = []
-//             snap.forEach(data => {
-//                 dataTemp.push({ id: data.id, ...data.data() })
-//             })
-
-//             setCabsList(dataTemp)
-//         })
-
-//     }
-// }, [data])
-
-
-// const { andamanCabName } = params;
-// const res = await db.collection("rentalAndaman").where("slug", "==", `/cabs/Andaman/${andamanCabName}`).get()
-// const entry = res.docs.map((entry) => {
-//   return ({ id: entry.id, ...entry.data() })
-// });
-
-
-// const resAndaman = await db.collection("activityAndaman").get()
-// const entryAndaman = resAndaman.docs.map((entry) => {
-//   return ({ id: entry.id, ...entry.data() })
-// });
-
-// let sortedData = []
-
-// function GetRand(num) {
-//   var ran = Math.floor(Math.random() * num)
-//   if (num > 3 && num - ran >= 3) {
-//     for (let index = 0; index < 3; index++) {
-//       sortedData.push(entryAndaman[ran])
-//       ran += 1
-
-//     }
-//   }
-//   else if (num <= 3) {
-//     for (let index = 0; index < num; index++) {
-//       sortedData.push(entryAndaman[index])
-//     }
-//   }
-//   else { GetRand(num) }
-// }
-
-// GetRand(entryAndaman.length)
-
-// const resCruise = await db.collection("ferry").get()
-// const entryCruise = resCruise.docs.map((entry) => {
-//   return ({ id: entry.id, ...entry.data() })
-// });
-
-// let sortedFerryData = []
-
-// function GetRandFerry(num) {
-//   var ran = Math.floor(Math.random() * num)
-//   if (num > 3 && num - ran >= 3) {
-//     for (let index = 0; index < 3; index++) {
-//       sortedFerryData.push(entryCruise[ran])
-//       ran += 1
-
-//     }
-//   }
-//   else if (num <= 3) {
-//     for (let index = 0; index < num; index++) {
-//       sortedFerryData.push(entryCruise[index])
-//     }
-//   }
-//   else { GetRandFerry(num) }
-// }
-
-// GetRandFerry(entryCruise.length)
-
-
-
-// if (entry.length == 0) {
-//   return {
-//     notFound: true
-//   };
-// }
-
-
-// const data = entry[0]
-
-// console.log(data)
-
-// const resCabs = await db.doc(`rentalAndaman/${data.id}`).collection('cabs').get()
-// const cabsList = resCabs.docs.map((res) => {
-//   return ({ id: data.id, ...res.data() })
-// });
-
-
-
-
-
 export default async function AndamanCab({ params, searchParams }) {
+
+  function Scooty({name, price, image}) {
+      return (
+        <div className='flex flex-col bg-white justify-start items-center p-4 w-[250px] border gap-4 rounded-2xl hover:shadow-xl'>
+          <div className='w-full h-[180px] relative'><Image src={image} className=' object-contain' fill /></div>
+  
+          <div>
+            <h2 className='text-xl font-bold'>{name}</h2>
+            <p className='text-center'>{price}/day</p>
+          </div>
+  
+          <p className=' bg-red-400 py-2 w-full text-center cursor-pointer rounded-full'>BOOK NOW</p>
+        </div>
+      )
+    }
+
   const { andamanCabName } = params;
   const res = await db.collection("rentalAndaman").where("slug", "==", `/cabs/Andaman/${andamanCabName}`).get()
   const entry = res.docs.map((entry) => {
@@ -142,10 +46,19 @@ export default async function AndamanCab({ params, searchParams }) {
   const cabsList = resCab.docs.map((entry) => {
     return ({ id: entry.id, ...entry.data() })
   });
+  
+  const data = entry[0]
+
+  if (entry.length==0)return notFound()
+
+  const wheeler2 = cabsList.filter((f)=>f.type=="2")
+  const wheeler4 = cabsList.filter((f)=>f.type==undefined || f.type=="4")
+  
+  console.log(wheeler2)
 
   // console.log(cabsList)
 
-  const data = entry[0]
+
 
   return (
     <main>
@@ -156,10 +69,24 @@ export default async function AndamanCab({ params, searchParams }) {
           <div style={{ width: '90%', display: mobile() ? "block" : "flex", gap: '3%', marginTop: '3%' }}>
             <div style={{ width: mobile() ? "100%" : "65%", display: 'flex', flexDirection: 'column', gap: "2rem", overflow: 'hidden' }}>
               <h1 style={{ fontWeight: 900, fontSize: mobile() ? "2rem" : "2.5rem" }}>{data.title}</h1>
-
-              {cabsList.map((item, index) => (
+              <hr />
+              <h2 >Four Wheeler Rental</h2>
+              {wheeler4.map((item, index) => (
                 <SingleCab thumbnail={item.thumbnail} price={item.price} title={item.title} distance={item.distance} key={index} />
               ))}
+            </div>
+
+            <div style={{ width: mobile() ? "100%" : '35%', height: 'fit-content', marginTop: mobile() ? "4.5rem" : null }}>
+            <div style={{ padding: '5%', marginTop: "2rem", display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', gap:20 }}>
+                <h2 style={{ textAlign: "center", marginBottom: "1rem", padding: '0 10%' }}>Two Wheeler Rental</h2>
+                { wheeler2.length > 0 &&
+                wheeler2.map((item, i)=>(<Scooty key={i} name={item.title} price={item.price} image={item.thumbnail}/>))
+                }
+                {
+                  wheeler2.length==0 &&
+                  <Empty imageStyle={{width:"100%"}}/>
+                }
+              </div>
             </div>
 
             {/* <div style={{ width: mobile() ? "100%" : '35%', height: 'fit-content', marginTop: mobile() ? "4.5rem" : null }} id='ticketCollapse'>

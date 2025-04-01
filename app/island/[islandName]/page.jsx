@@ -4,30 +4,33 @@ import { Card, Image, Skeleton } from 'antd'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import { boxShadow, mobile } from '@/components/utils/variables'
+import { notFound } from 'next/navigation'
 
 
 const HeadImage = dynamic(() => import("@/components/master/HeadImage"))
 const Menu = dynamic(() => import("@/components/master/header"))
 
-export default async function IslandName({params}) {
-    const {islandName} = await params
-   
+export default async function IslandName({ params }) {
+    const { islandName } = await params
+
     const res = await db.collection("island").where("slug", "==", `/island/${islandName}`).get()
     const entry = res.docs.map((entry) => {
         return ({ id: entry.id, ...entry.data() })
     });
     const data = entry[0]
 
+    if (entry.length == 0) return notFound()
+
     return (
         <main>
             <div>
-                <Menu/>
-                <HeadImage image={data.headerImage}/>
+                <Menu />
+                <HeadImage image={data.headerImage} />
 
                 <div
                     className='backCurve3'
                     style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '3%', gap: 30 }}>
-                    <h1 style={{textAlign:'center', padding:"0 10px"}}>Places to Visit in {data.name}</h1>
+                    <h1 style={{ textAlign: 'center', padding: "0 10px" }}>Places to Visit in {data.name}</h1>
                     <div style={{ display: mobile() ? "block" : 'grid', gridTemplateColumns: "repeat(4, auto)", gridGap: '3%', width: mobile() ? "auto" : '90%', justifyContent: 'center', }}>
                         {data.data.map((item, i) => {
                             var newUrl = "";

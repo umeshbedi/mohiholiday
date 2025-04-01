@@ -82,8 +82,8 @@ export default function Journey({ youtube }) {
                                             width="100%"
                                             height="450px"
                                             src={`https://www.youtube.com/embed/${item.YoutubeLink.split("v=")[1]}?rel=0&amp;showinfo=0`}
-                                            frameborder="0"
-                                            allowfullscreen="allowfullscreen"
+                                            frameBorder="0"
+                                            allowFullScreen="allowfullscreen"
                                         >
                                         </iframe>
                                     </div>

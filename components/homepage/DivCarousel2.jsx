@@ -76,16 +76,16 @@ export default function DivCarousel2({ lightHead, darkHead, backgroundImage, sli
 
 
                         >
-                            {Array(6).fill(0).map((item, i) => (
+                            {sliderContent.map((item, i) => (
                                 <SwiperSlide key={i} style={{ width: 350 }}>
-                                    <Link href={"/activities"}>
+                                    <Link href={item.slug}>
                                     <div style={{background: 'white',borderRadius: "30px",}}
                                         className=' shadow-2xl relative h-52 overflow-hidden'
                                     >
-                                        <Image src={"/images/cabimage2.jpg"} alt='activities image' fill className='object-cover' />
+                                        <Image src={item.thumbnail} alt='activities image' fill className='object-cover' />
                                         <div className='absolute w-full h-52 bg-[rgba(0,0,0,.3)] flex items-center justify-end pb-3 flex-col'>
-                                            <h1 className='text-white text-2xl'>Activity Name</h1>
-                                            <p className='text-white'>2 activities</p>
+                                            <h1 className='text-white text-2xl'>{item.name}</h1>
+                                            <p className='text-white'>{item.count} activities</p>
                                         </div>
 
                                     </div>

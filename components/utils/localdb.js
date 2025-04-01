@@ -111,23 +111,18 @@ export const menu = {
     ],
 
     "activity": [
-        { name: "Andaman", slug: "/activity/Andaman" }, 
-        { name: "Bali", slug: "/activity/Bali" }
-    ],
-
-    "activity": [
         {
             "name": "Scuba Diving",
             "icon": "/activities/scuba-diving.png",
             "items": [
                 {
-                    "name": "abcd go there",
-                    "icon": "/activities/Boat dive hd.jpg",
+                    "name": "best scuba diving",
+                    "icon": "https://i.imgur.com/V8nl186.jpeg",
                     "slug": "/abcd-go-there"
                 },
                 {
                     "name": "abcd go there",
-                    "icon": "/activities/Boat dive hd.jpg",
+                    "icon": "https://i.imgur.com/V8nl186.jpeg",
                     "slug": "/abcd-go-there"
                 },
                 {

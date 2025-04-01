@@ -1,5 +1,5 @@
 import { DeleteFilled, EditFilled, PlusOutlined } from '@ant-design/icons'
-import { Button, Form, Input, Modal, message } from 'antd'
+import { Button, Divider, Form, Image, Input, Modal, message } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
 import { db } from '@/firebase'
 
@@ -9,6 +9,7 @@ export default function TestiMonials() {
     const [testimonials, settestimonials] = useState([])
 
     const [name, setname] = useState(null)
+    const [image, setImage] = useState(null)
     const [content, setcontent] = useState(null)
 
     const [index, setIndex] = useState(null)
@@ -18,10 +19,12 @@ export default function TestiMonials() {
     const [open, setOpen] = useState(false)
 
     const nameRef = useRef()
+    const imageRef = useRef()
     const contentRef = useRef()
 
     function addtestimonials(e) {
         const temptestimonials = [...testimonials]
+        console.log(e)
         temptestimonials.push(e)
         settestimonials(temptestimonials)
         testimonialdb.update({ testimonials: temptestimonials })
@@ -42,7 +45,7 @@ export default function TestiMonials() {
 
     function Edittestimonials() {
         const temptestimonials = [...testimonials]
-        temptestimonials[index] = { name, content }
+        temptestimonials[index] = { name, content, image }
         settestimonials(temptestimonials)
         setOpen(false)
         testimonialdb.update({ testimonials: temptestimonials })
@@ -68,9 +71,23 @@ export default function TestiMonials() {
             <Form style={{ border: "solid 1px lightgrey", padding: '2%' }} onFinish={addtestimonials}>
                 <h2 style={{ color: "grey" }}><i>Add TestiMonials</i></h2>
                 <br />
+                <Form.Item name={'name'} label="Name">
+                    <input required type="text" placeholder='Enter Name of person...' />
+                </Form.Item>
+                <Form.Item name={'image'} label="image">
+                        <input type="text" placeholder='Enter Image url...' />
+                    </Form.Item>
+                <Form.Item name={'content'} label="Content">
+                    <Input required type="text" placeholder='Enter Content 189 character...' />
+                </Form.Item>
+                <Button htmlType='submit'><PlusOutlined /> Add New</Button>
+            </Form>
+            <div>
+            <h2 style={{ color: "grey", marginTop:30, marginBottom:30 }}><i>TestiMonials</i></h2>
                 {testimonials.length != 0 &&
                     testimonials.map((item, i) => (
                         <div key={i}>
+                            <Image src={item.image} width={100} height={100} />
                             <p style={{ color: "grey", marginBottom: '1%' }}><b><i>
                                 #{i + 1}. {item.name} | {item.content} |  <span>
                                     <EditFilled onClick={() => {
@@ -78,6 +95,8 @@ export default function TestiMonials() {
                                         setTimeout(() => {
                                             nameRef.current.value = item.name;
                                             setname(item.name)
+                                            imageRef.current.value = item.image;
+                                            setImage(item.image)
                                             contentRef.current.value = item.content;
                                             setcontent(item.content)
                                             setIndex(i)
@@ -88,18 +107,12 @@ export default function TestiMonials() {
                                     <DeleteFilled
                                         onClick={() => deletetestimonials(i)} />
                                 </span>
+                                <Divider/>
                             </i></b></p>
                         </div>
                     ))
                 }
-                <Form.Item name={'name'} label="Name">
-                    <input required type="text" placeholder='Enter Name of person...' />
-                </Form.Item>
-                <Form.Item name={'content'} label="Content">
-                    <Input required type="text" placeholder='Enter Content...' />
-                </Form.Item>
-                <Button htmlType='submit'><PlusOutlined /> Add New</Button>
-            </Form>
+            </div>
             <br />
 
             <Modal
@@ -110,6 +123,9 @@ export default function TestiMonials() {
                 <div style={{ padding: '3%' }}>
                     <Form.Item name={'name'} label="name">
                         <input ref={nameRef} type="text" placeholder='Enter name...' onChange={(e) => setname(e.target.value)} />
+                    </Form.Item>
+                    <Form.Item name={'image'} label="image">
+                        <input ref={imageRef} type="text" placeholder='Enter Image url...' onChange={(e) => setImage(e.target.value)} />
                     </Form.Item>
                     <Form.Item name={'content'} label="Content">
                         <input ref={contentRef} type="text" placeholder='Enter content...' onChange={(e) => setcontent(e.target.value)} />

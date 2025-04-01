@@ -22,21 +22,7 @@ export default async function Rentals() {
 
   const banner = (await db.doc(`pages/allPageBanner`).get()).data().RentalPage;
 
-  function Scooty() {
-    return (
-      <div className='flex flex-col justify-start items-center p-4 w-[250px] border gap-4 rounded-2xl hover:shadow-xl'>
-        <div className='w-full h-[180px] relative'><Image src={"/jupiter-scooty.jpg"} className=' object-contain' fill /></div>
-
-        <div>
-          <h2 className='text-xl font-bold'>Jupiter Scooty</h2>
-          <p className='text-center'>699/day</p>
-        </div>
-
-        <p className=' bg-red-400 py-2 w-full text-center cursor-pointer rounded-full'>BOOK NOW</p>
-      </div>
-    )
-  }
-
+  
   if (entryAndaman == undefined) return <SHome />
 
 
@@ -62,14 +48,7 @@ export default async function Rentals() {
             </div>
             <hr />
 
-            {/* Two wheeler section */}
-
-            <h1 className='text-center'>Two Wheeler Rental In Andaman</h1>
-            <div className='flex justify-center mt-[1rem] w-full'>
-              <div className='flex gap-4 flex-wrap justify-center'>
-                {Array(10).fill(0).map((item, i)=>(<Scooty key={i}/>))}
-              </div>
-            </div>
+           
           </div>
 
 

@@ -84,7 +84,7 @@ export default function Testimonials({ testimonialsData }) {
 
                                 <div>
                                     <div className='relative w-[100%] h-40 mb-2'>
-                                        <Image src={"/images/Ravindra Patel.jpg"} alt='testimonials image' fill className='object-contain' />
+                                        <Image src={item.image==undefined?"/images/Ravindra Patel.jpg":item.image} alt='testimonials image' fill className='object-contain' />
                                     </div>
 
                                     <p className='text-lg'>{item.content.slice(0, 190)}</p>

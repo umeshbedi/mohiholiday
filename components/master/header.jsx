@@ -23,6 +23,7 @@ export default function Header() {
     const [logoImage, setLogoImage] = useState("/MH Logo For Website.png")
     const [megaMenuStyle, setMegaMenuStyle] = useState({visibility:"hidden", opacity:0})
     const [megaContent, setMegaContent] = useState([])
+    const [activityList, setActivityList] = useState([])
 
     useEffect(() => {
         setIsMobile(mobile())
@@ -61,17 +62,27 @@ export default function Header() {
         db.collection('ferry').onSnapshot((snap) => {
             const tempFerry = []
             snap.forEach((sndata) => {
-                tempFerry.push({ name: sndata.data().name, slug: sndata.data().slug, image:sndata.data().image })
+                tempFerry.push({ name: sndata.data().name, slug: sndata.data().slug, thumbnail:sndata.data().image, data:[] })
             })
             setFerryList(tempFerry)
+            console.log("getting activity from menu", tempFerry)
         })
 
         db.collection('island').onSnapshot((snap) => {
             const tempIsland = []
             snap.forEach((sndata) => {
-                tempIsland.push({ name: sndata.data().name, url: sndata.data().slug, icon:sndata.data().thumbnail, items:[] })
+                tempIsland.push({ name: sndata.data().name, slug: sndata.data().slug, thumbnail:sndata.data().thumbnail, data:[] })
             })
             setIsland(tempIsland)
+        })
+
+        db.collection('activity').onSnapshot((snap) => {
+            const tempactivity = []
+            snap.forEach((sndata) => {
+                tempactivity.push(sndata.data())
+            })
+            setActivityList(tempactivity)
+            console.log("getting activity from menu", tempactivity)
         })
 
 
@@ -80,8 +91,8 @@ export default function Header() {
     
 
     function megaActive(megaFor){
-        if(megaFor=="acitivity") setMegaContent(menu.activity);
-        else if(megaFor=="ferry") setMegaContent(ferryList.map((item, i)=>{return{name:item.name, icon:item.image, items:[], url:item.slug}}))
+        if(megaFor=="acitivity") setMegaContent(activityList);
+        else if(megaFor=="ferry") setMegaContent(ferryList)
         else if (megaFor=="island") setMegaContent(island);
         setMegaMenuStyle({visibility:"visible", opacity:1})
     }

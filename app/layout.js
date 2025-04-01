@@ -1,5 +1,6 @@
 import localFont from "next/font/local";
 import "./globals.css";
+import Footer from "@/components/master/Footer";
 
 const makaran = localFont({src:"./fonts/makaran.woff", variable:"--font-makaran"})
 
@@ -13,6 +14,7 @@ export default function RootLayout({ children }) {
     <html lang="en" className={makaran.variable}>
       <body >
         {children}
+        <Footer/>
       </body>
     </html>
   );

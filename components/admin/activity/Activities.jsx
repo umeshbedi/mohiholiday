@@ -2,7 +2,8 @@ import { db } from '@/firebase';
 import { DeleteFilled, DeleteOutlined, EditFilled, EditOutlined, PlusOutlined } from '@ant-design/icons'
 import { Button, Divider, Form, Input, Modal, Select, Space, message } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
-import ActivitiesDetails from './ActivitiesDetails';
+import ActivityItemsList from './ActivityItemsList';
+
 
 
 const activitydb = db.collection("activity")
@@ -20,12 +21,12 @@ export default function Activities() {
 
     const [selectedactivity, setselectedactivity] = useState(null)
     const [activityItem, setactivityItem] = useState([])
-    const [SID, setSID] = useState(null)
-    const [SIPD, setSIPD] = useState(null)
-    const [SIPI, setSIPI] = useState(null)
-
-    const [action, setAction] = useState("new")
-
+   
+    const [SIAD, setSIAD] = useState(null)
+    
+    console.log("SIAD:", SIAD)
+    console.log("selectedactivity:", selectedactivity)
+    
     const [msg, showMsg] = message.useMessage()
 
     var orderRef = useRef(null)
@@ -42,6 +43,7 @@ export default function Activities() {
 
             }))
             setactivityItem(tempactivity)
+            console.log("activity items from activities page: ", tempactivity)
         })
     }, [])
 
@@ -85,44 +87,21 @@ export default function Activities() {
             activitydb.doc(`${selectedactivity}`).delete().then(() =>
                 msg.success("deleted"))
             setselectedactivity(null)
-            setSIPD(null)
+            setSIAD(null)
             setSIPI(null)
-            setAction("new")
+            
         } else { console.log("denied") }
     }
 
     useEffect(() => {
         if (selectedactivity != null) {
             const result = activityItem.find(f => f.id == selectedactivity)
-            setSID(result)
+            setSIAD(result)
+            // console.log(result)
         }
     }, [selectedactivity, activityItem])
 
-    // console.log(SID)
-
-    function updatePlace(name, about, metaDescription, thumbnail) {
-        const tempSIPD = SID.data
-        const editedPlace = {
-            about, metaDescription, name, thumbnail,
-            slug: tempSIPD[SIPI].slug,
-
-        }
-        tempSIPD[SIPI] = editedPlace
-        activitydb.doc(`${selectedactivity}`).update({
-            data: tempSIPD
-        }).then(() => {
-            msg.success("updated")
-        })
-    }
-
-    function deletePlace(i) {
-        const tempPlace = SID.data
-        tempPlace.splice(i, 1)
-        activitydb.doc(`${selectedactivity}`).update({
-            data: tempPlace
-        }).then(() => { msg.success("deleted"); setSIPD(null); setAction("new"); setSIPI(null) })
-    }
-
+  
     return (
         <div>
             {showMsg}
@@ -148,17 +127,17 @@ export default function Activities() {
                                 onClick={() => {
                                     setOpen(true)
                                     setEdit(true)
-                                    setname(SID.name)
-                                    setthumbnail(SID.thumbnail)
-                                    setHeaderImage(SID.headerImage)
-                                    setMetaDescription(SID.metaDescription)
-                                    setOrder(SID.order)
+                                    setname(SIAD.name)
+                                    setthumbnail(SIAD.thumbnail)
+                                    setHeaderImage(SIAD.headerImage)
+                                    setMetaDescription(SIAD.metaDescription)
+                                    setOrder(SIAD.order)
                                     setTimeout(() => {
-                                        nameRef.current.value = SID.name;
-                                        orderRef.current.value = SID.order;
-                                        headerImageRef.current.value = SID.headerImage;
-                                        thumbnailRef.current.value = SID.thumbnail;
-                                        metaDescriptionRef.current.value = SID.metaDescription;
+                                        nameRef.current.value = SIAD.name;
+                                        orderRef.current.value = SIAD.order;
+                                        headerImageRef.current.value = SIAD.headerImage;
+                                        thumbnailRef.current.value = SIAD.thumbnail;
+                                        metaDescriptionRef.current.value = SIAD.metaDescription;
                                     }, 100);
 
                                 }}>
@@ -174,40 +153,12 @@ export default function Activities() {
                     }
 
                 </Space>
-
-                {SID != null && selectedactivity != null &&
-                    <>
-                        {SID.data.length != 0 &&
-                            <div>
-                                <Divider />
-                                <h3 style={{ marginBottom: '2%' }}>Places of {SID.name}</h3>
-                                {SID.data.map((d, i) => (
-                                    <div key={i} style={{ display: 'flex', gap: 10, color: '#25527b' }}>
-                                        <p> <b> #{i + 1}:</b></p>
-                                        <div style={{ marginBottom: 10 }}>
-                                            <p>{d.name}  {" | "}
-                                                <span style={{ cursor: 'pointer' }}><EditFilled onClick={() => {
-                                                    setAction("edit"); setSIPD(d); setSIPI(i)
-                                                }} /> {" | "} <DeleteFilled
-                                                        onClick={() => deletePlace(i)} style={{ color: 'red' }} /></span>
-                                            </p>
-                                        </div>
-
-                                    </div>
-                                ))}
-                            </div>
-                        }
-                        <ActivitiesDetails
-                            action={action}
-                            SIPD={SIPD}
-                            activitySlug={SID.slug}
-                            activityId={selectedactivity}
-                            update={updatePlace}
-                            addnewPlace={() => { setSIPD(null); setAction("new"); setSIPI(null) }}
-                        />
-
-                    </>
+                
+                {SIAD!=null && 
+                    <ActivityItemsList id={selectedactivity} data={SIAD}/>
+                    // <div>hello world</div>
                 }
+                
             </div>
 
 

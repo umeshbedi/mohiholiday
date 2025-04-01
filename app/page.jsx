@@ -30,23 +30,13 @@ export default async function Home() {
     return ({ id: entry.id, ...entry.data() })
   });
 
-  const desBali = await db.collection('destinationBali').get()
-  const desEntryBali = desBali.docs.map((entry) => {
-    return ({ id: entry.id, ...entry.data() })
-  });
-
   //Getting Activity
-  const actvtyAndaman = await db.collection("activityAndaman").get();
+  const actvtyAndaman = await db.collection("activity").get();
   const activityDataAndaman = actvtyAndaman.docs.map((act) => {
     const data = act.data()
-    return { name: data.name, thumbnail: data.thumbnail, slug: data.slug }
+    return { name: data.name, thumbnail: data.headerImage, slug: data.slug, count:data.data.length }
   })
 
-  const actvtyBali = await db.collection("activityBali").get();
-  const activityDataBali = actvtyBali.docs.map((act) => {
-    const data = act.data()
-    return { name: data.name, thumbnail: data.thumbnail, slug: data.slug }
-  })
 
   //Getting Ferry
   const ferry = await db.collection("ferry").get();
@@ -54,6 +44,17 @@ export default async function Home() {
     const data = fer.data()
     return { name: data.name, thumbnail: data.image, slug: data.slug }
   })
+
+  //Getting Island Destination
+
+  const resIsland = await db.collection("island").get()
+  const entryIsland = resIsland.docs.map((entry) => {
+    return ({ id: entry.id, ...entry.data() })
+  });
+
+  const portBlair = entryIsland.filter(e=>e.slug=="/island/Port-Blair")[0]
+  const haveLock = entryIsland.filter(e=>e.slug=="/island/Havelock-Island")[0]
+  const neilIsland = entryIsland.filter(e=>e.slug=="/island/Neil-Island")[0]
 
   //Getting Testimonials
   const testimonials = (await db.doc(`pages/testimonials`).get()).data().testimonials
@@ -77,18 +78,18 @@ export default async function Home() {
             <DivCarouselMobile
               lightHead={"Handpicked Destination in Port Blair"}
               // darkHead={"in Bali"}
-              button={{ name: "All Destination", slug: "/destination/port-blair" }}
-              sliderContent={desEntryBali}
+              button={{ name: "All Destination", slug: "/island/Port-Blair" }}
+              sliderContent={portBlair.data}
               category={'destination'}
             />
           ) : (
             <DivCarousel
               lightHead={"Handpicked Destination "}
               darkHead={"in Port Blair"}
-              button={{ name: "All Destination", slug: "/destination/port-blair" }}
+              button={{ name: "All Destination", slug: "/island/Port-Blair" }}
               backgroundImage={InsightBanner.HomeBaliInsight}
               category={'destination'}
-              sliderContent={desEntryBali}
+              sliderContent={portBlair.data}
             />
 
           )}
@@ -98,18 +99,18 @@ export default async function Home() {
             <DivCarouselMobile
               lightHead={"Handpicked Destination in Havelock Island"}
               // darkHead={"in Bali"}
-              button={{ name: "All Destination", slug: "/destination/havelock" }}
-              sliderContent={desEntryAndaman}
+              button={{ name: "All Destination", slug: "/island/Havelock-Island" }}
+              sliderContent={haveLock.data}
               category={'destination'}
             />
           ) : (
             <DivCarousel
               lightHead={"Handpicked Destination "}
               darkHead={"in Havelock Island"}
-              button={{ name: "All Destination", slug: "/destination//havelock" }}
+              button={{ name: "All Destination", slug: "/island/Havelock-Island" }}
               backgroundImage={InsightBanner.HomeAndamanInsight}
               category={'destination'}
-              sliderContent={desEntryAndaman}
+              sliderContent={haveLock.data}
             />
 
           )}
@@ -119,18 +120,18 @@ export default async function Home() {
             <DivCarouselMobile
               lightHead={"Handpicked Destination in Neil Island"}
               // darkHead={"in Bali"}
-              button={{ name: "All Destination", slug: "/destination/neil" }}
-              sliderContent={desEntryAndaman}
+              button={{ name: "All Destination", slug: "/island/Neil-Island" }}
+              sliderContent={neilIsland.data}
               category={'destination'}
             />
           ) : (
             <DivCarousel
               lightHead={"Handpicked Destination "}
               darkHead={"in Neil Island"}
-              button={{ name: "All Destination", slug: "/destination/neil" }}
+              button={{ name: "All Destination", slug: "/island/Neil-Island" }}
               backgroundImage={InsightBanner.HomeAndamanInsight}
               category={'destination'}
-              sliderContent={desEntryAndaman}
+              sliderContent={neilIsland.data}
             />
 
           )}
@@ -158,13 +159,13 @@ export default async function Home() {
 
           <DivCarousel2 title={"Activities in Andaman (India)"} sliderContent={activityDataAndaman} />
         </div>
-        
+
         {/* <Activities/> */}
 
         <Journey youtube={tarvelJourney} />
 
         {/* <Counter /> */}
-          <Testimonials testimonialsData={testimonials} />
+        <Testimonials testimonialsData={testimonials} />
 
         <WhatTheySay />
         <Authorities />

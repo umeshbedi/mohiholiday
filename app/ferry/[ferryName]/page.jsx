@@ -14,13 +14,12 @@ import Tile from '@/components/master/SingleTile'
 import Ticket from './Ticket'
 
 import { FaAnglesRight } from "react-icons/fa6";
+import { notFound } from 'next/navigation'
 
 const Menu = dynamic(() => import("@/components/master/header"))
 const HeadImage = dynamic(() => import("@/components/master/HeadImage"))
 
 export default async function Slug({ params }) {
-
-
 
   const { ferryName } = await params;
 
@@ -63,7 +62,7 @@ export default async function Slug({ params }) {
 
   // console.log(data.ticket)
 
-  // if (data == undefined) return <Skeleton active style={{ marginTop: '3%' }} />
+    if (entry.length==0)return notFound()
 
   const tabItem = [
     {

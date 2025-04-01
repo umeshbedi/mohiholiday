@@ -7,12 +7,13 @@ import Link from 'next/link'
 import { boxShadow, mobile } from '@/components/utils/variables'
 import dynamic from 'next/dynamic'
 import String2Html from '@/components/master/String2Html'
+import { notFound } from 'next/navigation'
 
 const HeadImage = dynamic(() => import("@/components/master/HeadImage"))
 const Menu = dynamic(() => import("@/components/master/header"))
 
 
-export default async function AboutIsland({params}) {
+export default async function AboutIsland({ params }) {
 
     // { data, headerImage, islandItem, headerImgAlt }
     // console.log(islandItem)
@@ -25,12 +26,13 @@ export default async function AboutIsland({params}) {
 
     // if (data == undefined) return <Skeleton active style={{ marginTop: '3%' }} />
     const { islandName, aboutIsland } = await params
-    
+
     const res = await db.collection("island").where("slug", "==", `/island/${islandName}`).get()
     const entry = res.docs.map((entry) => {
-        
         return ({ id: entry.id, ...entry.data() })
     });
+
+    if (entry.length == 0) return notFound()
 
     const getData = await db.doc(`island/${entry[0].id}`).get()
     const tempdata = getData.data()
@@ -41,9 +43,9 @@ export default async function AboutIsland({params}) {
 
     return (
         <main>
-           <div>
-           <Menu/>
-           <HeadImage image={data.headerImage}/>
+            <div>
+                <Menu />
+                <HeadImage image={data.headerImage} />
                 <div
                     className='backCurve5'
                     style={{ display: 'flex', justifyContent: 'center', }} id='packageContainer'>

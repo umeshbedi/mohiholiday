@@ -65,7 +65,7 @@ export default function Header() {
                 tempFerry.push({ name: sndata.data().name, slug: sndata.data().slug, thumbnail:sndata.data().image, data:[] })
             })
             setFerryList(tempFerry)
-            console.log("getting activity from menu", tempFerry)
+            // console.log("getting activity from menu", tempFerry)
         })
 
         db.collection('island').onSnapshot((snap) => {
@@ -82,7 +82,7 @@ export default function Header() {
                 tempactivity.push(sndata.data())
             })
             setActivityList(tempactivity)
-            console.log("getting activity from menu", tempactivity)
+            // console.log("getting activity from menu", tempactivity)
         })
 
 

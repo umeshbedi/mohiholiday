@@ -54,7 +54,7 @@ export default async function AndamanCab({ params, searchParams }) {
   const wheeler2 = cabsList.filter((f)=>f.type=="2")
   const wheeler4 = cabsList.filter((f)=>f.type==undefined || f.type=="4")
   
-  console.log(wheeler2)
+  // console.log(wheeler2)
 
   // console.log(cabsList)
 

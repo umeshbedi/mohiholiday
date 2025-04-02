@@ -97,6 +97,7 @@ export default function RentalsItemUpdate({ collection, data }) {
                         ref={typeRef}
                         defaultValue={type==undefined?"null":type}
                         name="vehicletype"
+                        className='p-1'
                         onChange={(e) => {
                             if (e.target.value !== "null") {
                                 setType(e.target.value);

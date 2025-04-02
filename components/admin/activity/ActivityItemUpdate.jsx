@@ -43,8 +43,7 @@ export default function ActivityItemUpdate({ collection, data, allItemData, inde
     }
 
     function editData() {
-        const slug = `${allItemData.slug}/${title.split(" ").join("-")}`
-        allItemData.data[index] = { title, thumbnail, about, headerImage, metaDescription, slug }
+        allItemData.data[index] = { title, thumbnail, about, headerImage, metaDescription }
         
         setLoading(true)
         db.doc(`${collection}`).update({

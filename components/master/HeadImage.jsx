@@ -23,7 +23,7 @@ export default function HeadImage({image="", title}) {
                 alt={title}
             />
             <div style={{ position: 'absolute', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>
-                <h1 style={{ color: 'white',textShadow:"2px 2px 4px #000000" }}>{title}</h1>
+                <h1 style={{ color: 'white',textShadow:"2px 2px 4px #000000", textAlign:'center' }}>{title}</h1>
             </div>
         </div>
     )

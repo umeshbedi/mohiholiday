@@ -28,6 +28,8 @@ const Media = dynamic(() => import('../../components/admin/media/Media'), { ssr:
 
 const Activity = dynamic(() => import('../../components/admin/activity/Activities'), { ssr: false, loading: () => <Skeleton /> })
 
+const DayTrip = dynamic(() => import('../../components/admin/daytrip/DayTripList'), { ssr: false, loading: () => <Skeleton /> })
+
 const TestiMonials = dynamic(() => import('../../components/admin/AddTestimonials'), { ssr: false, loading: () => <Skeleton /> })
 
 
@@ -112,6 +114,10 @@ export default function Admin() {
 
     else if (e == 'island') {
       setContent(<Island />)
+    }
+    
+    else if (e == 'dayTrip') {
+      setContent(<DayTrip />)
     }
 
     else if (e == 'media') {

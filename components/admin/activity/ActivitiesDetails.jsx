@@ -19,7 +19,7 @@ export default function ActivitiesDetails({ IslandId, IslandSlug, SIPD, action, 
     const thumbRef = useRef()
     const metaDecRef = useRef()
 
-    console.log("from activity details", SIPD)
+    // console.log("from activity details", SIPD)
 
     useEffect(() => {
         if (SIPD != null && action == 'edit') {

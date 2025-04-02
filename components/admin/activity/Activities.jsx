@@ -24,8 +24,8 @@ export default function Activities() {
    
     const [SIAD, setSIAD] = useState(null)
     
-    console.log("SIAD:", SIAD)
-    console.log("selectedactivity:", selectedactivity)
+    // console.log("SIAD:", SIAD)
+    // console.log("selectedactivity:", selectedactivity)
     
     const [msg, showMsg] = message.useMessage()
 

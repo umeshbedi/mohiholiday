@@ -164,7 +164,7 @@ export default async function SinglePackage({ params, searchParams }) {
 
     const data = finalData[0]
 
-    console.log("hello", data)
+    
     if (data == undefined) return (<div style={{ height: '30vh', padding: '2%' }}><Skeleton active /></div>)
 
     let travelArr = []

@@ -31,6 +31,12 @@ const items = [
     },
 
     {
+      key: 'dayTrip',
+      icon: <FaCar />,
+      label: 'Day Trip',
+    },
+
+    {
       key: 'addcruises',
       icon: <FaShip />,
       label: 'Cruises',

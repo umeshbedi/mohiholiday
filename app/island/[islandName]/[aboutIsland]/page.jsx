@@ -11,6 +11,7 @@ import { notFound } from 'next/navigation'
 
 const HeadImage = dynamic(() => import("@/components/master/HeadImage"))
 const Menu = dynamic(() => import("@/components/master/header"))
+import FAQ from '@/components/master/FAQ'
 
 
 export default async function AboutIsland({ params }) {
@@ -55,6 +56,7 @@ export default async function AboutIsland({ params }) {
                             <h1>About {islandItem.name}</h1>
                             <Divider style={{ margin: "0", backgroundColor: style.lightGrey, height: 1 }} />
                             <String2Html id={'aboutIsland'} string={islandItem.about} />
+                            <FAQ />
 
                         </div>
 

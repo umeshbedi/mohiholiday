@@ -51,10 +51,11 @@ export default function DivCarousel2({ lightHead, darkHead, backgroundImage, sli
             }}
         >
             <Title isdark title={title} center={true} />
-            
-            <div className='w-[100%] relative bg-gray-500 py-10'>
-                <h1 className='text-white text-center'>Activities in Andaman</h1>
-                <center>
+
+            <div className='w-[100%] relative py-10' style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' }}>
+                <div className="absolute inset-0 bg-black/50 z-0"></div>
+                <h1 className='text-white text-center relative z-10'>Activities in Andaman</h1>
+                <center className="relative z-10">
                     <div style={{ width: "90%", marginTop: 20 }}>
                         <Swiper
                             // effect={"coverflow"}

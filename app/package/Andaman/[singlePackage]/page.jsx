@@ -9,6 +9,7 @@ import { db } from '@/firebase'
 import String2Html from '@/components/master/String2Html'
 import ContactForm from '@/components/master/ContactForm'
 import { FaBed, FaTag, FaTags } from 'react-icons/fa'
+import FAQ from '@/components/master/FAQ'
 
 const Menu = dynamic(() => import("@/components/master/header"), { ssr: true })
 const HeadImage = dynamic(() => import("@/components/master/HeadImage"), { ssr: true })
@@ -30,7 +31,7 @@ export default async function SinglePackage({ params, searchParams }) {
     //     setIsMobile(mobile())
     // }, [isMobile])
 
-    const { singlePackage } = params
+    const { singlePackage } = await params;
 
     // console.log(singlePackage)
 
@@ -240,7 +241,7 @@ export default async function SinglePackage({ params, searchParams }) {
                             <h2>Exclusions</h2>
                             <String2Html id={'exclusion'} string={data.exclusion} />
 
-
+                            <FAQ/>
                         </div>
 
                         {mobile() && <Divider />}

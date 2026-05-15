@@ -13,7 +13,7 @@ const Menu = dynamic(() => import("@/components/master/header"))
 const HeadImage = dynamic(() => import("@/components/master/HeadImage"))
 
 export default async function ActivityName({ params }) {
-    const { activityPlace, activityName } = params
+    const { activityPlace, activityName } = await params;
 
     const resAndaman = await db.collection('activity').where("slug", "==", `/activity/${activityPlace}`).get()
     const entryAndaman = resAndaman.docs.map((entry) => {

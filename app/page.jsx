@@ -156,7 +156,7 @@ export default async function Home() {
 
           )}
 
-          <DivCarousel2 title={"Activities in Andaman (India)"} sliderContent={activityDataAndaman} />
+          <DivCarousel2 title={"Activities in Andaman (India)"} sliderContent={activityDataAndaman} backgroundImage={InsightBanner.HomeAndamanInsight} />
         </div>
 
         {/* <Activities/> */}

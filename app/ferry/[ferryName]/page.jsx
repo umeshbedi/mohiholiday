@@ -19,6 +19,8 @@ import { notFound } from 'next/navigation'
 const Menu = dynamic(() => import("@/components/master/header"))
 const HeadImage = dynamic(() => import("@/components/master/HeadImage"))
 
+import FAQ from '@/components/master/FAQ'
+
 export default async function Slug({ params }) {
 
   const { ferryName } = await params;
@@ -124,6 +126,8 @@ export default async function Slug({ params }) {
                 items={tabItem}
 
               />
+
+              <FAQ/>
 
             </div>
 

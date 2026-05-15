@@ -17,8 +17,7 @@ import SHeader from '@/components/skeleton/SHeader'
 import SHome from '@/components/skeleton/SHome'
 
 import Tile from '@/components/master/SingleTile'
-
-
+import FAQ from '@/components/master/FAQ'
 
 export default function SingleActivity({ data, sortedData, parentActivity }) {
 
@@ -46,7 +45,7 @@ export default function SingleActivity({ data, sortedData, parentActivity }) {
               <h1>{data.title}</h1>
               <Divider style={{ margin: "0", backgroundColor: "var(--lightGreyColor)", height: 1 }} />
               <String2Html id={'aboutIsland'} string={data.about} />
-
+              <FAQ/>
             </div>
 
             <div style={{ width: mobile() ? '100%' : '30%', background: 'white', padding: '3%', height: 'fit-content', flexDirection: 'column', display: 'flex', alignItems: 'center' }}>

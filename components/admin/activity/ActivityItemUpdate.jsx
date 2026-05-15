@@ -1,9 +1,11 @@
+"use client"
 import { db } from '@/firebase';
-import { Button, Divider, Form, Input, message } from 'antd';
+import { Button, Divider, Form, Input, message, Card } from 'antd';
 import React, { useEffect, useRef, useState } from 'react'
 
 import JoditEditor from 'jodit-react';
 import firebase from 'firebase/compat/app';
+import FAQEditor from '@/components/admin/FAQEditor';
 
 export default function ActivityItemUpdate({ collection, data, allItemData, index }) {
 
@@ -11,7 +13,10 @@ export default function ActivityItemUpdate({ collection, data, allItemData, inde
     const [about, setAbout] = useState("")
     const [thumbnail, setthumbnail] = useState("")
     const [headerImage, setHeaderImage] = useState("")
+    const [metaTitle, setMetaTitle] = useState("")
     const [metaDescription, setMetaDescription] = useState("")
+    const [customSlug, setCustomSlug] = useState("")
+    const [faqs, setFaqs] = useState([])
 
     const [messageApi, contextHolder] = message.useMessage();
     const [loading, setLoading] = useState(false)
@@ -23,7 +28,8 @@ export default function ActivityItemUpdate({ collection, data, allItemData, inde
 
 
     function submit() {
-        const slug = `${allItemData.slug}/${title.split(" ").join("-")}`
+        const finalSlugSuffix = customSlug.trim() !== "" ? customSlug.split(" ").join("-") : title.split(" ").join("-")
+        const slug = `${allItemData.slug}/${finalSlugSuffix}`
         setLoading(true)
         db.doc(`${collection}`).update({
             data: firebase.firestore.FieldValue.arrayUnion({ 
@@ -31,8 +37,10 @@ export default function ActivityItemUpdate({ collection, data, allItemData, inde
                 thumbnail, 
                 about, 
                 headerImage, 
+                metaTitle,
                 metaDescription,
-                slug
+                slug,
+                faqs
             })
         }).then((e) => {
             messageApi.success("Item Added Successfully!")
@@ -43,7 +51,9 @@ export default function ActivityItemUpdate({ collection, data, allItemData, inde
     }
 
     function editData() {
-        allItemData.data[index] = { title, thumbnail, about, headerImage, metaDescription }
+        const finalSlugSuffix = customSlug.trim() !== "" ? customSlug.split(" ").join("-") : title.split(" ").join("-")
+        const slug = `${allItemData.slug}/${finalSlugSuffix}`
+        allItemData.data[index] = { title, thumbnail, about, headerImage, metaTitle, metaDescription, slug, faqs }
         
         setLoading(true)
         db.doc(`${collection}`).update({
@@ -61,10 +71,16 @@ export default function ActivityItemUpdate({ collection, data, allItemData, inde
             setAbout(data.about)
             setTitle(data.title)
             setHeaderImage(data.headerImage)
+            setMetaTitle(data.metaTitle || "")
             setMetaDescription(data.metaDescription)
             setthumbnail(data.thumbnail)
-            console.log("Index from update",index)
-            console.log("all items data", allItemData)
+            if(data.slug && allItemData?.slug) {
+                const slugSuffix = data.slug.replace(`${allItemData.slug}/`, "");
+                setCustomSlug(slugSuffix);
+            } else if (data.title) {
+                setCustomSlug(data.title.split(" ").join("-"));
+            }
+            setFaqs(data.faqs || [])
         }
     }, [data])
 
@@ -80,6 +96,10 @@ export default function ActivityItemUpdate({ collection, data, allItemData, inde
                     <input ref={titleRef} defaultValue={title} placeholder='Enter Page Title' onChange={(e) => setTitle(e.target.value)} />
                 </Form.Item>
 
+                <Form.Item label="Slug">
+                    <Input addonBefore={allItemData?.slug + '/'} value={data != undefined ? customSlug : (customSlug || title.split(" ").join("-"))} placeholder='Custom Slug (auto-generated if empty)' onChange={(e) => setCustomSlug(e.target.value)} />
+                </Form.Item>
+
                 <Form.Item label="Header Image Url">
                     <input ref={headerImageRef} defaultValue={headerImage} placeholder='Enter Header Image Url' onChange={(e) => setHeaderImage(e.target.value)} />
                 </Form.Item>
@@ -93,10 +113,19 @@ export default function ActivityItemUpdate({ collection, data, allItemData, inde
                     <JoditEditor value={about} onBlur={e => { setAbout(e) }} />
                 </div>
 
-                <Form.Item label="Meta Description">
-                    <input ref={metaDescriptionRef} defaultValue={metaDescription} placeholder='Enter Thumbnail Url' onChange={(e) => setMetaDescription(e.target.value)} />
-                </Form.Item>
 
+                <FAQEditor faqs={faqs} setFaqs={setFaqs} />
+
+                <Card title="SEO Settings" size="small" style={{ marginBottom: 20, marginTop: 20, backgroundColor: '#fafafa' }}>
+                    <Form.Item label="Meta Title" style={{ marginBottom: 12 }}>
+                        <Input value={metaTitle} placeholder='Enter Meta Title (SEO)' onChange={(e) => setMetaTitle(e.target.value)} />
+                    </Form.Item>
+                    
+                    <Form.Item label="Meta Description" style={{ marginBottom: 0 }}>
+                        <Input.TextArea value={metaDescription} placeholder='Enter Meta Description (SEO)' rows={3} onChange={(e) => setMetaDescription(e.target.value)} />
+                    </Form.Item>
+                </Card>
+                
                 <Button loading={loading} onClick={data != undefined ? editData : submit} type='primary' style={{ marginBottom: '5%' }}>{data != undefined ? "Update" : "Submit"}</Button>
 
             </Form>

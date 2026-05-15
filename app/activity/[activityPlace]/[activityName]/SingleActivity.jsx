@@ -21,7 +21,7 @@ import FAQ from '@/components/master/FAQ'
 
 export default function SingleActivity({ data, sortedData, parentActivity }) {
 
-  // console.log(sortedData)
+  // console.log(data)
   const [open, setOpen] = useState(false)
 
   const [activityDetails, setActivityDetails] = useState({})
@@ -45,7 +45,7 @@ export default function SingleActivity({ data, sortedData, parentActivity }) {
               <h1>{data.title}</h1>
               <Divider style={{ margin: "0", backgroundColor: "var(--lightGreyColor)", height: 1 }} />
               <String2Html id={'aboutIsland'} string={data.about} />
-              <FAQ/>
+              <FAQ faqData={data.faqs} />
             </div>
 
             <div style={{ width: mobile() ? '100%' : '30%', background: 'white', padding: '3%', height: 'fit-content', flexDirection: 'column', display: 'flex', alignItems: 'center' }}>

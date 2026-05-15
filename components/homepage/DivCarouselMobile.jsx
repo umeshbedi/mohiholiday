@@ -106,8 +106,8 @@ export default function DivCarouselMobile({ lightHead, darkHead, backgroundImage
             {sliderContent.map((item, index) => (
               <SwiperSlide style={{ width: 250, height: 350 }} key={index} className='singleSwiper'>
                 <Link href={item.slug}>
-                  <div style={{ height: 350 }}>
-                    <Image src={item.thumbnail} alt={item.name} fill style={{ objectFit: 'cover', borderRadius: isMobile ? 25 : 50, position: 'absolute', zIndex: -1 }} />
+                  <div style={{ width: 210, height: isMobile ? 250 : 350 }}>
+                    <Image src={item.thumbnail || null} alt={item.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" style={{ objectFit: 'cover', borderRadius: isMobile ? 25 : 50, position: 'absolute', zIndex: -1 }} />
                     <h1 style={{
                       color: 'white',
                       fontWeight: 700,

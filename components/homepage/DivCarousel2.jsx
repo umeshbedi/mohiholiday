@@ -82,7 +82,9 @@ export default function DivCarousel2({ lightHead, darkHead, backgroundImage, sli
                                     <div style={{background: 'white',borderRadius: "30px",}}
                                         className=' shadow-2xl relative h-52 overflow-hidden'
                                     >
-                                        <Image src={item.thumbnail} alt='activities image' fill className='object-cover' />
+                                        <div className='w-full h-full relative'>
+                                            <Image src={item.thumbnail || null} alt='activities image' fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className='object-cover' />
+                                        </div>
                                         <div className='absolute w-full h-52 bg-[rgba(0,0,0,.3)] flex items-center justify-end pb-3 flex-col'>
                                             <h1 className='text-white text-2xl'>{item.name}</h1>
                                             <p className='text-white'>{item.count} activities</p>

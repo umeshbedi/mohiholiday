@@ -3,8 +3,7 @@ import { mobile } from '@/components/utils/variables'
 import SHome from '@/components/skeleton/SHome'
 import { db } from '@/firebase'
 import Activities from '@/components/homepage/Activities'
-
-
+import QuotePopup from '@/components/homepage/QuotePopup'
 
 const DivCarousel = dynamic(() => import("@/components/homepage/DivCarousel"), { ssr: true, loading: () => <SHome /> })
 const DivCarousel2 = dynamic(() => import('@/components/homepage/DivCarousel2'), { ssr: true, loading: () => <SHome /> })
@@ -69,7 +68,7 @@ export default async function Home() {
 
     <main>
       <Menu />
-
+      <QuotePopup />
       <div >
         <Slider sliderData={res.data().banner} />
 

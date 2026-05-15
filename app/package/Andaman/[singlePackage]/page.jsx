@@ -97,8 +97,6 @@ export default async function SinglePackage({ params, searchParams }) {
                         fill
                         style={{ objectFit: 'cover' }}
                         loading='lazy'
-                        placeholder='blur'
-                        blurDataURL={thumbnail + '?blur'}
                     />
                 </a>
                 <h1 style={{

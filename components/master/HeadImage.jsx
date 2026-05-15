@@ -17,8 +17,6 @@ export default function HeadImage({image="", title}) {
                 fill
                 loading='lazy'
                 style={{ objectFit: 'cover', transform:`scale(${scale})`, transition:'transform 10s ease' }}
-                placeholder='blur'
-                blurDataURL={image + '?blur'}
                 onLoad={()=>setScale(1)}
                 alt={title}
             />

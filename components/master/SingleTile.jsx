@@ -16,8 +16,6 @@ export default function Tile({ thumbnail, name, slug }) {
                         fill
                         style={{ objectFit: 'cover' }}
                         loading='lazy'
-                        placeholder='blur'
-                        blurDataURL={thumbnail + '?blur'}
                     />
                 </a>
                 <h1 style={{

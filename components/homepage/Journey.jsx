@@ -23,7 +23,12 @@ export default function Journey({ youtube }) {
     
     return (
         <div>
-            <Title title={"Witness the epic The Andaman Islands"} center={true}/>
+            <Title title={"Withness the Epic andaman Islands with the Expert Mohi Holidays"} center={true}/>
+            
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px', margin: '20px 0', flexWrap: 'wrap' }}>
+                <Image src="/images/tripadvisor.png" alt="TripAdvisor" width={300} height={100} style={{ objectFit: 'contain' }} />
+                <Image src="/images/andaman nicobar.png" alt="Andaman Nicobar" width={250} height={100} style={{ objectFit: 'contain' }} />
+            </div>
             <Swiper
                 style={{padding: isMobile?0:"0 20%"}}
                 spaceBetween={30}
@@ -69,12 +74,11 @@ export default function Journey({ youtube }) {
                                                 </iframe>
                                             </div>)
                                         : (<Image
-                                            src={item.image}
+                                            src={item.image || null}
                                             fill
+                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                             loading='lazy'
                                             style={{ objectFit: 'cover', borderRadius: 20, transform: size }}
-                                            placeholder='blur'
-                                            blurDataURL={item.image}
                                         />)
                                     } */}
                                     <div style={{ borderRadius: 30, overflow: 'hidden', width: '100%' }}>

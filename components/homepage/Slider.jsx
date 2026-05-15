@@ -69,13 +69,12 @@ export default function Slider({ sliderData }) {
                                     }}>
 
                                     <Image
-                                        src={item.image}
+                                        src={item.image || null}
                                         alt={`mohi holiday slider image ${index}`}
                                         fill
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                         loading='lazy'
                                         style={{ objectFit: 'cover' }}
-                                        placeholder='blur'
-                                        blurDataURL={item.image + '?blur'}
                                     />
                                     <div style={{
                                         height: height,

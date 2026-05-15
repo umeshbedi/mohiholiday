@@ -127,13 +127,12 @@ export default function DivCarousel({ lightHead, darkHead, backgroundImage, slid
                 <Link href={item.slug}>
                   <div style={{ width: 210, height: isMobile ? 250 : 350 }}>
                     <Image
-                      src={item.thumbnail}
+                      src={item.thumbnail || null}
                       alt={item.name}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       style={{ objectFit: 'cover', borderRadius: isMobile ? 25 : 50, position: 'absolute', zIndex: -1 }}
                       loading='lazy'
-                      placeholder='blur'
-                      blurDataURL={item.thumbnail}
                     />
 
                     <h1 style={{

@@ -14,7 +14,7 @@ const HeadImage = dynamic(() => import("@/components/master/HeadImage"))
 
 export default async function Rentals() {
 
-  const resAndaman = await db.collection('rentalAndaman').get()
+  const resAndaman = await db.collection('rentalAndaman').orderBy('order').get()
   const entryAndaman = resAndaman.docs.map((entry) => {
     return ({ id: entry.id, ...entry.data() })
   });

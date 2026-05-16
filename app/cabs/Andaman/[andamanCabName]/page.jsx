@@ -31,25 +31,25 @@ export default async function AndamanCab({ params, searchParams }) {
             <p className='text-center'>{price}/day</p>
           </div>
   
-          <p className=' bg-red-400 py-2 w-full text-center cursor-pointer rounded-full'>BOOK NOW</p>
+          <p style={{background:'var(--primaryColor)', fontSize:'1.2rem'}} className=' text-white py-2 w-full text-center cursor-pointer rounded-full'>Book Now</p>
         </div>
       )
     }
 
-  const { andamanCabName } = params;
+  const { andamanCabName } = await params;
   const res = await db.collection("rentalAndaman").where("slug", "==", `/cabs/Andaman/${andamanCabName}`).get()
   const entry = res.docs.map((entry) => {
     return ({ id: entry.id, ...entry.data() })
   });
+
+  if (entry.length === 0) return notFound();
 
   const resCab = await db.doc(`rentalAndaman/${entry[0].id}`).collection('cabs').get()
   const cabsList = resCab.docs.map((entry) => {
     return ({ id: entry.id, ...entry.data() })
   });
   
-  const data = entry[0]
-
-  if (entry.length==0)return notFound()
+  const data = entry[0];
 
   const wheeler2 = cabsList.filter((f)=>f.type=="2")
   const wheeler4 = cabsList.filter((f)=>f.type==undefined || f.type=="4")

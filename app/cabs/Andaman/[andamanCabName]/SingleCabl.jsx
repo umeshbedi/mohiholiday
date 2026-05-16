@@ -38,7 +38,7 @@ export default function SingleCab({ thumbnail, title, price, distance }) {
             >
                 <div style={{ width: mobile() ? "100%" : "15%", display: 'flex', justifyContent: 'center', marginBottom: mobile() ? "1.5rem" : null }}>
                     <div style={{ width: mobile() ? 200 : 100, position: 'relative', height: mobile() ? 200 : 100 }}>
-                        <Image src={thumbnail} fill style={{ objectFit: 'cover', borderRadius: 20 }} />
+                        <Image src={thumbnail} fill style={{ objectFit: 'cover', borderRadius: 20 }} alt={title}/>
                     </div>
 
                 </div>

@@ -9,24 +9,23 @@ import RentalsItemList from './RentalItemsList';
 export default function RentalsUpdate({ collection, data }) {
 
     const [title, setTitle] = useState("")
+    const [slug, setSlug] = useState("")
     const [headerImage, setHeaderImage] = useState("")
     const [thumbnail, setThumbnail] = useState("")
     const [metaDescription, setmetaDescription] = useState("")
+    const [order, setOrder] = useState(0)
 
+    const prefix = `/cabs/${collection=="rentalBali"?"Bali":"Andaman"}/`;
 
     const [messageApi, contextHolder] = message.useMessage();
     const [loading, setLoading] = useState(false)
 
-    const titleRef = useRef()
-    const headerImageRef = useRef()
-    const metaDescriptionRef = useRef()
-    const thumbnailRef = useRef()
-
     function Submit() {
         setLoading(true)
+        const finalSlug = (slug || title.toLowerCase().split(" ").join("-")).replace(new RegExp(`^${prefix}`, "i"), "");
         db.collection(`${collection}`).add({
-            title, headerImage, metaDescription, thumbnail,
-            slug:`/cabs/${collection=="rentalBali"?"Bali":"Andaman"}/${title.split(" ").join("-")}`
+            title, headerImage, metaDescription, thumbnail, order,
+            slug: `${prefix}${finalSlug}`
         }).then((e) => {
             messageApi.success("Item Added Successfully!")
             setLoading(false)
@@ -37,8 +36,10 @@ export default function RentalsUpdate({ collection, data }) {
 
     function EditData() {
         setLoading(true)
+        const finalSlug = (slug || title.toLowerCase().split(" ").join("-")).replace(new RegExp(`^${prefix}`, "i"), "");
         db.collection(`${collection}`).doc(`${data.id}`).update({
-            title, headerImage, metaDescription, thumbnail
+            title, headerImage, metaDescription, thumbnail, order,
+            slug: `${prefix}${finalSlug}`
         }).then((e) => {
             messageApi.success("Page Updated Successfully!")
             setLoading(false)
@@ -57,24 +58,19 @@ export default function RentalsUpdate({ collection, data }) {
                     if (data !== undefined) {
                         const dataLength = Object.keys(data).length
                         if (dataLength != 0) {
-                            setTitle(data.title)
-
-                            setmetaDescription(data.metaDescription)
-                            setHeaderImage(data.headerImage)
-                            setThumbnail(data.thumbnail)
-                            titleRef.current.value = data.title
-                            metaDescriptionRef.current.value = data.metaDescription
-                            headerImageRef.current.value = data.headerImage
-                            thumbnailRef.current.value = data.thumbnail
+                            setTitle(data.title || "")
+                            setSlug(data.slug ? data.slug.replace(new RegExp(`^${prefix}`, "i"), "") : "")
+                            setmetaDescription(data.metaDescription || "")
+                            setHeaderImage(data.headerImage || "")
+                            setThumbnail(data.thumbnail || "")
+                            setOrder(data.order || 0)
                         } else {
                             setTitle("")
-
+                            setSlug("")
                             setmetaDescription("")
                             setHeaderImage("")
-                            titleRef.current.value = ""
-                            metaDescriptionRef.current.value = ""
-                            headerImageRef.current.value = ""
-                            thumbnailRef.current.value = ""
+                            setThumbnail("")
+                            setOrder(0)
                         }
                     }
                 })
@@ -87,22 +83,25 @@ export default function RentalsUpdate({ collection, data }) {
         <div>
             {contextHolder}
 
-            <Form>
+            <Form layout="vertical">
+                <Form.Item label="Order No.">
+                    <Input type='number' placeholder='Enter Order No.' value={order} onChange={(e) => setOrder(Number(e.target.value))} />
+                </Form.Item>
                 <Form.Item label="Title">
-                    <input ref={titleRef} defaultValue={title} placeholder='Enter Page Title' onChange={(e) => setTitle(e.target.value)} />
+                    <Input placeholder='Enter Page Title' value={title} onChange={(e) => setTitle(e.target.value)} />
+                </Form.Item>
+                <Form.Item label="Slug">
+                    <Input addonBefore={prefix} placeholder='enter-slug-name' value={slug} onChange={(e) => setSlug(e.target.value)} />
                 </Form.Item>
                 <Form.Item label="Header Image">
-                    <input ref={headerImageRef} defaultValue={headerImage} placeholder='Enter header Image url' onChange={(e) => setHeaderImage(e.target.value)} />
+                    <Input placeholder='Enter header Image url' value={headerImage} onChange={(e) => setHeaderImage(e.target.value)} />
                 </Form.Item>
                 <Form.Item label="Thumbnail">
-                    <input ref={thumbnailRef} defaultValue={thumbnail} placeholder='Enter header Image url' onChange={(e) => setThumbnail(e.target.value)} />
+                    <Input placeholder='Enter Thumbnail Image url' value={thumbnail} onChange={(e) => setThumbnail(e.target.value)} />
                 </Form.Item>
-
-
                 <Form.Item label="Meta Description">
-                    <input ref={metaDescriptionRef} defaultValue={metaDescription} placeholder='Enter Short Meta Description' onChange={(e) => setmetaDescription(e.target.value)} />
+                    <Input.TextArea rows={3} placeholder='Enter Short Meta Description' value={metaDescription} onChange={(e) => setmetaDescription(e.target.value)} />
                 </Form.Item>
-
 
                 <Button loading={loading} onClick={data != undefined ? EditData : Submit} type='primary' style={{ marginBottom: '5%' }}>{data != undefined ? "Update" : "Add New"}</Button>
 

@@ -10,7 +10,7 @@ export default function MegaMenu({ content = [] }) {
         <div className="content">
           {content.map((item, i) => (
             <div key={i} className="hover:bg-cyan-200 rounded-2xl">
-              <a href={"javascript:void(0)"} className="flex gap-2 bg-slate-200 hover:bg-cyan-300 p-3 rounded-2xl">
+              <a href={item?.slug.split("/")[1]!=='activity' ? item.slug : "javascript:void(0)"} className="flex gap-2 bg-slate-200 hover:bg-cyan-300 p-3 rounded-2xl">
                 <div className="relative h-[30px] w-[30px] flex-shrink-0 items-center">
                   <Image src={item.thumbnail} fill className="object-cover rounded-lg" alt={item.name} />
                 </div>

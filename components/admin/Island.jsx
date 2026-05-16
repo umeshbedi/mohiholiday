@@ -11,6 +11,8 @@ export default function Island() {
     const [open, setOpen] = useState(false);
 
     const [name, setname] = useState("")
+    const [slug, setSlug] = useState("")
+    const [title, setTitle] = useState("")
     const [thumbnail, setthumbnail] = useState("")
     const [headerImage, setHeaderImage] = useState("")
     const [metaDescription, setMetaDescription] = useState("")
@@ -28,12 +30,6 @@ export default function Island() {
 
     const [msg, showMsg] = message.useMessage()
 
-    var orderRef = useRef(null)
-    var nameRef = useRef(null)
-    var headerImageRef = useRef(null)
-    var thumbnailRef = useRef(null)
-    var metaDescriptionRef = useRef(null)
-
     useEffect(() => {
         Islanddb.onSnapshot((snap) => {
             const tempIsland = []
@@ -47,9 +43,11 @@ export default function Island() {
 
     function addNewIsland() {
         if (name != "" && thumbnail != "" && headerImage != "" && metaDescription != "") {
+            const finalSlug = (slug || name.toLowerCase().split(" ").join("-")).replace(/^\/island\//i, "");
             Islanddb.add({
                 name,
-                slug: `/island/${name.split(" ").join("-")}`,
+                slug: `/island/${finalSlug}`,
+                title,
                 thumbnail,
                 headerImage, metaDescription,
                 order,
@@ -61,20 +59,18 @@ export default function Island() {
     }
 
     function editIsland() {
+        const finalSlug = (slug || name.toLowerCase().split(" ").join("-")).replace(/^\/island\//i, "");
         Islanddb.doc(`${selectedIsland}`).update({
-            name, order, metaDescription, headerImage, thumbnail
+            name, order, metaDescription, headerImage, thumbnail, slug: `/island/${finalSlug}`, title
         }).then(() => {
             msg.success("Updated")
             setname("")
+            setSlug("")
+            setTitle("")
             setthumbnail("")
             setHeaderImage("")
             setMetaDescription("")
             setOrder(0)
-            nameRef.current.value = "";
-            orderRef.current.value = 0;
-            headerImageRef.current.value = "";
-            thumbnailRef.current.value = "";
-            metaDescriptionRef.current.value = "";
             setEdit(false)
             setOpen(false)
         })
@@ -148,18 +144,13 @@ export default function Island() {
                                 onClick={() => {
                                     setOpen(true)
                                     setEdit(true)
-                                    setname(SID.name)
-                                    setthumbnail(SID.thumbnail)
-                                    setHeaderImage(SID.headerImage)
-                                    setMetaDescription(SID.metaDescription)
-                                    setOrder(SID.order)
-                                    setTimeout(() => {
-                                        nameRef.current.value = SID.name;
-                                        orderRef.current.value = SID.order;
-                                        headerImageRef.current.value = SID.headerImage;
-                                        thumbnailRef.current.value = SID.thumbnail;
-                                        metaDescriptionRef.current.value = SID.metaDescription;
-                                    }, 100);
+                                    setname(SID.name || "")
+                                    setSlug(SID.slug ? SID.slug.replace(/^\/island\//i, "") : "")
+                                    setTitle(SID.title || "")
+                                    setthumbnail(SID.thumbnail || "")
+                                    setHeaderImage(SID.headerImage || "")
+                                    setMetaDescription(SID.metaDescription || "")
+                                    setOrder(SID.order || 0)
 
                                 }}>
                                 <EditOutlined />
@@ -216,15 +207,12 @@ export default function Island() {
                 open={open}
                 onCancel={() => {
                     setname("")
+                    setSlug("")
+                    setTitle("")
                     setthumbnail("")
                     setHeaderImage("")
                     setMetaDescription("")
                     setOrder(0)
-                    nameRef.current.value = "";
-                    orderRef.current.value = 0;
-                    headerImageRef.current.value = "";
-                    thumbnailRef.current.value = "";
-                    metaDescriptionRef.current.value = "";
                     setEdit(false)
                     setOpen(false)
                 }}
@@ -233,22 +221,30 @@ export default function Island() {
                 ]}
             >
                 <div style={{ flexDirection: 'column', display: 'flex', gap: 10, padding: '1%' }}>
-                    <div>Order No.:
-                        <input ref={orderRef} type='number' placeholder='Enter Order No.' onChange={(e) => setOrder(e.target.valueAsNumber)} />
+                    <div><label>Order No.:</label>
+                        <Input type='number' placeholder='Enter Order No.' value={order} onChange={(e) => setOrder(Number(e.target.value))} />
                     </div>
-                    <div>Island Name:
-                        <input ref={nameRef} placeholder='Enter Island Name' onChange={(e) => setname(e.target.value)} />
+                    <div><label>Island Name:</label>
+                        <Input placeholder='Enter Island Name' value={name} onChange={(e) => setname(e.target.value)} />
                     </div>
-                    <div>Header Image Url:
-                        <input ref={headerImageRef} placeholder='Enter Header Image Url' onChange={(e) => setHeaderImage(e.target.value)} />
+                    <div><label>Slug:</label>
+                        <Input addonBefore='/island/' placeholder='enter-slug-name' value={slug} onChange={(e) => setSlug(e.target.value)} />
                     </div>
-                    <div>Thumbnail Url:
-                        <input ref={thumbnailRef} placeholder='Enter Thumbnail Url' onChange={(e) => setthumbnail(e.target.value)} />
+                    <div><label>Header Image Url:</label>
+                        <Input placeholder='Enter Header Image Url' value={headerImage} onChange={(e) => setHeaderImage(e.target.value)} />
                     </div>
-                    <div>Meta Description:
-                        <input ref={metaDescriptionRef} placeholder='Enter Short Meta Description' onChange={(e) => setMetaDescription(e.target.value)} />
+                    <div><label>Thumbnail Url:</label>
+                        <Input placeholder='Enter Thumbnail Url' value={thumbnail} onChange={(e) => setthumbnail(e.target.value)} />
                     </div>
-
+                    
+                    <Divider style={{ margin: '10px 0' }}>SEO Section</Divider>
+                    
+                    <div><label>SEO Title:</label>
+                        <Input placeholder='Enter SEO Title' value={title} onChange={(e) => setTitle(e.target.value)} />
+                    </div>
+                    <div><label>Meta Description:</label>
+                        <Input.TextArea rows={3} placeholder='Enter Short Meta Description' value={metaDescription} onChange={(e) => setMetaDescription(e.target.value)} />
+                    </div>
                 </div>
             </Modal>
         </div>

@@ -127,7 +127,7 @@ export default async function Slug({ params }) {
 
               />
 
-              <FAQ/>
+              <FAQ faqData={data?.faqs}/>
 
             </div>
 

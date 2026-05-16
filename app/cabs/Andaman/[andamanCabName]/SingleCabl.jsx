@@ -4,14 +4,10 @@ import Image from 'next/image'
 import { FaMap, FaUser } from 'react-icons/fa'
 import { CarFilled } from '@ant-design/icons'
 import { boxShadow, mobile } from "@/components/utils/variables";
-import { Divider, Modal } from "antd";
-import React, { useState } from "react";
+import React from "react";
 import ContactForm from '@/components/master/ContactForm'
 
-
-export default function SingleCab({ thumbnail, title, price, distance }) {
-
-    const [open, setOpen] = useState(false)
+export default function SingleCab({ thumbnail, title, price, distance, onBookNow }) {
 
     function Icons({ icon = <></>, title = "" }) {
         return (
@@ -58,14 +54,7 @@ export default function SingleCab({ thumbnail, title, price, distance }) {
                         <h1 style={{ fontSize: '2rem' }}>₹{price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</h1>
                     </div>
                     <div style={{ height: "3rem", width: '100%', background: "var(--primaryColor)", marginTop: "1.5rem", display: 'flex', alignItems: "center", justifyContent: 'center', cursor: 'pointer', borderRadius: mobile() ? 50 : null }}
-                        onClick={() => {
-                            setOpen(true);
-                            setActivityDetails({
-                                name: title,
-                                distance: distance,
-                                price: `₹${price}`
-                            })
-                        }}
+                        onClick={() => onBookNow({ name: title, distance, price: `₹${price}` })}
                     >
                         <p style={{ fontSize: "1.2rem", color: "white" }}>Book Now</p>
                     </div>
@@ -85,24 +74,7 @@ export default function SingleCab({ thumbnail, title, price, distance }) {
 
             {/* <Footer /> */}
 
-            <Modal
-                open={open}
-                onCancel={() => setOpen(false)}
-                footer={[]}
-            >
-                <h2>Booking:</h2>
-                <Divider style={{ margin: '1%' }} />
-                {/* <h1 style={{ margin: '1% 0', fontSize: '2rem' }}>{activityDetails.price}</h1> */}
-                {/* <ContactForm
-                    to={'activity'}
-                    packageName={`Cab | ${data.title}`}
-                    packageDetail={`
-          <p>Cab Name: ${activityDetails.name}</p>
-          <p>Price: ${activityDetails.price}</p>
-          <p>Distance: ${activityDetails.distance} kms</p>
-        `}
-                /> */}
-            </Modal>
+
 
         </div>
     )

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import JoditEditor from 'jodit-react';
 import { db } from '@/firebase';
-import { Button, Divider, Select, Space, message } from 'antd';
+import { Button, Divider, Select, Space, message, Input, Form } from 'antd';
 import { DeleteFilled, PlusOutlined } from '@ant-design/icons';
 import { v4 as uuid } from 'uuid'
 import firebase from 'firebase/compat/app';
+import FAQEditor from '../FAQEditor';
 
 
 const ferrydb = db.collection('ferry')
@@ -20,7 +21,8 @@ export default function AddFerryDetails({ details, ferryId }) {
     const [about, setAbout] = useState(details.about)
     const [terms, setTerms] = useState(details.termAndCondtion)
     const [metaDescription, setMetaDescription] = useState(details.metaDescription)
-    const [metaTag, setMetaTag] = useState(details.metaTag)
+    const [title, setTitle] = useState(details.title)
+    const [faqs, setFaqs] = useState(details.faqs || [])
     const [image, setImage] = useState(details.image)
 
     // console.log(terms)
@@ -101,7 +103,8 @@ export default function AddFerryDetails({ details, ferryId }) {
             about,
             termAndCondtion: terms,
             metaDescription,
-            metaTag,
+            title,
+            faqs,
             image
         })
             .then(() => msg.success("updated successfully!"))
@@ -130,22 +133,18 @@ export default function AddFerryDetails({ details, ferryId }) {
     }
 
     return (
-        <div style={{ marginTop: '2%', flexDirection: 'column', display: 'flex', gap: 20 }}>
+        <Form layout="vertical" style={{ marginTop: '2%', display: 'flex', flexDirection: 'column', gap: 20 }}>
             {showMsg}
-            <div>
-                <Space>
-                    <h3 >Header Image Url:</h3>
-                    <input required defaultValue={details.image} placeholder='Enter Url' onChange={(e) => setImage(e.target.value)} />
-                </Space>
-            </div>
-            <div>
-                <h3 style={{ marginBottom: 10 }}>About {details.name}:</h3>
-                <JoditEditor onBlur={e => { setAbout(e) }} value={details.about} />
-            </div>
-            <div>
-                <h3 style={{ marginBottom: 10 }}>Terms and Conditions of {details.name}:</h3>
-                <JoditEditor onBlur={e => { setTerms(e) }} value={details.termAndCondtion} />
-            </div>
+            <Form.Item label="Header Image Url">
+                <Input required value={image} placeholder='Enter Url' onChange={(e) => setImage(e.target.value)} />
+            </Form.Item>
+            
+            <Form.Item label={`About ${details.name}`}>
+                <JoditEditor onBlur={e => { setAbout(e) }} value={about} />
+            </Form.Item>
+            <Form.Item label={`Terms and Conditions of ${details.name}`}>
+                <JoditEditor onBlur={e => { setTerms(e) }} value={terms} />
+            </Form.Item>
             <Divider />
             <div>
                 <h3 style={{ marginBottom: 10 }}>Tickets:</h3>
@@ -157,7 +156,7 @@ export default function AddFerryDetails({ details, ferryId }) {
                                 <span>dep: {tk.departure}, arrival: {tk.arrival}</span>{" | "}
                                 <span>distance: {tk.distance}</span>{" | "}
                                 <span>duration: {tk.duration}</span>
-                                <span style={{ color: 'red', cursor: 'pointer' }} onClick={() => { deleteTicket(i) }}> <DeleteFilled /></span>
+                                <span style={{ color: 'red', cursor: 'pointer', marginLeft: 10 }} onClick={() => { deleteTicket(i) }}> <DeleteFilled /></span>
                             </p>
                         </div>
 
@@ -168,16 +167,16 @@ export default function AddFerryDetails({ details, ferryId }) {
                 <form onSubmit={addTicket} style={{ flexDirection: 'column', display: 'flex', gap: 10 }}>
                     <div>
                         <Space>
-                            <input required name='from' placeholder='from' />
-                            <input required name='to' placeholder='to' />
-                            <input required name='arrival' placeholder='arrival' />
+                            <Input required name='from' placeholder='from' />
+                            <Input required name='to' placeholder='to' />
+                            <Input required name='arrival' placeholder='arrival' />
                         </Space>
                     </div>
                     <div>
                         <Space>
-                            <input required name='departure' placeholder='departure' />
-                            <input required name='distance' placeholder='distance' />
-                            <input required name='duration' placeholder='duration (hrs.)' />
+                            <Input required name='departure' placeholder='departure' />
+                            <Input required name='distance' placeholder='distance' />
+                            <Input required name='duration' placeholder='duration (hrs.)' />
                         </Space>
                     </div>
                     <div>
@@ -212,30 +211,31 @@ export default function AddFerryDetails({ details, ferryId }) {
                         <Classes />
                         <form onSubmit={addClass}>
                             <Space>
-                                <input required name='class' placeholder='Class Name' />
-                                <input required name='price' type='number' placeholder='Price of class' />
+                                <Input required name='class' placeholder='Class Name' />
+                                <Input required name='price' type='number' placeholder='Price of class' />
                             </Space>
-                            <Button htmlType='submit' type='dashed'><PlusOutlined /> Add Class</Button>
+                            <Button htmlType='submit' type='dashed' style={{ marginLeft: 10 }}><PlusOutlined /> Add Class</Button>
                         </form>
                     </div>
                 }
 
             </div>
+
+            <Divider />
+            <FAQEditor faqs={faqs} setFaqs={setFaqs} />
+
             <Divider>SEO Section</Divider>
-            <div>
-                <Space style={{ marginRight: 10 }}>
-                    <p>Meta Description:</p>
-                    <input required defaultValue={details.metaDescription} placeholder='Enter Meta Description' onChange={(e) => setMetaDescription(e.target.value)} />
-                </Space>
-                <Space>
-                    <p>Meta Tag:</p>
-                    <input required defaultValue={details.metaTag} placeholder='Enter Meta Tag' onChange={(e) => setMetaTag(e.target.value)} />
-                </Space>
-            </div>
+            <Form.Item label="SEO Title">
+                <Input required value={title} placeholder='Enter SEO Title' onChange={(e) => setTitle(e.target.value)} />
+            </Form.Item>
+            <Form.Item label="Meta Description">
+                <Input.TextArea rows={3} required value={metaDescription} placeholder='Enter Meta Description' onChange={(e) => setMetaDescription(e.target.value)} />
+            </Form.Item>
+
             <div>
                 <Button onClick={submit} type='primary'>Publish</Button>
             </div>
 
-        </div>
+        </Form>
     )
 }

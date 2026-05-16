@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react'
 
 import JoditEditor from 'jodit-react';
 import RentalsItemList from './RentalItemsList';
+import FAQEditor from '../FAQEditor';
 
 
 export default function RentalsUpdate({ collection, data }) {
@@ -13,6 +14,7 @@ export default function RentalsUpdate({ collection, data }) {
     const [headerImage, setHeaderImage] = useState("")
     const [thumbnail, setThumbnail] = useState("")
     const [metaDescription, setmetaDescription] = useState("")
+    const [faqs, setFaqs] = useState([])
     const [order, setOrder] = useState(0)
 
     const prefix = `/cabs/${collection=="rentalBali"?"Bali":"Andaman"}/`;
@@ -24,7 +26,7 @@ export default function RentalsUpdate({ collection, data }) {
         setLoading(true)
         const finalSlug = (slug || title.toLowerCase().split(" ").join("-")).replace(new RegExp(`^${prefix}`, "i"), "");
         db.collection(`${collection}`).add({
-            title, headerImage, metaDescription, thumbnail, order,
+            title, headerImage, metaDescription, thumbnail, order, faqs,
             slug: `${prefix}${finalSlug}`
         }).then((e) => {
             messageApi.success("Item Added Successfully!")
@@ -38,7 +40,7 @@ export default function RentalsUpdate({ collection, data }) {
         setLoading(true)
         const finalSlug = (slug || title.toLowerCase().split(" ").join("-")).replace(new RegExp(`^${prefix}`, "i"), "");
         db.collection(`${collection}`).doc(`${data.id}`).update({
-            title, headerImage, metaDescription, thumbnail, order,
+            title, headerImage, metaDescription, thumbnail, order, faqs,
             slug: `${prefix}${finalSlug}`
         }).then((e) => {
             messageApi.success("Page Updated Successfully!")
@@ -64,6 +66,7 @@ export default function RentalsUpdate({ collection, data }) {
                             setHeaderImage(data.headerImage || "")
                             setThumbnail(data.thumbnail || "")
                             setOrder(data.order || 0)
+                            setFaqs(data.faqs || [])
                         } else {
                             setTitle("")
                             setSlug("")
@@ -71,6 +74,7 @@ export default function RentalsUpdate({ collection, data }) {
                             setHeaderImage("")
                             setThumbnail("")
                             setOrder(0)
+                            setFaqs([])
                         }
                     }
                 })
@@ -102,6 +106,9 @@ export default function RentalsUpdate({ collection, data }) {
                 <Form.Item label="Meta Description">
                     <Input.TextArea rows={3} placeholder='Enter Short Meta Description' value={metaDescription} onChange={(e) => setmetaDescription(e.target.value)} />
                 </Form.Item>
+                
+                <Divider style={{ margin: '10px 0' }} />
+                <FAQEditor faqs={faqs} setFaqs={setFaqs} />
 
                 <Button loading={loading} onClick={data != undefined ? EditData : Submit} type='primary' style={{ marginBottom: '5%' }}>{data != undefined ? "Update" : "Add New"}</Button>
 

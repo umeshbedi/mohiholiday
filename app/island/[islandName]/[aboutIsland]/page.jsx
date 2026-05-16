@@ -56,7 +56,7 @@ export default async function AboutIsland({ params }) {
                             <h1>About {islandItem.name}</h1>
                             <Divider style={{ margin: "0", backgroundColor: style.lightGrey, height: 1 }} />
                             <String2Html id={'aboutIsland'} string={islandItem.about} />
-                            <FAQ />
+                            <FAQ faqData={islandItem.faqs}/>
 
                         </div>
 
@@ -89,38 +89,3 @@ export default async function AboutIsland({ params }) {
         </main>
     )
 }
-
-
-// export async function getStaticProps(context) {
-//     const { islandName, aboutIsland } = context.params
-//     const res = await db.collection("island").where("slug", "==", `/island/${islandName}`).get()
-//     const entry = res.docs.map((entry) => {
-//         return ({ id: entry.id, ...entry.data() })
-//     });
-
-//     if (entry.length == 0) {
-//         return {
-//             notFound: true
-//         };
-//     }
-
-//     const getData = await db.doc(`island/${entry[0].id}`).get()
-//     const data = getData.data()
-//     const headerImage = data.headerImage
-//     const islandItem = data.data.find((f) => f.slug == `/island/${islandName}/${aboutIsland}`)
-
-//     if (data.length == 0) {
-//         return {
-//             notFound: true
-//         };
-//     }
-
-//     return {
-//         props: {
-//             data: data.data,
-//             headerImage, islandItem,
-//             headerImgAlt: data.name
-//         },
-//         revalidate: 10,
-//     }
-// }

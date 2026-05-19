@@ -7,7 +7,7 @@ import JoditEditor from 'jodit-react';
 import firebase from 'firebase/compat/app';
 import FAQEditor from '@/components/admin/FAQEditor';
 
-export default function ActivityItemUpdate({ collection, data, allItemData, index }) {
+export default function ActivityItemUpdate({ collection, data, allItemData, index, submitted=(e)=>{void(e)} }) {
 
     const [title, setTitle] = useState("")
     const [about, setAbout] = useState("")
@@ -45,6 +45,7 @@ export default function ActivityItemUpdate({ collection, data, allItemData, inde
         }).then((e) => {
             messageApi.success("Item Added Successfully!")
             setLoading(false)
+            submitted(true)
         }).catch((err) => {
             messageApi.error(err.message)
         })
@@ -61,6 +62,7 @@ export default function ActivityItemUpdate({ collection, data, allItemData, inde
         }).then((e) => {
             messageApi.success("Item Updated Successfully!")
             setLoading(false)
+            
         }).catch((err) => {
             messageApi.error(err.message)
         })

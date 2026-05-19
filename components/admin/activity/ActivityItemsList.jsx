@@ -68,7 +68,7 @@ export default function ActivityItemsList({ data, id }) {
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <a onClick={() => setUpdateDiv(<ActivityItemUpdate collection={`activity/${id}`} index={record.key} data={record.itemData} allItemData={data}/>)} style={{ color: 'blue' }}><EditFilled /> Edit</a>
+                    <a onClick={() => setUpdateDiv(<ActivityItemUpdate collection={`activity/${id}`} index={record.key} data={record.itemData} allItemData={data} submitted={() => setUpdateDiv(null)}/>)} style={{ color: 'blue' }}><EditFilled /> Edit</a>
                     < a onClick={() => moveToTrash({ dataToRemove: record.itemData })} style={{ color: 'red' }}><DeleteFilled /> Delete</a>
                     {/* <p>{record.action}</p> */}
                 </Space >
@@ -83,7 +83,7 @@ export default function ActivityItemsList({ data, id }) {
             <div >
 
                 <Button style={{ margin: "15px 0" }} type='dashed' onClick={() => {
-                    setUpdateDiv(<ActivityItemUpdate collection={`activity/${id}`} allItemData={data} data={undefined} />)
+                    setUpdateDiv(<ActivityItemUpdate collection={`activity/${id}`} allItemData={data} data={undefined} submitted={() => setUpdateDiv(null)} />)
                 }}
                 >
                     <PlusOutlined /> Add Activity

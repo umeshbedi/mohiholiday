@@ -4,7 +4,17 @@ import Title from '../master/Title'
 import style from './WhatSay.module.css'
 import { testimonials } from '../utils/localdb'
 import Image from 'next/image'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/css'
+import 'swiper/css/pagination'
+import 'swiper/css/navigation'
+import { Autoplay, Pagination, Navigation } from 'swiper/modules'
 
+const sayImages = [
+    { src: '/images/What they Say.jpg', alt: 'What they say - slide 1' },
+    { src: '/images/1UKB.webp', alt: 'What they say - slide 2' },
+    { src: '/images/cabimage2.jpg', alt: 'What they say - slide 3' },
+]
 
 export default function WhatSay() {
     return (
@@ -14,23 +24,38 @@ export default function WhatSay() {
             <div className={style.SayContainer}>
 
                 <div className={style.SayImage}>
-                    <Image src={`/images/What they Say.jpg`} alt='What they say background Image' fill style={{ objectFit: 'fill' }} />
+                    <Swiper
+                        spaceBetween={0}
+                        centeredSlides={true}
+                        loop={true}
+                        speed={800}
+                        autoplay={{ delay: 3000, disableOnInteraction: false, pauseOnMouseEnter: true }}
+                        pagination={{ clickable: true }}
+                        navigation={true}
+                        modules={[Autoplay, Pagination, Navigation]}
+                        style={{ width: '100%', height: '100%' }}
+                    >
+                        {sayImages.map((img, index) => (
+                            <SwiperSlide key={index}>
+                                <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                                    <Image
+                                        src={img.src}
+                                        alt={img.alt}
+                                        fill
+                                        style={{ objectFit: 'cover' }}
+                                    />
+                                </div>
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
                 </div>
 
-                <div className={style.SayBox}>
+                <div className={style.SayBox} style={{padding:'2%'}}>
                     <div className={style.arrowBox}/>
-                    <h2 style={{fontSize:20, marginBottom:5}}>The Best experience I can have for the Bali and Andaman Trip is via Mohi Holidays Leisures only.</h2>
-                    
-                    <p style={{fontSize:18}}> I am a travel enthusiast and i have Traveled to Bali and Andaman During the Mohi Holidays Leisures which was unforgettable and i discovered more from the Islands with Local Expertise in depth.  </p>
-                    <div className={style.SayAuthor}>
-                        <div style={{ width: 80, height: 80, position: 'relative', borderRadius: 100, overflow: 'hidden' }}>
-                            <Image src={`/images/Ravindra Patel.jpg`} alt='Ravindra Patel Influencer' fill style={{ objectFit: 'cover' }} />
-                        </div>
-                        <div>
-                            <p style={{ fontWeight: 'bold' }}>by Ravindra Patel</p>
-                            <p >Influencer</p>
-                        </div>
-                    </div>
+                    <p style={{fontSize:16.5, textAlign:'justify'}}> 
+                    Every journey tells a different story, and at Mohi Holidays, we feel privileged to be a part of those unforgettable moments. From the first welcome in the Andaman Islands to the last goodbye, every smile in these photographs reflects memories of beautiful beaches, peaceful sunsets, island adventures, and experiences that stay close to the heart.    
+                    Our greatest reward is seeing our guests return home with happiness, cherished memories, and stories worth sharing for years to come. At Mohi Holidays, we don’t just arrange holidays — we create journeys that become lifelong memories.
+                    </p>
                 </div>
             </div>
 

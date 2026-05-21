@@ -61,10 +61,10 @@ export default function Authorities() {
                     image={"andamans5.png"}
                     content={"Accredited by local Andaman Tourism"}
                 />
-                <Element
+                {/* <Element
                     image={"ministry.png"}
                     content={"Approved by ministry of Tourism, Govt. of India"}
-                />
+                /> */}
                 <Element
                     image={"emerald.png"}
                     content={"Awarded by Dept. of Tourism, A&N Administration."}

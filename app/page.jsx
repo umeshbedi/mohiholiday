@@ -15,6 +15,7 @@ const Journey = dynamic(() => import('@/components/homepage/Journey'), { ssr: tr
 const Testimonials = dynamic(() => import('@/components/homepage/Testimonials'), { ssr: true, loading: () => <SHome /> })
 const Authorities = dynamic(() => import("@/components/homepage/Authorities"), { ssr: true, loading: () => <SHome /> })
 const WhatTheySay = dynamic(() => import("@/components/homepage/WhatSay"), { ssr: true, loading: () => <SHome /> })
+const FerryPartners = dynamic(() => import("@/components/homepage/FerryPartners"), { ssr: true, loading: () => <SHome /> })
 
 
 export default async function Home() {
@@ -167,6 +168,7 @@ export default async function Home() {
         <Testimonials testimonialsData={testimonials} />
 
         <WhatTheySay />
+        <FerryPartners />
         <Authorities />
 
 

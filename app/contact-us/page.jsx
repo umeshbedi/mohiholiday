@@ -1,9 +1,8 @@
 "use client"
-import React from 'react'
+import React, { useState } from 'react'
 
 import { FiMail, FiMapPin, FiPhone } from 'react-icons/fi';
 import { mobile } from '@/components/utils/variables';
-import ContactForm from '@/components/master/ContactForm';
 
 import dynamic from 'next/dynamic'
 import SHeader from '@/components/skeleton/SHeader'
@@ -24,6 +23,7 @@ export default function ContactUsPage() {
                 flexDirection: mobile() ? 'column' : 'row',
                 width: '100%',
                 background: 'black',
+                marginTop: '3rem'
             }}>
                 {/* Contact details: Address, Email, Phone */}
                 <div style={{
@@ -65,6 +65,127 @@ export default function ContactUsPage() {
                 </div>
             </div>
         )
+    }
+
+    function InlineContactForm() {
+        const [form, setForm] = useState({ name: '', email: '', phone: '', query: '', message: '' });
+        const [submitted, setSubmitted] = useState(false);
+
+        const inputStyle = {
+            width: '100%',
+            padding: '0.45rem 0.75rem',
+            border: '1.5px solid #d9d9d9',
+            borderRadius: '0.4rem',
+            fontSize: '0.85rem',
+            color: '#222',
+            background: '#f0fbff',
+            outline: 'none',
+            boxSizing: 'border-box',
+            fontFamily: 'inherit',
+            transition: 'border-color 0.2s',
+        };
+
+        const requiredStar = <span style={{ color: 'var(--primaryColor)', fontWeight: 700, fontSize: '0.75rem' }}>*</span>;
+
+        function handleChange(e) {
+            setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+        }
+
+        function handleSubmit(e) {
+            e.preventDefault();
+            const body = `Name: ${form.name}%0AEmail: ${form.email}%0APhone: ${form.phone}%0AQuery: ${form.query}%0AMessage: ${form.message}`;
+            window.open(`mailto:infomohiholidays@gmail.com?subject=Contact Us - ${form.query || 'General'}&body=${body}`, '_blank');
+            setSubmitted(true);
+        }
+
+        if (submitted) return (
+            <div style={{ textAlign: 'center', padding: '1.2rem 0' }}>
+                <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>✅</div>
+                <h3 style={{ fontWeight: 700, color: 'var(--primaryColor)', margin: '0 0 0.3rem', fontSize: '1rem' }}>Message Sent!</h3>
+                <p style={{ color: '#555', fontSize: '0.85rem' }}>We'll get back to you within 24 hours.</p>
+                <button onClick={() => setSubmitted(false)} style={{
+                    marginTop: '1rem', background: 'var(--primaryColor)', color: 'white',
+                    border: 'none', borderRadius: '3rem', padding: '0.5rem 1.4rem',
+                    fontWeight: 600, cursor: 'pointer', fontSize: '0.85rem',
+                }}>Send another</button>
+            </div>
+        );
+
+        return (
+            <form onSubmit={handleSubmit}>
+                <h3 style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--primaryColor)', margin: '0 0 0.8rem' }}>Your details</h3>
+
+                {/* Name */}
+                <div style={{ marginBottom: '0.5rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.15rem' }}>{requiredStar}</div>
+                    <input required name="name" value={form.name} onChange={handleChange}
+                        placeholder="Name" style={inputStyle}
+                        onFocus={e => e.target.style.borderColor = 'var(--primaryColor)'}
+                        onBlur={e => e.target.style.borderColor = '#d9d9d9'} />
+                </div>
+
+                {/* Email */}
+                <div style={{ marginBottom: '0.5rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.15rem' }}>{requiredStar}</div>
+                    <input required type="email" name="email" value={form.email} onChange={handleChange}
+                        placeholder="Email" style={inputStyle}
+                        onFocus={e => e.target.style.borderColor = 'var(--primaryColor)'}
+                        onBlur={e => e.target.style.borderColor = '#d9d9d9'} />
+                </div>
+
+                {/* Phone */}
+                <div style={{ marginBottom: '0.5rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.15rem' }}>{requiredStar}</div>
+                    <input required type="tel" name="phone" value={form.phone} onChange={handleChange}
+                        placeholder="Phone" style={inputStyle}
+                        onFocus={e => e.target.style.borderColor = 'var(--primaryColor)'}
+                        onBlur={e => e.target.style.borderColor = '#d9d9d9'} />
+                </div>
+
+                {/* Query dropdown */}
+                <div style={{ marginBottom: '0.5rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.15rem' }}>{requiredStar}</div>
+                    <select required name="query" value={form.query} onChange={handleChange}
+                        style={{
+                            ...inputStyle, appearance: 'none', cursor: 'pointer',
+                            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2315aee8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`,
+                            backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.75rem center',
+                        }}
+                        onFocus={e => e.target.style.borderColor = 'var(--primaryColor)'}
+                        onBlur={e => e.target.style.borderColor = '#d9d9d9'}>
+                        <option value="" disabled>Choose Your Query</option>
+                        <option value="Package Enquiry">Package Enquiry</option>
+                        <option value="Booking Support">Booking Support</option>
+                        <option value="Cancellation / Refund">Cancellation / Refund</option>
+                        <option value="Ferry / Activity Booking">Ferry / Activity Booking</option>
+                        <option value="General">General</option>
+                    </select>
+                </div>
+
+                {/* Message */}
+                <div style={{ marginBottom: '1rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.15rem' }}>{requiredStar}</div>
+                    <textarea required name="message" value={form.message} onChange={handleChange}
+                        placeholder="What's on your mind?" rows={3}
+                        style={{ ...inputStyle, resize: 'vertical' }}
+                        onFocus={e => e.target.style.borderColor = 'var(--primaryColor)'}
+                        onBlur={e => e.target.style.borderColor = '#d9d9d9'} />
+                </div>
+
+                {/* Submit */}
+                <button type="submit" style={{
+                    display: 'flex', alignItems: 'center', gap: '0.4rem',
+                    background: 'var(--primaryColor)', color: 'white', border: 'none',
+                    borderRadius: '3rem', padding: '0.6rem 1.5rem',
+                    fontWeight: 700, fontSize: '0.88rem', cursor: 'pointer',
+                    transition: 'background 0.2s, transform 0.15s',
+                }}
+                    onMouseEnter={e => { e.currentTarget.style.background = '#0d95cc'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = 'var(--primaryColor)'; e.currentTarget.style.transform = 'none'; }}>
+                    Submit <span style={{ fontSize: '1rem' }}>→</span>
+                </button>
+            </form>
+        );
     }
 
     return (
@@ -189,15 +310,11 @@ export default function ContactUsPage() {
                             </p>
                         </div>
 
-                        {/* Right: Form + Address stacked */}
+                        {/* Right: Inline Form */}
                         <div style={{ flex: '1 1 400px' }}>
-                            <div style={{ background: 'white', borderRadius: '1rem', padding: '2rem', marginBottom: '1.5rem', boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}>
-                                <ContactForm
-                                    packageName={"Contact Us"}
-                                    packageDetail={"Message from Contact Us Page"}
-                                />
+                            <div style={{ background: 'white', borderRadius: '1rem', padding: '2rem 2.5rem', boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}>
+                                <InlineContactForm />
                             </div>
-
                         </div>
                     </div>
 

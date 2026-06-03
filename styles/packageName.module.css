@@ -1,12 +1,26 @@
 .packageRow{
-    display: flex;
-    /* grid-template-columns: repeat(4,auto); */
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     width: 100%;
-    /* justify-content: center; */
-    gap: 2.5rem;
-    align-self: center;
-    justify-content: center;
+    gap: 1.25rem;
+}
+
+@media (max-width: 1024px) {
+    .packageRow{
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .packageRow{
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .packageRow{
+        grid-template-columns: 1fr;
+    }
 }
 .tile{
     transition: transform .5s ease;
@@ -16,3 +30,111 @@
 .tile:hover{
     transform: scale(1.03);
 }
+
+/* Single package page layout */
+.packageLayout {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    gap: 4%;
+    margin-top: 3%;
+}
+
+.mainContent {
+    width: 65%;
+    background: white;
+    padding: 3%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sidebar {
+    width: 35%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.includeGrid {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(4, auto);
+    margin-top: 3%;
+}
+
+.mobileCostSection {
+    display: none;
+}
+
+.desktopCostSection {
+    display: block;
+}
+
+.mobileDivider {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .packageLayout {
+        flex-direction: column;
+    }
+    .mainContent {
+        width: 100%;
+    }
+    .sidebar {
+        width: 100%;
+    }
+    .includeGrid {
+        grid-template-columns: repeat(2, auto);
+    }
+    .mobileCostSection {
+        display: block;
+    }
+    .desktopCostSection {
+        display: none;
+    }
+    .mobileDivider {
+        display: block;
+    }
+}
+
+/* Travel Journey Collapse theming */
+.travelCollapse :global(.ant-collapse-item) > :global(.ant-collapse-header) {
+    background-color: #e8f7fd;
+    border-radius: 10px !important;
+    margin-bottom: 6px;
+    color: #1a1a1a;
+    font-weight: 600;
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.travelCollapse :global(.ant-collapse-item-active) > :global(.ant-collapse-header) {
+    background-color: #15aee8 !important;
+    color: #ffffff !important;
+    border-radius: 10px 10px 0 0 !important;
+}
+
+.travelCollapse :global(.ant-collapse-item-active) > :global(.ant-collapse-header) h4 {
+    color: #ffffff !important;
+}
+
+.travelCollapse :global(.ant-collapse-item-active) :global(.ant-collapse-expand-icon) {
+    color: #ffffff !important;
+}
+
+.travelCollapse :global(.ant-collapse-content) {
+    border: 1px solid #b3e5f8;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+}
+
+.travelCollapse :global(.ant-collapse-item) {
+    border: none !important;
+    margin-bottom: 8px;
+    border-radius: 10px !important;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(21,174,232,0.08);
+}
+

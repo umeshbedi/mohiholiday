@@ -33,14 +33,14 @@ export default async function PackageName() {
 
     const bannerAndaman = (await db.doc(`pages/allPageBanner`).get()).data().PackageAndamanPage;
 
-    console.log(allData)
+    // console.log(allData)
 
     return (
         <div>
             <main>
                 <div>
                     <Menu />
-                    <HeadImage image={bannerAndaman} title={"Packages"}/>
+                    <HeadImage image={bannerAndaman} title={"Packages"} isHalf/>
 
                     <div style={{ padding: "5% 3rem", width: "100%", display: 'flex', flexDirection: 'column', gap: "1rem", background:'var(--lightGreyColor)' }}>
                         <div>
@@ -57,41 +57,3 @@ export default async function PackageName() {
         </div>
     )
 }
-
-// export const getStaticProps = async (context) => {
-//     const { packageName } = context.params;
-//     console.log(context)
-//     const packagegroup = `${packageName == "Andaman" ? "packageAndaman" : packageName == "Bali" ? "packageBali" : null}`
-//     const res = await db.collection(`${packagegroup}`).get()
-//     // console.log(res)
-
-//     const entry = res.docs.map((entry) => {
-//         return ({ id: entry.id, ...entry.data() })
-//     });
-//     let allData = []
-//     for (let i = 0; i < entry.length; i++) {
-//         const getData = await db.doc(`${packagegroup}/${entry[i].id}`).collection("singlePackage").where("status", "==", "published").get()
-//         const data = getData.docs.map((d) => ({ id: d.id, ...d.data() }))
-//         allData.push({ parentID: entry[i].id, childData: data })
-//     }
-
-//     const bannerAndaman = (await db.doc(`pages/allPageBanner`).get()).data().PackageAndamanPage;
-//     const bannerBali = (await db.doc(`pages/allPageBanner`).get()).data().PackageBaliPage;
-
-//     if (entry.length == 0) {
-//         return {
-//             notFound: true
-//         };
-//     }
-
-//     return {
-//         props: {
-//             data: entry,
-//             allData,
-//             banner: packageName == "Andaman" ? bannerAndaman : packageName == "Bali" ? bannerBali : null
-//         },
-//         revalidate: 60,
-
-//     }
-
-// }

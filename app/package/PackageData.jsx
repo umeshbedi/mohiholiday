@@ -1,7 +1,7 @@
 "use client"
 import React, {useEffect, useState} from 'react'
-import { Segmented } from 'antd'
-import Tile from '@/components/master/SingleTile'
+import { ConfigProvider, Segmented } from 'antd'
+import SingleTile from './SingleTile'
 import style from '@/styles/packageName.module.css'
 
 export default function PackageData({data, allData}) {
@@ -31,13 +31,37 @@ export default function PackageData({data, allData}) {
     return (
         <React.Fragment>
             <div style={{ marginTop: '2rem', overflowX: 'scroll', padding: 20 }} className='segmented'>
-                <Segmented options={tabTemp} size='large' onChange={fetchData} style={{ boxShadow: "0px 0px 20px rgba(0,0,0,.2)" }} />
+                <ConfigProvider
+                    theme={{
+                        components: {
+                            Segmented: {
+                                itemSelectedBg: '#15aee8',
+                                itemSelectedColor: '#ffffff',
+                                trackBg: '#e0f5fd',
+                                borderRadius: 999,
+                                borderRadiusSM: 999,
+                                borderRadiusLG: 999,
+                            }
+                        }
+                    }}
+                >
+                    <Segmented
+                        options={tabTemp}
+                        size='large'
+                        onChange={fetchData}
+                        style={{
+                            boxShadow: '0px 4px 24px rgba(21,174,232,0.18)',
+                            borderRadius: 999,
+                            padding: 4,
+                        }}
+                    />
+                </ConfigProvider>
             </div>
 
             <div style={{ display: "flex", justifyContent: 'center', width: "100%", }}>
                 <div className={style.packageRow}>
                     {packageData.map((item, index) => (
-                        <Tile key={index} thumbnail={item.thumbnail} name={item.title} slug={item.slug} />
+                        <SingleTile key={index} thumbnail={item.thumbnail} name={item.name} slug={item.slug} price={item.price} type={item.type} />
                     ))}
                 </div>
             </div>

@@ -16,20 +16,7 @@ const HeadImage = dynamic(() => import("@/components/master/HeadImage"), { ssr: 
 
 
 export default async function SinglePackage({ params, searchParams }) {
-    // { data, sortedData }
 
-    // const { query } = useRouter()
-
-    // const [packageName, setPackageName] = useState(null)
-    // const [packageDetail, setPackageDetail] = useState(null)
-
-    // const [isMobile, setIsMobile] = useState(false)
-
-    // // console.log(sortedData)
-
-    // useEffect(() => {
-    //     setIsMobile(mobile())
-    // }, [isMobile])
 
     const { singlePackage } = await params;
 
@@ -59,7 +46,7 @@ export default async function SinglePackage({ params, searchParams }) {
         })
         // allData.push({ parentID: entry[i].id, childData: data })
     }
-    
+
 
     let sortedData = []
 
@@ -118,9 +105,9 @@ export default async function SinglePackage({ params, searchParams }) {
 
     function Include({ icon, name }) {
         return (
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Image src={icon} alt={name} width={40} height={40} />
-                <p >{name}</p>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexWrap: 'wrap' }}>
+                <Image src={icon} alt={name} width={35} height={35} />
+                <p style={{ fontSize: '.8rem' }}>{name}</p>
             </div>
         )
     }
@@ -150,7 +137,7 @@ export default async function SinglePackage({ params, searchParams }) {
                         {/* <p style={{ fontWeight: '800', color: "var(--primaryColor)", fontSize:20, marginBottom:5 }}>Without Hotel</p>
                         <Divider style={{ backgroundColor: style.lightGrey, margin: "10px 0" }} /> */}
                         <p style={{ fontWeight: '800', color: "var(--primaryColor)", fontSize: 20, marginBottom: 5 }}><FaBed /> Include Hotel</p>
-                        {data.hotelName.map((item, index) => (
+                        {data.hotelName && data.hotelName.map((item, index) => (
                             <p key={index}>{item}</p>
                         ))}
                     </div>
@@ -163,11 +150,14 @@ export default async function SinglePackage({ params, searchParams }) {
 
     const data = finalData[0]
 
-    
+
     if (data == undefined) return (<div style={{ height: '30vh', padding: '2%' }}><Skeleton active /></div>)
 
     let travelArr = []
     data.travelJourney.map((d, i) => { travelArr.push(i) })
+
+    console.log('[SinglePackage] data.images:', data.images)
+    console.log('[SinglePackage] image[0]:', data.images?.[0])
 
     return (
 
@@ -176,25 +166,25 @@ export default async function SinglePackage({ params, searchParams }) {
 
             <div>
                 <Menu />
-                <HeadImage image={data.images[0]}/>
+                <HeadImage image={data.images[0]} />
 
                 <div
                     className='backCurve5'
                     style={{ display: 'flex', justifyContent: 'center', }} id='packageContainer'>
-                    <div style={{ width: '90%', display: "flex", gap: '4%', marginTop: '3%', flexDirection: mobile() ? "column" : "row" }}>
-                        <div style={{ width: mobile() ? "100%" : "65%", background: 'white', padding: '3%', display: 'flex', flexDirection: 'column', gap: 15 }}>
-                            <h1 id='packageTitle'>
+                    <div className={style.packageLayout}>
+                        <div className={style.mainContent}>
+                            <h1 className="sm:text-3xl text-2xl">
                                 {data.title}
                             </h1>
 
                             <h3 id='packageDetail' ><ClockCircleFilled /> {data.subtitle}</h3>
                             <Divider style={{ margin: '2%' }} />
 
-                            {mobile() && data.isPrice == true && <CostSection />}
+                            {data.isPrice == true && <div className={style.mobileCostSection}><CostSection /></div>}
 
                             <div>
                                 <h2>Includes</h2>
-                                <div style={{ display: 'grid', gridGap: 20, gridTemplateColumns: `repeat(${mobile() ? "2" : "4"}, auto)`, marginTop: '3%' }}>
+                                <div className={style.includeGrid}>
                                     {data.includeIcon.map((item, i) => (
                                         <Include key={i} icon={item.icon} name={item.name} />
                                     ))}
@@ -215,22 +205,25 @@ export default async function SinglePackage({ params, searchParams }) {
                             <Divider style={{ margin: '2%' }} />
 
                             <h2>Travel Journey</h2>
-                            <Collapse 
-                            size='large' 
-                            defaultActiveKey={travelArr} 
-                            accordion={false} style={{ background: 'none' }} 
-                            items={data.travelJourney.map((tj, i)=>{
-                                return {
-                                    key:i, 
-                                    label:<h4>{tj.heading}</h4>,
-                                    children:<div>
-                                    <p>{tj.content}</p>
-                                    <img src={tj.image} alt={tj.heading} loading='lazy' style={{ width: '100%', borderRadius: '20px', marginTop: 10 }} />
-                                </div>
-                                }
-                            })}
+                            <Collapse
+                                className={style.travelCollapse}
+                                size='large'
+                                defaultActiveKey={travelArr}
+                                accordion={false}
+                                items={data.travelJourney.map((tj, i) => {
+                                    return {
+                                        key: i,
+                                        label: <h4 style={{ margin: 0 }}>{tj.heading}</h4>,
+                                        children: <div>
+                                            <p>{tj.content}</p>
+                                            {tj.image &&
+                                                <img src={tj.image} alt={tj.heading} loading='lazy' style={{ width: '100%', borderRadius: '20px', marginTop: 10 }} />
+                                            }
+                                        </div>
+                                    }
+                                })}
                             />
-                            
+
                             <Divider style={{ margin: '2%' }} />
 
                             <h2>Inclusion</h2>
@@ -241,15 +234,15 @@ export default async function SinglePackage({ params, searchParams }) {
                             <h2>Exclusions</h2>
                             <String2Html id={'exclusion'} string={data.exclusion} />
 
-                            <FAQ/>
+                            <FAQ />
                         </div>
 
-                        {mobile() && <Divider />}
+                        <div className={style.mobileDivider}><Divider /></div>
 
 
-                        <div style={{ width: mobile() ? '100%' : '35%', height: 'fit-content', flexDirection: 'column', display: 'flex', alignItems: 'center' }}>
+                        <div className={style.sidebar}>
 
-                            {!mobile() && data.isPrice == true && <CostSection />}
+                            {data.isPrice == true && <div className={style.desktopCostSection}><CostSection /></div>}
 
                             <div style={{ background: 'white', width: '100%', padding: '5%', }}>
 

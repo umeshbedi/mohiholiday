@@ -1,5 +1,7 @@
+"use client"
 import { db } from '@/firebase';
-import { Button, Divider, Form, Input, message } from 'antd';
+import { Button, Divider, Form, Input, InputNumber, Select, message } from 'antd';
+const { TextArea } = Input;
 import React, { useEffect, useRef, useState } from 'react'
 
 import JoditEditor from 'jodit-react';
@@ -12,47 +14,36 @@ export default function DayTripItemUpdate({ data, allItemData, id }) {
     const [thumbnail, setthumbnail] = useState("")
     const [headerImage, setHeaderImage] = useState("")
     const [metaDescription, setMetaDescription] = useState("")
-    const [type, setType] = useState("null")
+    const [type, setType] = useState(null)
     const [location, setLocation] = useState("")
     const [duration, setDuration] = useState(0)
     const [price, setPrice] = useState(0)
 
-
     const [messageApi, contextHolder] = message.useMessage();
     const [loading, setLoading] = useState(false)
-
-    let titleRef = useRef()
-    let headerImageRef = useRef(null)
-    let thumbnailRef = useRef(null)
-    let metaDescriptionRef = useRef(null)
-    let typeRef = useRef()
-    let priceRef = useRef()
-    let locationRef = useRef()
-    let durationRef = useRef()
-
 
     function submit() {
         const slug = `trip/${type}/${title.split(" ").join("-")}`
         setLoading(true)
-        db.collection('dayTrip').add({title, thumbnail, about, headerImage, metaDescription, slug, type, location, duration, price})
-        .then((e) => {
-            messageApi.success("Item Added Successfully!")
-            setLoading(false)
-        }).catch((err) => {
-            messageApi.error(err.message)
-        })
+        db.collection('dayTrip').add({ title, thumbnail, about, headerImage, metaDescription, slug, type, location, duration, price })
+            .then((e) => {
+                messageApi.success("Item Added Successfully!")
+                setLoading(false)
+            }).catch((err) => {
+                messageApi.error(err.message)
+            })
     }
 
     function editData() {
         setLoading(true)
         db.doc(`dayTrip/${id}`)
-        .update({title, thumbnail, about, headerImage, metaDescription, type, location, duration, price})
-        .then((e) => {
-            messageApi.success("Item Updated Successfully!")
-            setLoading(false)
-        }).catch((err) => {
-            messageApi.error(err.message)
-        })
+            .update({ title, thumbnail, about, headerImage, metaDescription, type, location, duration, price })
+            .then((e) => {
+                messageApi.success("Item Updated Successfully!")
+                setLoading(false)
+            }).catch((err) => {
+                messageApi.error(err.message)
+            })
     }
 
     useEffect(() => {
@@ -66,76 +57,102 @@ export default function DayTripItemUpdate({ data, allItemData, id }) {
             setPrice(data.price)
             setDuration(data.duration)
             setLocation(data.location)
-            typeRef.current.value = data.type
-            durationRef.current.value = data.duration
-            priceRef.current.value = data.price
-            // console.log("Index from update", id)
-            // console.log("all items data", allItemData)
         }
     }, [data])
-
-
-
 
     return (
         <div>
             {contextHolder}
 
-            <Form>
+            <Form layout="vertical">
                 <Form.Item label="Title">
-                    <input ref={titleRef} defaultValue={title} placeholder='Enter Page Title' onChange={(e) => setTitle(e.target.value)} />
+                    <Input
+                        value={title}
+                        placeholder='Enter Page Title'
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
                 </Form.Item>
 
                 <Form.Item label="Location">
-                    <input ref={locationRef} defaultValue={location} placeholder='Enter Trip Location' onChange={(e) => setLocation(e.target.value)} />
+                    <Input
+                        value={location}
+                        placeholder='Enter Trip Location'
+                        onChange={(e) => setLocation(e.target.value)}
+                    />
                 </Form.Item>
 
                 <Form.Item label="Trip Duration (hrs.)">
-                    <input type='number' min={0} ref={durationRef} defaultValue={duration} placeholder='Enter Trip Duration' onChange={(e) => setDuration(e.target.valueAsNumber)} />
+                    <InputNumber
+                        min={0}
+                        value={duration}
+                        placeholder='Enter Trip Duration'
+                        onChange={(val) => setDuration(val)}
+                        style={{ width: '100%' }}
+                    />
                 </Form.Item>
 
                 <Form.Item label="Price (Rs.)">
-                    <input type='number' min={0} ref={priceRef} defaultValue={price} placeholder='Enter Trip Price' onChange={(e) => setPrice(e.target.valueAsNumber)} />
+                    <InputNumber
+                        min={0}
+                        value={price}
+                        placeholder='Enter Trip Price'
+                        onChange={(val) => setPrice(val)}
+                        style={{ width: '100%' }}
+                        prefix="₹"
+                    />
                 </Form.Item>
 
                 <Form.Item label="Type">
-                    <select
-                        ref={typeRef}
-                        defaultValue={type == undefined ? "null" : type}
-                        name="trip-type"
-                        className='p-1'
-                        onChange={(e) => {
-                            if (e.target.value !== "null") {
-                                setType(e.target.value);
-                                console.log(e.target.value)
-                            }
-                        }}
-                    >
-                        <option value="null">select Trip type</option>
-                        <option value="car">Car</option>
-                        <option value="boat">Boat</option>
-                        <option value="combo">Combo</option>
-                    </select>
+                    <Select
+                        value={type}
+                        placeholder="Select Trip Type"
+                        onChange={(val) => setType(val)}
+                        options={[
+                            { value: 'car', label: 'Car' },
+                            { value: 'boat', label: 'Boat' },
+                            { value: 'combo', label: 'Combo' },
+                        ]}
+                    />
                 </Form.Item>
 
-                <Form.Item label="Header Image Url">
-                    <input ref={headerImageRef} defaultValue={headerImage} placeholder='Enter Header Image Url' onChange={(e) => setHeaderImage(e.target.value)} />
+                <Form.Item label="Header Image URL">
+                    <Input
+                        value={headerImage}
+                        placeholder='Enter Header Image URL'
+                        onChange={(e) => setHeaderImage(e.target.value)}
+                    />
                 </Form.Item>
 
-                <Form.Item label="Thumbnail Url">
-                    <input ref={thumbnailRef} defaultValue={thumbnail} placeholder='Enter Thumbnail Url' onChange={(e) => setthumbnail(e.target.value)} />
+                <Form.Item label="Thumbnail URL">
+                    <Input
+                        value={thumbnail}
+                        placeholder='Enter Thumbnail URL'
+                        onChange={(e) => setthumbnail(e.target.value)}
+                    />
+                </Form.Item>
+
+                <Form.Item label="Short Description">
+                    <TextArea
+                        value={metaDescription}
+                        placeholder='Enter short description'
+                        onChange={(e) => setMetaDescription(e.target.value)}
+                        rows={4}
+                    />
                 </Form.Item>
 
                 <div>
-                    <p style={{ marginBottom: 10, fontSize:14 }}>About Trip:</p>
+                    <p style={{ marginBottom: 10, fontSize: 14 }}>About Trip:</p>
                     <JoditEditor value={about} onBlur={e => { setAbout(e) }} />
                 </div>
 
-                <Form.Item label="Meta Description">
-                    <input ref={metaDescriptionRef} defaultValue={metaDescription} placeholder='Enter Thumbnail Url' onChange={(e) => setMetaDescription(e.target.value)} />
-                </Form.Item>
-
-                <Button loading={loading} onClick={data != undefined ? editData : submit} type='primary' style={{ marginBottom: '5%' }}>{data != undefined ? "Update" : "Submit"}</Button>
+                <Button
+                    loading={loading}
+                    onClick={data != undefined ? editData : submit}
+                    type='primary'
+                    style={{ marginBottom: '5%', marginTop: '2rem' }}
+                >
+                    {data != undefined ? "Update" : "Submit"}
+                </Button>
 
             </Form>
         </div>

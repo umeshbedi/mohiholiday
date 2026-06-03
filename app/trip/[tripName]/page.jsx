@@ -27,7 +27,7 @@ export default async function Trip({ params }) {
             <HeadImage image='/images/cabimage2.jpg' title={`${tripName} Trips in Andaman`} />
 
             <div className='py-[3rem] mt-10 flex w-full justify-center'>
-                <div className='flex sm:w-[80%] flex-wrap'>
+                <div className='w-full px-4 sm:w-[90%] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
                     {tripAndaman.map((item, i) => (<SingleTrip key={i} data={item}/>))}
                 </div>
             </div>

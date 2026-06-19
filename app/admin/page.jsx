@@ -31,6 +31,8 @@ const Activity = dynamic(() => import('../../components/admin/activity/Activitie
 const DayTrip = dynamic(() => import('../../components/admin/daytrip/DayTripList'), { ssr: false, loading: () => <Skeleton /> })
 
 const TestiMonials = dynamic(() => import('../../components/admin/AddTestimonials'), { ssr: false, loading: () => <Skeleton /> })
+const BlogAdmin = dynamic(() => import('../../components/admin/blog/BlogAdmin'), { ssr: false, loading: () => <Skeleton /> })
+const HotelsAdmin = dynamic(() => import('../../components/admin/hotels/HotelsAdmin'), { ssr: false, loading: () => <Skeleton /> })
 
 
 export default function Admin() {
@@ -101,6 +103,12 @@ export default function Admin() {
     }
     else if (e == 'Testimonials') {
       setContent(<TestiMonials />)
+    }
+    else if (e == 'blog') {
+      setContent(<BlogAdmin />)
+    }
+    else if (e == 'hotels') {
+      setContent(<HotelsAdmin />)
     }
     else if (e == 'generalInfo' || e == "destinationAndaman" || e == "destinationBali" ) {
       setContent(<W2sList pageName={e} />)

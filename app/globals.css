@@ -10,6 +10,9 @@
   --lightGreyColor:#f6f6f6;
   --lightBackground:#f1f1f1;
   --light-blue: #ffe3e3;
+
+  /* Always force light mode — ignore OS dark/light preference */
+  color-scheme: light only;
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -30,7 +33,9 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  
+  /* Explicit colours so dark-mode OS never overrides them */
+  background-color: #ffffff;
+  color: #111111;
 }
 
 
@@ -65,11 +70,7 @@ input:focus {
   color: #d9d9d9;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}
+/* Dark-mode OS preference intentionally disabled — site always uses its own colours */
 
 main{
   min-height: 100vh;
@@ -97,6 +98,7 @@ h3{
 li{
   font-size: 1.2rem;
 }
+
 /* Change the background color of the active slide */
 .swiper-slide-active {
   /* background-color: #ff0000;  */

@@ -17,15 +17,18 @@ export const metadata = {
 };
 
 import ThemeProvider from "@/components/master/ThemeProvider";
+import { AuthProvider } from "@/components/master/AuthContext";
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${makaran.variable} ${redHatDisplay.variable}`} suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <ThemeProvider>
-          {children}
-          {/* <Footer/> */}
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider>
+            {children}
+            {/* <Footer/> */}
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );

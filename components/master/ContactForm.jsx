@@ -3,11 +3,15 @@ import { DeleteFilled, PlusOutlined } from '@ant-design/icons'
 import { Button, DatePicker, Form, Input, Modal, Select, Space } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { mobile } from '../utils/variables'
+import { db } from '@/firebase'
+import firebase from 'firebase/compat/app'
+import { useAuth } from './AuthContext'
 
 export default function ContactForm({ packageName, packageDetail, to, data }) {
     const [date, setDate] = useState(null)
     const [loading, setLoading] = useState(false)
     const [msg, showMsg] = Modal.useModal()
+    const { currentUser } = useAuth()
 
     const [passengers, setPassengers] = useState([])
 
@@ -102,11 +106,47 @@ export default function ContactForm({ packageName, packageDetail, to, data }) {
             body: JSON.stringify(emailBody)
         })
             .then(res => res.json())
-            .then(res => {
+            .then(async res => {
                 msg.success({
                     title: "Query sent successfully!",
                     content: "Congratulations! Your query has been received. Our representative will contact you soon with email or phone. Happy Journey!"
                 });
+
+                const enquiryPayload = {
+                    packageName: packageName || '',
+                    packageDetail: packageDetail || '',
+                    name: e.name || '',
+                    mobile: e.mobile || '',
+                    email: e.email || '',
+                    adults: e.adults || '',
+                    infants: e.infants || '',
+                    kids: e.kids || '',
+                    date: date || '',
+                    message: e.message || '',
+                    userName: currentUser?.displayName || '',
+                    userEmail: currentUser?.email || '',
+                    submittedAt: new Date().toISOString(),
+                }
+
+                // Run Firestore save + Google Sheets append in parallel
+                await Promise.allSettled([
+                    // 1. Save to Firestore (only if signed in)
+                    currentUser
+                        ? db.collection('enquiries').doc(currentUser.uid).collection('items').add({
+                            ...enquiryPayload,
+                            status: 'Pending',
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        })
+                        : Promise.resolve(),
+
+                    // 2. Append row to Google Sheet (always, for every enquiry)
+                    fetch('/api/enquiry', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(enquiryPayload),
+                    }).catch(sheetErr => console.error('Google Sheets append failed:', sheetErr)),
+                ])
+
                 setLoading(false)
             })
             .catch(err => { console.log(err); setLoading(false) })

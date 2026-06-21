@@ -115,7 +115,7 @@ export default function Header() {
                         :
                         (
                             content.map((item, index) => (
-                                <li key={index}><Link target='blank' href={item.slug}>{item.name}</Link></li>
+                                <li key={index}><Link href={item.slug}>{item.name}</Link></li>
 
                             ))
                         )

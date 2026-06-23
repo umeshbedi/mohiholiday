@@ -199,7 +199,10 @@ export default function Admin() {
       <Modal
         open={open}
         onCancel={() => setOpen(false)}
-        footer={[]}
+        footer={null}
+        width="min(90vw, 1200px)"
+        style={{ top: 20 }}
+        styles={{ body: { padding: 0, maxHeight: '85vh', overflowY: 'auto' } }}
       >
         <Media />
       </Modal>

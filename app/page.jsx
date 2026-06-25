@@ -32,10 +32,22 @@ export default async function Home() {
 
   //Getting Activity
   const actvtyAndaman = await db.collection("activity").get();
-  const activityDataAndaman = actvtyAndaman.docs.map((act) => {
-    const data = act.data()
-    return { name: data.name, thumbnail: data.headerImage, slug: data.slug, count:data.data.length }
-  })
+  const activityDataAndaman = [];
+  actvtyAndaman.docs.forEach((act) => {
+    const data = act.data();
+    if (data.data && Array.isArray(data.data)) {
+      data.data.forEach((item) => {
+        activityDataAndaman.push({
+          title: item.title || "",
+          thumbnail: item.thumbnail || item.headerImage || data.headerImage || "",
+          slug: item.slug || "",
+          about: item.about || "",
+          metaDescription: item.metaDescription || data.metaDescription || "",
+          categoryName: data.name || ""
+        });
+      });
+    }
+  });
 
 
   //Getting Ferry
@@ -63,7 +75,7 @@ export default async function Home() {
   const tarvelJourney = (await db.doc(`pages/travelJourney`).get()).data()
 
 
-
+// console.log(activityDataAndaman)
 
   return (
 
@@ -157,7 +169,7 @@ export default async function Home() {
 
           )}
 
-          <DivCarousel2 title={"Activities in Andaman (India)"} sliderContent={activityDataAndaman} backgroundImage={InsightBanner.HomeAndamanInsight} />
+          <DivCarousel2 title={"Popular Activities in Andaman"} sliderContent={activityDataAndaman} backgroundImage={InsightBanner.HomeAndamanInsight} />
         </div>
 
         {/* <Activities/> */}

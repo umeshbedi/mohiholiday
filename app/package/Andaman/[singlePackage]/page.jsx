@@ -11,6 +11,7 @@ import ContactForm from '@/components/master/ContactForm'
 import PackageEnquiryWidget from '@/components/master/PackageEnquiryWidget'
 import { FaBed, FaTag, FaTags } from 'react-icons/fa'
 import FAQ from '@/components/master/FAQ'
+import SingleTile from '../../SingleTile'
 
 const Menu = dynamic(() => import("@/components/master/header"), { ssr: true })
 const HeadImage = dynamic(() => import("@/components/master/HeadImage"), { ssr: true })
@@ -71,38 +72,7 @@ export default async function SinglePackage({ params, searchParams }) {
     GetRand(allData.length)
 
 
-    function Tile({ thumbnail, name, slug }) {
-        return (
-            <div
-                data-aos="fade-up"
-                data-aos-anchor-placement="top-bottom"
-                data-aos-duration="1000"
-                className={style.tile} style={{ height: 350, width: 250, position: 'relative', borderRadius: 40, overflow: 'hidden', marginBottom: '2rem' }}>
-                <a href={slug}>
 
-                    <Image
-                        src={thumbnail}
-                        alt={name}
-                        fill
-                        style={{ objectFit: 'cover' }}
-                        loading='lazy'
-                    />
-                </a>
-                <h1 style={{
-                    color: 'white',
-                    fontWeight: 700,
-                    fontSize: "1.5rem",
-                    bottom: 20,
-                    textAlign: 'center',
-                    position: 'absolute',
-                    width: '100% '
-                }}
-                >
-                    {name}
-                </h1>
-            </div>
-        )
-    }
 
     function Include({ icon, name }) {
         return (
@@ -256,11 +226,19 @@ export default async function SinglePackage({ params, searchParams }) {
 
                             <div style={{ background: 'white', width: '100%', padding: '5%', flexDirection: 'column', display: 'flex', alignItems: 'center' }}>
 
-                                <h2 style={{ textAlign: 'center', padding: "0 10px 20px 10px" }}>Explore more packages from Andaman</h2>
+                                <h2 style={{ textAlign: 'center', padding: "0 10px 20px 10px", fontWeight: 800 }}>Explore more packages from Andaman</h2>
                                 {sortedData.map((item, i) => {
                                     if (item.id !== data.id) {
                                         return (
-                                            <Tile key={i} name={item.title} slug={item.slug} thumbnail={item.thumbnail} />
+                                            <div key={i} style={{ width: '100%', maxWidth: '350px', marginBottom: '2rem' }}>
+                                                <SingleTile 
+                                                    thumbnail={item.thumbnail} 
+                                                    name={item.title} 
+                                                    slug={item.slug} 
+                                                    price={item.price} 
+                                                    type={item.type} 
+                                                />
+                                            </div>
                                         )
                                     }
                                 })}

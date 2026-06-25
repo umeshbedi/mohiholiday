@@ -182,7 +182,6 @@ export default function Admin() {
                 icon={<UserOutlined />}
                 placement='bottomRight'
                 size='large'
-
               >
                 Admin
               </Dropdown.Button>

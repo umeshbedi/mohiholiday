@@ -16,7 +16,7 @@ export default function AdminLogin({login, isloading}) {
         <div className="flex justify-center items-center h-screen">
             <Space direction='vertical'>
                 <div className='relative w-full h-[70px] '>
-                    <Image fill className='object-contain' alt='PustaHolidays Logo icon' src='/PH JPG 1.jpg' />
+                    <Image fill className='object-contain' alt='Mohiholidays Logo icon' src='/MH Logo For Website.png' />
                 </div>
                 <Form
                     style={{ maxWidth: 300 }}

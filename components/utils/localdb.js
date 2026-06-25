@@ -7,7 +7,7 @@ export const menu = {
         
         {
             "name": "About Andaman",
-            "slug": "/about-andaman"
+            "slug": "/about-andman"
         },
         
        

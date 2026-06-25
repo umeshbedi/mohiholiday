@@ -15,7 +15,7 @@ const HeadImage = dynamic(() => import("@/components/master/HeadImage"))
 
 export default async function ActivityPlace({ params, searchParams }) {
 
-    const { activityPlace } = params;
+    const { activityPlace } = await params;
 
     const resAndaman = await db.collection('activity').where("slug", "==", `/activity/${activityPlace}`).get()
     const entryAndaman = resAndaman.docs.map((entry) => {
@@ -65,7 +65,7 @@ export default async function ActivityPlace({ params, searchParams }) {
 }
 
 export async function generateMetadata({ params, searchParams }, parent) {
-    const { activityPlace } = params;
+    const { activityPlace } = await params;
 
     const resAndaman = await db.collection('activity').where("slug", "==", `/activity/${activityPlace}`).get()
     const entryAndaman = resAndaman.docs.map((entry) => {

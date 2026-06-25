@@ -87,7 +87,7 @@ export default function Testimonials({ testimonialsData }) {
                                         <Image src={item.image==undefined?"/images/Ravindra Patel.jpg":item.image} alt='testimonials image' fill className='object-contain' />
                                     </div>
 
-                                    <p className='text-lg'>{item.content.slice(0, 190)}</p>
+                                    <p className='text-lg line-clamp-6'>{item.content}</p>
                                 </div>
 
                             </div>

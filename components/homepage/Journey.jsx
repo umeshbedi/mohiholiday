@@ -23,7 +23,7 @@ export default function Journey({ youtube }) {
     
     return (
         <div>
-            <Title title={"Withness the Epic andaman Islands with the Expert Mohi Holidays"} center={true}/>
+            <Title title={"Witness the Epic andaman Islands with the Expert Mohi Holidays"} center={true}/>
             
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px', margin: '20px 0', flexWrap: 'wrap' }}>
                 <Image src="/images/tripadvisor.png" alt="TripAdvisor" width={300} height={100} style={{ objectFit: 'contain' }} />

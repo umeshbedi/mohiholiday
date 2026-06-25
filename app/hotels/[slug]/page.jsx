@@ -226,7 +226,7 @@ export default function HotelDetailPage() {
                 </div>
             </div>
 
-            <Footer />
+            
         </main>
     )
 }

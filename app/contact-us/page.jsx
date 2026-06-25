@@ -317,11 +317,6 @@ export default function ContactUsPage() {
                             </div>
                         </div>
                     </div>
-
-                    <Address
-                        Address={"11/2 SN Road Goal Ghar, Opposite Hotel Shreesh, Port Blair, South Andaman"}
-                        Phone={"+91 9434282120"}
-                    />
                 </div>
             </div>
         </main>

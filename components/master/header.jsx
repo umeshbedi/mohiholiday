@@ -320,9 +320,11 @@ export default function Header() {
                             <li onMouseEnter={() => megaActive("ferry")}><Link href="javascript:void(0)">Cruise ▾</Link></li>
                             {/* <DropdownMenu heading='Ferry' content={ferryList} /> */}
                             <DropdownMenu heading='Day Trips' content={menu.daytrips} />
-                            <li onMouseEnter={megaInactive}><Link href="/contact-us">Contact Us</Link></li>
                             <li onMouseEnter={megaInactive}><Link href="/blog">Blog</Link></li>
                             <li onMouseEnter={megaInactive}><Link href="/hotels">Hotels</Link></li>
+                            <li onMouseEnter={megaInactive}><Link href="/contact-us"
+                                style={{ background: 'var(--primaryColor)', borderRadius: 50, padding: "5px 20px", color: "white", marginRight: 10 }}
+                            >Contact</Link></li>
 
                             {/* ---- Auth Button (desktop) ---- */}
                             <li onMouseEnter={megaInactive} style={{ position: 'relative' }}>

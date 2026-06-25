@@ -1,6 +1,7 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import Footer from "@/components/master/Footer";
+import RequestCallbackButton from "@/components/master/RequestCallbackButton";
 import { Red_Hat_Display } from 'next/font/google';
 const makaran = localFont({ src: "./fonts/makaran.woff", variable: "--font-makaran" })
 
@@ -26,7 +27,8 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <ThemeProvider>
             {children}
-            {/* <Footer/> */}
+            <Footer />
+            <RequestCallbackButton />
           </ThemeProvider>
         </AuthProvider>
       </body>

@@ -5,29 +5,10 @@ const nextConfig = {
         remotePatterns: [
           {
             protocol: 'https',
-            hostname: 'picsum.photos',
+            hostname: '**',
             port: '',
             pathname: '/**',
           },
-          {
-            protocol: 'https',
-            hostname: 'i.imgur.com',
-            port: '',
-            pathname: '/**',
-          },
-          {
-            protocol: 'https',
-            hostname: 'firebasestorage.googleapis.com',
-            port: '',
-            pathname: '/**',
-          },
-          {
-            protocol: 'https',
-            hostname: '*.googleusercontent.com',
-            port: '',
-            pathname: '/**',
-          },
-
         ],
       },
       allowedDevOrigins: ['10.93.90.234'],

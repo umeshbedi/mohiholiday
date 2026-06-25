@@ -8,6 +8,7 @@ import { ClockCircleFilled } from '@ant-design/icons'
 import { db } from '@/firebase'
 import String2Html from '@/components/master/String2Html'
 import ContactForm from '@/components/master/ContactForm'
+import PackageEnquiryWidget from '@/components/master/PackageEnquiryWidget'
 import { FaBed, FaTag, FaTags } from 'react-icons/fa'
 import FAQ from '@/components/master/FAQ'
 
@@ -242,15 +243,15 @@ export default async function SinglePackage({ params, searchParams }) {
 
                         <div className={style.sidebar}>
 
-                            {data.isPrice == true && <div className={style.desktopCostSection}><CostSection /></div>}
+                            <img src='/images/tripadvisor.jpg' alt='tripadvisor' style={{ width: '100%' }} loading='lazy' />
 
-                            <div style={{ background: 'white', width: '100%', padding: '5%', }}>
-
-                                <ContactForm
-                                    packageName={data.title}
-                                    packageDetail={data.subtitle}
-                                />
-                            </div>
+                            <PackageEnquiryWidget
+                                packageName={data.title}
+                                packageDetail={data.subtitle}
+                                price={data.price}
+                                originalPrice={data.originalPrice}
+                                hotelName={data.hotelName}
+                            />
                             <Divider style={{ backgroundColor: style.lightGrey, height: 1 }} />
 
                             <div style={{ background: 'white', width: '100%', padding: '5%', flexDirection: 'column', display: 'flex', alignItems: 'center' }}>
@@ -277,71 +278,3 @@ export default async function SinglePackage({ params, searchParams }) {
 }
 
 
-// export async function getStaticProps(context) {
-
-//     const { packageName, singlePackage } = context.params
-
-//     const packagegroup = `${packageName == "Andaman" ? "packageAndaman" : packageName == "Bali" ? "packageBali" : null}`
-
-//     const res = await db.collection(`package${packageName}`).get()
-//     const entry = res.docs.map((entry) => {
-//         return ({ id: entry.id })
-//     });
-//     // console.log(entry)
-//     let finalData = []
-//     for (let i = 0; i < entry.length; i++) {
-//         const getData = await db.doc(`package${packageName}/${entry[i].id}`).collection("singlePackage").where("slug", "==", `/package/${packageName}/${singlePackage}`).get()
-//         const data = getData.docs.map((d) => ({ id: d.id, ...d.data() }))
-//         if (data.length != 0) {
-//             finalData = [...data]
-//             break
-//         }
-//     }
-
-//     let allData = []
-//     for (let i = 0; i < entry.length; i++) {
-//         const getData = await db.doc(`${packagegroup}/${entry[i].id}`).collection("singlePackage").where("status", "==", "published").get()
-//         const data = getData.docs.map((d) => ({ id: d.id, ...d.data() }))
-//         data.map((item) => {
-//             allData.push(item)
-//         })
-//         // allData.push({ parentID: entry[i].id, childData: data })
-//     }
-
-//     let sortedData = []
-
-//     function GetRand(num) {
-//         var ran = Math.floor(Math.random() * num)
-//         if (num > 4 && num - ran >= 4) {
-//             for (let index = 0; index < 4; index++) {
-//                 sortedData.push(allData[ran])
-//                 ran += 1
-
-//             }
-//         }
-//         else if (num <= 4) {
-//             for (let index = 0; index < num; index++) {
-//                 sortedData.push(allData[index])
-//             }
-//         }
-//         else { GetRand(num) }
-//     }
-
-//     GetRand(allData.length)
-
-
-
-//     if (finalData.length == 0) {
-//         return {
-//             notFound: true
-//         };
-//     }
-
-//     return {
-//         props: {
-//             data: finalData[0],
-//             sortedData
-//         },
-//         revalidate: 10,
-//     }
-// }

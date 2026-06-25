@@ -370,7 +370,7 @@ export default function HotelsPage() {
                 )}
             </div>
 
-            <Footer />
+            
 
             <style>{`
                 @keyframes shimmer {

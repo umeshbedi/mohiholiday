@@ -14,6 +14,13 @@ export default function QuotePopup() {
         return () => clearTimeout(timer);
     }, []);
 
+    useEffect(() => {
+        // Allow any component (e.g. RequestCallbackButton in layout) to open this popup
+        const handler = () => setIsModalOpen(true);
+        window.addEventListener('open-quote-popup', handler);
+        return () => window.removeEventListener('open-quote-popup', handler);
+    }, []);
+
     const handleCancel = () => {
         setIsModalOpen(false);
     };

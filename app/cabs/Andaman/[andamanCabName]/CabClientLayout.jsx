@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { mobile } from '@/components/utils/variables';
 import FAQ from '@/components/master/FAQ';
 import SingleCab from './SingleCabl';
-import ContactForm from '@/components/master/ContactForm';
+import CabEnquiryForm from '@/components/master/CabEnquiryForm';
 
 export default function CabClientLayout({ data, wheeler2, wheeler4 }) {
     const [open, setOpen] = useState(false);
@@ -74,12 +74,10 @@ export default function CabClientLayout({ data, wheeler2, wheeler4 }) {
                 onCancel={() => setOpen(false)}
                 footer={[]}
             >
-                <h2>Booking:</h2>
+                <h2 style={{textAlign:'center'}}>Book Your Ride</h2>
                 <Divider style={{ margin: '1%' }} />
-                {/* <h1 style={{ margin: '1% 0', fontSize: '2rem' }}>{activityDetails.price}</h1> */}
-                <ContactForm
-                    to={'activity'}
-                    packageName={`Cab | ${data.title}`}
+                <CabEnquiryForm
+                    packageName={`${activityDetails.name}`}
                     packageDetail={`
           <p>Cab Name: ${activityDetails.name}</p>
           <p>Price: ${activityDetails.price}</p>

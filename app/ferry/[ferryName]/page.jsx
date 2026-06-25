@@ -80,10 +80,10 @@ export default async function Slug({ params }) {
   ]
 
   const iconCard = [
-    { title: "1. Search", desc: "and compare ferry from wide range of choices", icon: "/icons/Search.png", color:"sky-100" },
-    { title: "2. Select", desc: "ferry based on timing and choose seat type", icon: "/icons/Select.png", color:"sky-200" },
-    { title: "3. Pay", desc: "in full for instant tickets or small advance for 'On Request' tickets", icon: "/icons/Pay.png", color:"sky-300" },
-    { title: "4. Receive", desc: "your confirmed ticket instantly or in 3-4 working hours", icon: "/icons/Receive Tickets Via Email.png", color:"sky-400" },
+    { title: "1. Search", desc: "and compare ferry from wide range of choices", icon: "/icons/Search.png", color:"#e0f2fe" },
+    { title: "2. Select", desc: "ferry based on timing and choose seat type", icon: "/icons/Select.png", color:"#bae6fd" },
+    { title: "3. Pay", desc: "in full for instant tickets or small advance for 'On Request' tickets", icon: "/icons/Pay.png", color:"#7dd3fc" },
+    { title: "4. Receive", desc: "your confirmed ticket instantly or in 1 working hour", icon: "/icons/Receive Tickets Via Email.png", color:"#38bdf8" },
   ]
 
 
@@ -97,7 +97,7 @@ export default async function Slug({ params }) {
         <div className='sm:flex flex flex-col sm:flex-row gap-6 w-full bg-[var(--lightBackground)] px-[5%] pt-10 justify-center items-center'>
 
           {iconCard.map((itm, i) => (
-            <div key={i} className={`w-[250px] bg-${itm.color} flex flex-col items-center rounded-2xl justify-center relative border border-sky-500`}>
+            <div key={i} style={{ backgroundColor: itm.color }} className={`w-[250px] flex flex-col items-center rounded-2xl justify-center relative border border-sky-500`}>
               
               <FaAnglesRight size={30} className={`absolute ${i==3?'hidden':'block'} text-orange-600 right-[-15px]`} />
 
@@ -153,71 +153,3 @@ export default async function Slug({ params }) {
     </main>
   )
 }
-
-
-// export const getStaticPaths = async () => {
-//   const entries = await db.collection("ferry").get()
-//   const paths = entries.docs.map(entry => ({
-//     params: {
-//       ferryName: entry.data().slug
-//     }
-//   }));
-//   return {
-//     paths,
-//     fallback: true
-//   }
-// }
-
-// export const getStaticProps = async (context) => {
-//   const { ferryName } = context.params;
-//   const res = await db.collection("ferry").where("slug", "==", `/ferry/${ferryName}`).get()
-//   // console.log(res)
-
-//   const entry = res.docs.map((entry) => {
-//     return ({ id: entry.id, ...entry.data() })
-//   });
-
-
-//   const resAndaman = await db.collection("activityAndaman").get()
-//   const entryAndaman = resAndaman.docs.map((entry) => {
-//     return ({ id: entry.id, ...entry.data() })
-//   });
-
-
-//   let sortedData = []
-
-//   function GetRand(num) {
-//     var ran = Math.floor(Math.random() * num)
-//     if (num > 4 && num - ran >= 4) {
-//       for (let index = 0; index < 4; index++) {
-//         sortedData.push(entryAndaman[ran])
-//         ran += 1
-
-//       }
-//     }
-//     else if (num <= 4) {
-//       for (let index = 0; index < num; index++) {
-//         sortedData.push(entryAndaman[index])
-//       }
-//     }
-//     else { GetRand(num) }
-//   }
-
-//   GetRand(entryAndaman.length)
-
-//   if (entry.length == 0) {
-//     return {
-//       notFound: true
-//     };
-//   }
-
-//   return {
-//     props: {
-//       data: entry[0],
-//       sortedData
-//     },
-//     revalidate: 60,
-
-//   }
-
-// }

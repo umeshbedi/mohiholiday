@@ -53,7 +53,7 @@ export default async function AboutIsland({ params }) {
                     <div style={{ width: '90%', display: mobile() ? "block" : "flex", gap: '4%', marginTop: '3%' }}>
                         <div
                             style={{ width: mobile() ? '100%' : "70%", background: 'white', padding: '3%', display: 'flex', flexDirection: 'column', gap: 15 }}>
-                            <h1>About {islandItem.name}</h1>
+                            <h1 style={{fontSize:'24px'}}>{islandItem.name}</h1>
                             <Divider style={{ margin: "0", backgroundColor: style.lightGrey, height: 1 }} />
                             <String2Html id={'aboutIsland'} string={islandItem.about} />
                             <FAQ faqData={islandItem.faqs}/>
@@ -77,7 +77,7 @@ export default async function AboutIsland({ params }) {
                                             width={260}
                                             height={280}
                                             style={{ objectFit: 'cover', borderTopLeftRadius: 10, borderTopRightRadius: 10 }} />
-                                        <h2 style={{ padding: '5%', textAlign: 'center' }}>{item.name}</h2>
+                                        <h2 style={{ padding: '5%', textAlign: 'center', fontSize:'18px' }} className='line-clamp-2'>{item.name}</h2>
                                     </div>
                                 </Link>
                             ))}

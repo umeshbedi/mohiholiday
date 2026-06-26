@@ -1,7 +1,14 @@
 "use client"
 import { PhoneOutlined } from '@ant-design/icons'
+import { usePathname } from 'next/navigation'
 
 export default function RequestCallbackButton() {
+  const pathname = usePathname()
+
+  if (pathname?.startsWith('/admin')) {
+    return null
+  }
+
 
   function handleClick() {
     window.dispatchEvent(new CustomEvent('open-quote-popup'))

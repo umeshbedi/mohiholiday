@@ -2,6 +2,7 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import {
   FacebookFilled,
   InstagramOutlined,
@@ -78,6 +79,12 @@ function FooterLink({ href, children }) {
 }
 
 export default function Footer() {
+  const pathname = usePathname()
+
+  if (pathname?.startsWith('/admin')) {
+    return null
+  }
+
   return (
     <footer style={{ backgroundColor: '#0d1b2a' }}>
       {/* Main footer body */}

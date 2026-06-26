@@ -36,15 +36,14 @@ export default function Header() {
     }, [isMobile])
 
     const socialArr = [
-        { icon: <InstagramOutlined /> },
-        { icon: <FacebookFilled /> },
-        { icon: <TwitterOutlined /> },
-        { icon: <YoutubeFilled /> }
+        { icon: <InstagramOutlined />, url: 'https://www.instagram.com/mohiholidays/' },
+        { icon: <FacebookFilled />, url: 'https://www.facebook.com/mohiholidays/' },
+        { icon: <YoutubeFilled />, url: 'https://www.youtube.com/@mohiholidays' }
     ]
 
-    function Social({ media }) {
+    function Social({ media, url = '#' }) {
         return (
-            <a style={{ fontSize: "1.5rem", color: 'white' }}>
+            <a href={url} target="_blank" rel="noopener noreferrer" className={style.socialIcon}>
                 {media}
             </a>
         )
@@ -139,124 +138,144 @@ export default function Header() {
         }
 
         return (
-            <>
-                <Menu
-                    mode={isMobile ? 'inline' : 'horizontal'}
-                    style={{
-                        fontWeight: 'bold',
-                        float: 'right',
-                        width: isMobile ? '100%' : 'auto',
-                        borderBottom: 0,
-                        backgroundColor: "var(--primaryColor)",
-                        color: 'white',
-                        textTransform: 'uppercase',
-                        //fontSize:'.5rem'
+            <div style={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                height: '100%', 
+                justifyContent: 'space-between',
+                background: '#0d1b2a'
+            }}>
+                <div style={{ flex: 1, overflowY: 'auto', padding: '1rem 0' }}>
+                    <Menu
+                        mode={isMobile ? 'inline' : 'horizontal'}
+                        theme="dark"
+                        style={{
+                            fontWeight: '600',
+                            width: '100%',
+                            borderRight: 0,
+                            backgroundColor: "transparent",
+                            color: 'white',
+                            textTransform: 'uppercase',
+                        }}
+                        disabledOverflow
+                        onClick={(e) => { setActive(e.key); setOpen(false) }}
+                        activeKey={active}
+                        className={style.RespMenu}
+                    >
+                        <Menu.SubMenu title={<p>Know{isMobile ? null : <FaAngleDown />}</p>}>
+                            {menu.know.map((item, index) => (
+                                <Menu.Item key={item.name}>
+                                    <Link style={{ textTransform: 'uppercase' }} href={item.slug}>{item.name}</Link>
+                                </Menu.Item>
+                            ))
+                            }
+                        </Menu.SubMenu>
 
-                    }}
-                    disabledOverflow
-                    onClick={(e) => { setActive(e.key); setOpen(false) }}
-                    activeKey={active}
-                    className={style.RespMenu}
-                // forceSubMenuRender
-                >
+                        <Menu.SubMenu title={<p>Popular Islands{isMobile ? null : <FaAngleDown />}</p>}>
+                            {
+                                island.map((name, key) => (
+                                    <Menu.Item key={name.name + key}>
+                                        <Link style={{ textTransform: 'uppercase' }} href={name.slug}>{name.name}</Link>
+                                    </Menu.Item>
+                                ))
+                            }
+                        </Menu.SubMenu>
 
-                    <Menu.SubMenu title={<p >Know{isMobile ? null : <FaAngleDown />}</p>}>
-                        {menu.know.map((item, index) => (
-                            <Menu.Item key={item.name}>
-                                <Link style={{ textTransform: 'uppercase' }} target='blank' href={item.slug}>{item.name}</Link>
+                        <Menu.Item key={'Rental'}>
+                            <Link href={'/cabs'}><p>Rentals</p></Link>
+                        </Menu.Item>
+                        <Menu.Item key={'Package'}>
+                            <Link href={'/package'}><p>Packages</p></Link>
+                        </Menu.Item>
+
+                        <Menu.SubMenu title={<p>Activities{isMobile ? null : <FaAngleDown />}</p>}>
+                            {
+                                activityList.map((activity, key) => (
+                                    <Menu.SubMenu key={activity.name + key} title={activity.name}>
+                                        {activity.data && activity.data.map((subAct, subKey) => (
+                                            <Menu.Item key={subAct.title + subKey}>
+                                                <Link href={subAct.slug}>{subAct.title}</Link>
+                                            </Menu.Item>
+                                        ))}
+                                    </Menu.SubMenu>
+                                ))
+                            }
+                        </Menu.SubMenu>
+
+
+                        <Menu.SubMenu title={<p>Cruise{isMobile ? null : <FaAngleDown />}</p>}>
+                            {
+                                ferryList.map((ferry, key) => (
+                                    <Menu.Item key={key}>
+                                        <Link href={ferry.slug}>{ferry.name}</Link>
+                                    </Menu.Item>
+                                ))
+                            }
+                        </Menu.SubMenu>
+
+                        <Menu.SubMenu title={<p>Day Trips{isMobile ? null : <FaAngleDown />}</p>}>
+                            {
+                                menu.daytrips.map((name, key) => (
+                                    <Menu.Item key={name.name + key}>
+                                        <Link style={{ textTransform: 'uppercase' }} href={name.slug}>{name.name}</Link>
+                                    </Menu.Item>
+                                ))
+                            }
+                        </Menu.SubMenu>
+
+                        <Menu.Item key={'Blog'}>
+                            <Link href={'/blog'}><p>Blog</p></Link>
+                        </Menu.Item>
+
+                        <Menu.Item key={'Hotels'}>
+                            <Link href={'/hotels'}><p>Hotels</p></Link>
+                        </Menu.Item>
+
+                        <Menu.Item key={'ContactUs'}>
+                            <Link href={'/contact-us'}><p>Contact Us</p></Link>
+                        </Menu.Item>
+
+
+                        {/* Auth items in mobile drawer */}
+                        {isMobile && currentUser && (
+                            <Menu.Item key={'dashboard'}>
+                                <Link href={'/dashboard'}><p>My Dashboard</p></Link>
                             </Menu.Item>
-                        ))
-                        }
-                    </Menu.SubMenu>
-
-                    <Menu.SubMenu title={<p >Popular Islands{isMobile ? null : <FaAngleDown />}</p>}>
-                        {
-                            menu.what2see.map((name, key) => (
-                                <Menu.Item key={name.name + key}>
-                                    <Link target='blank' style={{ textTransform: 'uppercase' }}
-                                        href={name.slug}>{name.name}</Link>
-                                </Menu.Item>
-                            ))
-                        }
-                    </Menu.SubMenu>
-
-                    <Menu.Item key={'Rental'} >
-                        <Link href={'/cabs'}><p>Rentals</p></Link>
-                    </Menu.Item>
-
-                    <Menu.SubMenu title={<p >Packages{isMobile ? null : <FaAngleDown />}</p>}>
-                        {
-                            menu.packages.map((name, key) => (
-                                <Menu.Item key={name.name + key}>
-                                    <Link target='blank' style={{ textTransform: 'uppercase' }}
-                                        href={name.slug}>{name.name}</Link>
-                                </Menu.Item>
-                            ))
-                        }
-                    </Menu.SubMenu>
-
-                    <Menu.SubMenu title={<p >Activities{isMobile ? null : <FaAngleDown />}</p>}>
-                        {
-                            menu.activity.map((name, key) => (
-                                <Menu.Item key={name.name + key}>
-                                    <Link target='blank' style={{ textTransform: 'uppercase' }}
-                                        href={name.slug}>{name.name}</Link>
-                                </Menu.Item>
-                            ))
-                        }
-                    </Menu.SubMenu>
-
-                    <Menu.SubMenu title={<p >Ferry{isMobile ? null : <FaAngleDown />}</p>}>
-                        {
-                            ferryList.map((ferry, key) => (
-                                <Menu.Item key={key}>
-                                    <Link target='blank' href={ferry.slug}>{ferry.name}</Link>
-                                </Menu.Item>
-                            ))
-                        }
-                    </Menu.SubMenu>
-
-                    <Menu.Item key={'ContactUs'} >
-                        <Link href={'/contact-us'}><p>Contact Us</p></Link>
-                    </Menu.Item>
-
-                    <Menu.Item key={'Blog'} >
-                        <Link href={'/blog'}><p>Blog</p></Link>
-                    </Menu.Item>
-
-                    <Menu.Item key={'Hotels'} >
-                        <Link href={'/hotels'}><p>Hotels</p></Link>
-                    </Menu.Item>
-
-                    {/* Auth items in mobile drawer */}
-                    {isMobile && (
-                        currentUser ? (
-                            <>
-                                <Menu.Item key={'dashboard'}>
-                                    <Link href={'/dashboard'}><p>My Dashboard</p></Link>
-                                </Menu.Item>
-                                <Menu.Item key={'signout'} onClick={signOut}>
-                                    <p style={{ color: '#ff4d4f' }}>Sign Out</p>
-                                </Menu.Item>
-                            </>
-                        ) : (
+                        )}
+                        {isMobile && currentUser && (
+                            <Menu.Item key={'signout'} onClick={signOut}>
+                                <p style={{ color: '#ff4d4f' }}>Sign Out</p>
+                            </Menu.Item>
+                        )}
+                        {isMobile && !currentUser && (
                             <Menu.Item key={'login'}>
                                 <Link href={'/auth'}><p>Login / Sign Up</p></Link>
                             </Menu.Item>
-                        )
-                    )}
+                        )}
 
-                </Menu>
-                {isMobile &&
-                    <div style={{ width: "100%", height: "30%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <div style={{ display: 'flex', gap: "1.5rem" }}>
+                    </Menu>
+                </div>
+                {isMobile && (
+                    <div style={{ 
+                        padding: '1.5rem', 
+                        borderTop: '1px solid rgba(255, 255, 255, 0.08)', 
+                        background: '#0a1420',
+                        display: 'flex', 
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '1rem'
+                    }}>
+                        <div style={{ display: 'flex', gap: "1.2rem" }}>
                             {socialArr.map((item, index) => (
-                                <Social key={index} media={item.icon} />
+                                <Social key={index} media={item.icon} url={item.url} />
                             ))}
                         </div>
+                        <div style={{ color: 'rgba(255, 255, 255, 0.45)', fontSize: '0.75rem' }}>
+                            © {new Date().getFullYear()} Mohi Holidays.
+                        </div>
                     </div>
-                }
-            </>
+                )}
+            </div>
         )
     }
 
@@ -281,14 +300,22 @@ export default function Header() {
 
             <Drawer
                 placement='right'
-                width={'100%'}
+                width={320}
                 open={open}
                 onClose={() => setOpen(false)}
-                style={{ background: "var(--primaryColor)", position: 'relative' }}
-
+                styles={{
+                    body: { padding: 0, background: "#0d1b2a" },
+                    header: { background: "#0d1b2a", borderBottom: "1px solid rgba(255, 255, 255, 0.08)" },
+                    mask: { backdropFilter: 'blur(4px)' }
+                }}
+                title={
+                    <div style={{ display: 'flex', alignItems: 'center', height: '40px' }}>
+                        <img src="/white-mohi-holidays-logo.png" alt="Mohi Holidays Logo" style={{ height: '32px', objectFit: 'contain' }} />
+                    </div>
+                }
+                closeIcon={<span style={{ color: 'white', fontSize: '1.25rem' }}>✕</span>}
             >
                 <RespMenu />
-
             </Drawer>
 
             <div>

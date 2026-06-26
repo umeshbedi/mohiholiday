@@ -37,18 +37,6 @@ export default async function IslandName({ params }) {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 w-full max-w-7xl mx-auto justify-items-center">
                         {data.data.map((item, i) => {
-                            let newUrl = item.thumbnail;
-                            if (item.thumbnail.includes("imgur")) {
-                                const parts = item.thumbnail.split(".");
-                                if (parts.length > 2) {
-                                    const ext = parts.pop();
-                                    const path = parts.join(".");
-                                    if (!path.endsWith("m")) {
-                                        newUrl = `${path}m.${ext}`;
-                                    }
-                                }
-                            }
-
                             return (
                                 <Link
                                     data-aos="fade-up"
@@ -58,7 +46,7 @@ export default async function IslandName({ params }) {
                                     <div id='cardImage' className="bg-white rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.12)] transition-all duration-300 transform hover:-translate-y-2 border border-slate-100 flex flex-col h-[340px] w-[250px] mx-auto group">
                                         <div className="relative w-full h-[240px] overflow-hidden bg-slate-100">
                                             <img
-                                                src={newUrl}
+                                                src={item.thumbnail}
                                                 alt={item.name}
                                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                                 loading="lazy"

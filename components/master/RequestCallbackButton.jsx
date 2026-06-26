@@ -20,7 +20,7 @@ export default function RequestCallbackButton() {
       style={{
         position: 'fixed',
         right: 0,
-        top: '50%',
+        top: '60%',
         transform: 'translateY(-50%)',
         zIndex: 1000,
         backgroundColor: 'var(--primaryColor)',

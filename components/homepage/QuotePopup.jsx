@@ -40,14 +40,14 @@ export default function QuotePopup() {
             centered
             width={860}
             styles={{
-                body: { padding: 0, overflow: 'hidden', borderRadius: 12 },
-                content: { padding: 0, borderRadius: 12, overflow: 'hidden' },
+                body: { padding: 0, borderRadius: 12 },
+                content: { padding: 0, borderRadius: 12 },
             }}
         >
-            <div style={{ display: 'flex', minHeight: 520 }}>
+            <div className="flex flex-col md:flex-row min-h-[520px] max-h-[90vh] md:max-h-none bg-white">
 
                 {/* ── Left: Image panel ── */}
-                <div style={{ position: 'relative', width: '42%', flexShrink: 0, minHeight: 520 }}>
+                <div className="relative w-full md:w-[42%] shrink-0 min-h-[400px] md:min-h-[520px] h-[400px] md:h-auto">
                     <Image
                         src="/images/Contact Form Image.jpg"
                         fill
@@ -62,7 +62,7 @@ export default function QuotePopup() {
                 </div>
 
                 {/* ── Right: Form panel ── */}
-                <div style={{ flex: 1, padding: '28px 28px 24px', overflowY: 'auto' }}>
+                <div className="flex-1 p-6 md:p-[28px_28px_24px] bg-white">
                     <div style={{ marginBottom: 20 }}>
                         <h2 style={{ fontSize: '22px', fontWeight: 700, color: '#2c3e50', marginBottom: 8, marginTop: 4 }}>
                             Get Free Quote
@@ -76,6 +76,7 @@ export default function QuotePopup() {
                         layout="vertical"
                         onFinish={onFinish}
                         requiredMark={false}
+                        
                     >
                         <Form.Item
                             label={<span style={{ color: '#34495e', fontWeight: 500 }}>Name</span>}

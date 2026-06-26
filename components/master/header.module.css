@@ -7,7 +7,8 @@
     transition: padding .5s ease, background .5s ease;
 }
 .RespMenu p{
-font-weight: bold;
+font-weight: 600;
+margin: 0;
 }
 
 .menuContainer:hover{
@@ -98,3 +99,70 @@ img:hover .dropdown {
 @media (min-width: 701px) and (max-width: 1120px) {
 
 }
+
+/* Ant Design Menu dark theme override in RespMenu */
+.RespMenu {
+    background: transparent !important;
+}
+
+.RespMenu :global(.ant-menu-sub) {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-radius: 8px;
+    margin: 4px 12px !important;
+}
+
+.RespMenu :global(.ant-menu-item),
+.RespMenu :global(.ant-menu-submenu-title),
+.RespMenu :global(.ant-menu-item a),
+.RespMenu :global(.ant-menu-title-content),
+.RespMenu p {
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    text-align: left;
+}
+
+.RespMenu :global(.ant-menu-item),
+.RespMenu :global(.ant-menu-submenu-title) {
+    color: rgba(255, 255, 255, 0.85) !important;
+    border-radius: 8px;
+    margin: 4px 8px !important;
+    width: calc(100% - 16px) !important;
+    transition: all 0.3s ease;
+}
+
+.RespMenu :global(.ant-menu-item:hover),
+.RespMenu :global(.ant-menu-submenu-title:hover) {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+}
+
+.RespMenu :global(.ant-menu-item-selected) {
+    background-color: var(--primaryColor) !important;
+    color: #ffffff !important;
+}
+
+.RespMenu :global(.ant-menu-item-selected a) {
+    color: #ffffff !important;
+}
+
+.socialIcon {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.65);
+    background: rgba(255, 255, 255, 0.08);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.socialIcon:hover {
+    color: #ffffff;
+    background: var(--primaryColor);
+    transform: translateY(-2px);
+}

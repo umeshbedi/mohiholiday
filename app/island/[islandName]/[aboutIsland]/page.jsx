@@ -63,24 +63,33 @@ export default async function AboutIsland({ params }) {
                         <div style={{ width: mobile() ? '100%' : '30%', background: 'white', padding: '3%', height: 'fit-content', flexDirection: 'column', display: 'flex', alignItems: 'center' }}>
                             <h2 style={{ textAlign: 'center' }}>Visit Other Places of {data.name}</h2>
                             <Divider style={{ backgroundColor: style.lightGrey, height: 1 }} />
-                            {data.data.map((item, i) => (
-                                <Link
-                                    data-aos="fade-up"
-                                    data-aos-anchor-placement="top-bottom"
-                                    data-aos-duration="2000"
-                                    key={i} target='blank' href={item.slug}>
-                                    <div id='cardImage' style={{ borderRadius: 10, background: 'white', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: boxShadow, width: 260, marginBottom: 30 }}>
-                                        <Image
-                                            src={item.thumbnail}
-                                            alt={item.name}
-                                            preview={false}
-                                            width={260}
-                                            height={280}
-                                            style={{ objectFit: 'cover', borderTopLeftRadius: 10, borderTopRightRadius: 10 }} />
-                                        <h2 style={{ padding: '5%', textAlign: 'center', fontSize:'18px' }} className='line-clamp-2'>{item.name}</h2>
-                                    </div>
-                                </Link>
-                            ))}
+                            {data.data.map((item, i) => {
+                                return (
+                                    <Link
+                                        data-aos="fade-up"
+                                        data-aos-anchor-placement="top-bottom"
+                                        data-aos-duration="2000"
+                                        key={i} href={item.slug}
+                                        className='mb-5'
+                                        >
+                                        <div id='cardImage' className="bg-white rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.12)] transition-all duration-300 transform hover:-translate-y-2 border border-slate-100 flex flex-col h-[340px] w-[250px] mx-auto group">
+                                            <div className="relative w-full h-[240px] overflow-hidden bg-slate-100">
+                                                <img
+                                                    src={item.thumbnail}
+                                                    alt={item.name}
+                                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                                    loading="lazy"
+                                                />
+                                            </div>
+                                            <div className="p-4 flex flex-grow items-center justify-center text-center">
+                                                <h2 className="text-base font-bold text-slate-800 tracking-tight group-hover:text-[var(--primaryColor)] transition-colors duration-200 line-clamp-2 leading-snug">
+                                                    {item.name}
+                                                </h2>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                )
+                            })}
                         </div>
                     </div>
                 </div>

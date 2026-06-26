@@ -101,6 +101,11 @@ const items = [
       icon: <FaImage />,
       label: 'Media',
     },
+    {
+      key: 'footer',
+      icon: <FaList />,
+      label: 'Footer Settings',
+    },
     
   ]
 

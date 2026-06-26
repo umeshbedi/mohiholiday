@@ -33,6 +33,7 @@ const DayTrip = dynamic(() => import('../../components/admin/daytrip/DayTripList
 const TestiMonials = dynamic(() => import('../../components/admin/AddTestimonials'), { ssr: false, loading: () => <Skeleton /> })
 const BlogAdmin = dynamic(() => import('../../components/admin/blog/BlogAdmin'), { ssr: false, loading: () => <Skeleton /> })
 const HotelsAdmin = dynamic(() => import('../../components/admin/hotels/HotelsAdmin'), { ssr: false, loading: () => <Skeleton /> })
+const FooterAdmin = dynamic(() => import('../../components/admin/FooterAdmin'), { ssr: false, loading: () => <Skeleton /> })
 
 
 export default function Admin() {
@@ -97,7 +98,7 @@ export default function Admin() {
     else if (e == 'packageBaliDetail' || e == "packageAndmanDetail") {
       setContent(<PackagesDetails packageFor={e == 'packageBaliDetail' ? 'packageBali' : 'packageAndaman'} />)
     }
-    
+
     else if (e == 'activityBali' || e == "activityAndaman") {
       setContent(<Activity activityFor={e} />)
     }
@@ -110,7 +111,7 @@ export default function Admin() {
     else if (e == 'hotels') {
       setContent(<HotelsAdmin />)
     }
-    else if (e == 'generalInfo' || e == "destinationAndaman" || e == "destinationBali" ) {
+    else if (e == 'generalInfo' || e == "destinationAndaman" || e == "destinationBali") {
       setContent(<W2sList pageName={e} />)
     }
     else if (e == "attractionAndaman" || e == "attractionBali") {
@@ -123,7 +124,7 @@ export default function Admin() {
     else if (e == 'island') {
       setContent(<Island />)
     }
-    
+
     else if (e == 'dayTrip') {
       setContent(<DayTrip />)
     }
@@ -132,9 +133,13 @@ export default function Admin() {
       setOpen(true)
     }
 
+    else if (e == 'footer') {
+      setContent(<FooterAdmin />)
+    }
+
     else {
       setContent(<PageUpdate pageName={e} />)
-      
+
     }
   }
 
@@ -170,10 +175,10 @@ export default function Admin() {
     <main >
       <div className='flex  h-screen'>
         <div className='bg-black'>
-        <MenuAdmin menuClick={(e) => onMenuClick(e)} />
+          <MenuAdmin menuClick={(e) => onMenuClick(e)} />
 
         </div>
-        
+
         <div className='w-full'>
           <Header style={{ background: 'inherit', display: 'flex', justifyContent: 'flex-end' }}>
             <div>

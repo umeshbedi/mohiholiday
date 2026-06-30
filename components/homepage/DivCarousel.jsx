@@ -105,7 +105,7 @@ export default function DivCarousel({ lightHead, darkHead, backgroundImage, slid
             modules={[Pagination, Navigation]}
             centeredSlides={isMobile ? false : center}
             slidesPerView={slides}
-            spaceBetween={isMobile ? 10 : 30}
+            spaceBetween={isMobile ? 10 : 15}
             speed={1500}
             onSlideChange={(e) => {
               if (e.activeIndex > 0) {
@@ -123,35 +123,48 @@ export default function DivCarousel({ lightHead, darkHead, backgroundImage, slid
             }}
           >
             {sliderContent.map((item, index) => (
-              <SwiperSlide style={{ width: 250, height: isMobile ? 250 : 350 }} key={index} className='singleSwiper'>
+              <SwiperSlide style={{ width: isMobile ? 210 : 270, height: isMobile ? 250 : 350 }} key={index} className='singleSwiper'>
                 <Link href={item.slug}>
-                  <div style={{ width: 210, height: isMobile ? 250 : 350 }}>
+                  <div style={{
+                    width: isMobile ? 210 : 270,
+                    height: isMobile ? 250 : 350,
+                    position: 'relative',
+                    borderRadius: isMobile ? 25 : 50,
+                    overflow: 'hidden'
+                  }}>
                     <Image
                       src={item.thumbnail || null}
-                      alt={item.name}
+                      alt={item.name || item.title}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      style={{ objectFit: 'cover', borderRadius: isMobile ? 25 : 50, position: 'absolute', zIndex: -1 }}
+                      style={{ objectFit: 'cover', zIndex: -1 }}
                       loading='lazy'
                     />
-
-                    <h1 style={{
-                      color: 'white',
-                      fontWeight: 700,
-                      fontSize: isMobile ? "1.5rem" : "1.8rem",
-                      writingMode: 'vertical-lr',
-                      transform: 'rotate(-180deg)',
-                      float: 'bottom',
-                      // background:'yellow',
-                      height: '100%',
-                      paddingTop: 20,
-                      marginLeft: 10,
-                      textShadow: textShadow
-                    }}
-                    >
-                      {item.name}
-                    </h1>
-
+                    <div style={{
+                      position: 'absolute',
+                      bottom: 0,
+                      left: 0,
+                      width: '100%',
+                      background: 'linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 0) 100%)',
+                      padding: isMobile ? '2.5rem 1rem 1rem 1rem' : '3.5rem 1.5rem 1.5rem 1.5rem',
+                      boxSizing: 'border-box'
+                    }}>
+                      <h1 style={{
+                        color: 'white',
+                        fontWeight: 700,
+                        fontSize: isMobile ? "1.05rem" : "1.25rem",
+                        lineHeight: '1.3',
+                        textShadow: textShadow,
+                        margin: 0,
+                        display: '-webkit-box',
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis'
+                      }}>
+                        {item.title || item.name}
+                      </h1>
+                    </div>
                   </div>
                 </Link>
               </SwiperSlide>

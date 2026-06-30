@@ -1,13 +1,11 @@
 import dynamic from 'next/dynamic'
-import { mobile } from '@/components/utils/variables'
 import SHome from '@/components/skeleton/SHome'
 import { db } from '@/firebase'
 import Activities from '@/components/homepage/Activities'
 import QuotePopup from '@/components/homepage/QuotePopup'
 
-const DivCarousel = dynamic(() => import("@/components/homepage/DivCarousel"), { ssr: true, loading: () => <SHome /> })
 const DivCarousel2 = dynamic(() => import('@/components/homepage/DivCarousel2'), { ssr: true, loading: () => <SHome /> })
-const DivCarouselMobile = dynamic(() => import('@/components/homepage/DivCarouselMobile'), { ssr: true, loading: () => <SHome /> })
+const AdaptiveCarousel = dynamic(() => import("@/components/homepage/AdaptiveCarousel"), { ssr: true, loading: () => <SHome /> })
 const Menu = dynamic(() => import("@/components/master/header"))
 const Slider = dynamic(() => import("@/components/homepage/Slider"), { ssr: true, loading: () => <SHome /> })
 const Journey = dynamic(() => import('@/components/homepage/Journey'), { ssr: true, loading: () => <SHome /> })
@@ -64,9 +62,9 @@ export default async function Home() {
     return ({ id: entry.id, ...entry.data() })
   });
 
-  const portBlair = entryIsland.filter(e=>e.slug=="/island/Port-Blair")[0]
-  const haveLock = entryIsland.filter(e=>e.slug=="/island/Havelock-Island")[0]
-  const neilIsland = entryIsland.filter(e=>e.slug=="/island/Neil-Island")[0]
+  const portBlair = entryIsland.find(e => e.slug?.toLowerCase() === "/island/port-blair")
+  const haveLock = entryIsland.find(e => e.slug?.toLowerCase() === "/island/havelock-island")
+  const neilIsland = entryIsland.find(e => e.slug?.toLowerCase() === "/island/neil-island")
 
   //Getting Testimonials
   const testimonials = (await db.doc(`pages/testimonials`).get()).data().testimonials
@@ -86,88 +84,80 @@ export default async function Home() {
         <Slider sliderData={res.data().banner} />
 
         <div style={{ marginTop: "3rem" }}>
-          {mobile() ? (
-            <DivCarouselMobile
-              lightHead={"Handpicked Destination in Port Blair"}
-              // darkHead={"in Bali"}
-              button={{ name: "All Destination", slug: "/island/Port-Blair" }}
-              sliderContent={portBlair.data}
-              category={'destination'}
-            />
-          ) : (
-            <DivCarousel
-              lightHead={"Handpicked Destination "}
-              darkHead={"in Port Blair"}
-              button={{ name: "All Destination", slug: "/island/Port-Blair" }}
-              backgroundImage={InsightBanner.HomeBaliInsight}
-              category={'destination'}
-              sliderContent={portBlair.data}
-            />
-
-          )}
+          <AdaptiveCarousel
+            mobileProps={{
+              lightHead: "Handpicked Destination in Port Blair",
+              button: { name: "All Destination", slug: portBlair?.slug || "/island/Port-Blair" },
+              sliderContent: portBlair?.data,
+              category: 'destination',
+              backgroundImage: InsightBanner?.HomeBaliInsight
+            }}
+            desktopProps={{
+              lightHead: "Handpicked Destination ",
+              darkHead: "in Port Blair",
+              button: { name: "All Destination", slug: portBlair?.slug || "/island/Port-Blair" },
+              backgroundImage: InsightBanner.HomeBaliInsight,
+              category: 'destination',
+              sliderContent: portBlair?.data
+            }}
+          />
 
 
-          {mobile() ? (
-            <DivCarouselMobile
-              lightHead={"Handpicked Destination in Havelock Island"}
-              // darkHead={"in Bali"}
-              button={{ name: "All Destination", slug: "/island/Havelock-Island" }}
-              sliderContent={haveLock.data}
-              category={'destination'}
-            />
-          ) : (
-            <DivCarousel
-              lightHead={"Handpicked Destination "}
-              darkHead={"in Havelock Island"}
-              button={{ name: "All Destination", slug: "/island/Havelock-Island" }}
-              backgroundImage={InsightBanner.HomeAndamanInsight}
-              category={'destination'}
-              sliderContent={haveLock.data}
-            />
-
-          )}
+          <AdaptiveCarousel
+            mobileProps={{
+              lightHead: "Handpicked Destination in Havelock Island",
+              button: { name: "All Destination", slug: haveLock?.slug || "/island/havelock-island" },
+              sliderContent: haveLock?.data,
+              category: 'destination',
+              backgroundImage: InsightBanner?.HomeAndamanInsight
+            }}
+            desktopProps={{
+              lightHead: "Handpicked Destination ",
+              darkHead: "in Havelock Island",
+              button: { name: "All Destination", slug: haveLock?.slug || "/island/havelock-island" },
+              backgroundImage: InsightBanner.HomeAndamanInsight,
+              category: 'destination',
+              sliderContent: haveLock?.data
+            }}
+          />
 
 
-          {mobile() ? (
-            <DivCarouselMobile
-              lightHead={"Handpicked Destination in Neil Island"}
-              // darkHead={"in Bali"}
-              button={{ name: "All Destination", slug: "/island/Neil-Island" }}
-              sliderContent={neilIsland.data}
-              category={'destination'}
-            />
-          ) : (
-            <DivCarousel
-              lightHead={"Handpicked Destination "}
-              darkHead={"in Neil Island"}
-              button={{ name: "All Destination", slug: "/island/Neil-Island" }}
-              backgroundImage={InsightBanner.HomeAndamanInsight}
-              category={'destination'}
-              sliderContent={neilIsland.data}
-            />
-
-          )}
+          <AdaptiveCarousel
+            mobileProps={{
+              lightHead: "Handpicked Destination in Neil Island",
+              button: { name: "All Destination", slug: neilIsland?.slug || "/island/Neil-Island" },
+              sliderContent: neilIsland?.data,
+              category: 'destination',
+              backgroundImage: InsightBanner?.HomeAndamanInsight
+            }}
+            desktopProps={{
+              lightHead: "Handpicked Destination ",
+              darkHead: "in Neil Island",
+              button: { name: "All Destination", slug: neilIsland?.slug || "/island/Neil-Island" },
+              backgroundImage: InsightBanner.HomeAndamanInsight,
+              category: 'destination',
+              sliderContent: neilIsland?.data
+            }}
+          />
 
 
-          {mobile() ? (
-            <DivCarouselMobile
-              lightHead={"Luxury Cruises In Andaman"}
-              // darkHead={"in Bali"}
-              button={{ name: "All Cruises", slug: "#" }}
-              sliderContent={ferryData}
-              category={'cruise'}
-            />
-          ) : (
-            <DivCarousel
-              lightHead={"Luxury Cruises"}
-              darkHead={" In Andaman"}
-              button={{ name: "All Cruises", slug: "/cruises" }}
-              backgroundImage={InsightBanner.HomeCruizeInsight}
-              sliderContent={ferryData}
-              category={'cruise'}
-            />
-
-          )}
+          <AdaptiveCarousel
+            mobileProps={{
+              lightHead: "Luxury Cruises In Andaman",
+              button: { name: "All Cruises", slug: "#" },
+              sliderContent: ferryData,
+              category: 'cruise',
+              backgroundImage: InsightBanner?.HomeCruizeInsight
+            }}
+            desktopProps={{
+              lightHead: "Luxury Cruises",
+              darkHead: " In Andaman",
+              button: { name: "All Cruises", slug: "/cruises" },
+              backgroundImage: InsightBanner.HomeCruizeInsight,
+              sliderContent: ferryData,
+              category: 'cruise'
+            }}
+          />
 
           <DivCarousel2 title={"Popular Activities in Andaman"} sliderContent={activityDataAndaman} backgroundImage={InsightBanner.HomeAndamanInsight} />
         </div>

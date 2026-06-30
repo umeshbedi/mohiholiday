@@ -35,7 +35,7 @@ export default function DivCarouselMobile({ lightHead, darkHead, backgroundImage
 
   useEffect(() => {
     setIsMobile(mobile())
-  }, [isMobile])
+  }, [])
 
 
   return (
@@ -43,13 +43,15 @@ export default function DivCarouselMobile({ lightHead, darkHead, backgroundImage
       ref={containerRef}
       style={{
         width: '100%',
+        backgroundImage: backgroundImage ? `linear-gradient(to bottom, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.75) 100%), url(${backgroundImage})` : 'none',
         backgroundAttachment: 'fixed',
         backgroundSize: 'cover',
         backgroundPosition: "center bottom",
         backgroundRepeat: 'no-repeat',
         float: 'right',
         position: 'relative',
-        marginBottom: isMobile ? '2.5rem' : "3.5rem"
+        marginBottom: isMobile ? '2.5rem' : "3.5rem",
+        padding: '2.5rem 0'
       }}
     >
       <div
@@ -68,8 +70,8 @@ export default function DivCarouselMobile({ lightHead, darkHead, backgroundImage
           <h1
             data-aos="fade-up"
             data-aos-duration="1000"
-            style={{ color: style.primaryColor, fontWeight: 900, lineHeight: 1.1, marginBottom: 20 }}>
-            {lightHead} <span style={{ color: 'grey' }}>{darkHead}</span>
+            style={{ color: 'white', fontWeight: 900, lineHeight: 1.1, marginBottom: 20 }}>
+            {lightHead} {darkHead && <span style={{ color: '#ccc' }}>{darkHead}</span>}
           </h1>
 
           <div
@@ -98,32 +100,53 @@ export default function DivCarouselMobile({ lightHead, darkHead, backgroundImage
             navigation={isMobile ? false : true}
             modules={[Pagination, Navigation]}
             slidesPerView={"auto"}
-            spaceBetween={isMobile ? 10 : 30}
+            spaceBetween={isMobile ? 10 : 15}
             rewind
             speed={1500}
 
           >
             {sliderContent.map((item, index) => (
-              <SwiperSlide style={{ width: 250, height: 350 }} key={index} className='singleSwiper'>
+              <SwiperSlide style={{ width: isMobile ? 210 : 270, height: isMobile ? 250 : 350 }} key={index} className='singleSwiper'>
                 <Link href={item.slug}>
-                  <div style={{ width: 210, height: isMobile ? 250 : 350 }}>
-                    <Image src={item.thumbnail || null} alt={item.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" style={{ objectFit: 'cover', borderRadius: isMobile ? 25 : 50, position: 'absolute', zIndex: -1 }} />
-                    <h1 style={{
-                      color: 'white',
-                      fontWeight: 700,
-                      fontSize: isMobile ? "1.8rem" : "2.2rem",
-                      writingMode: 'vertical-lr',
-                      transform: 'rotate(-180deg)',
-                      float: 'bottom',
-                      // background:'yellow',
-                      height: '100%',
-                      paddingTop: 20,
-                      marginLeft: 10,
-                      textShadow: textShadow
-                    }}
-                    >
-                      {category == 'destination' ? item.title : item.name}
-                    </h1>
+                  <div style={{
+                    width: isMobile ? 210 : 270,
+                    height: isMobile ? 250 : 350,
+                    position: 'relative',
+                    borderRadius: isMobile ? 25 : 50,
+                    overflow: 'hidden'
+                  }}>
+                    <Image
+                      src={item.thumbnail || null}
+                      alt={item.name}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      style={{ objectFit: 'cover', zIndex: -1 }}
+                    />
+                    <div style={{
+                      position: 'absolute',
+                      bottom: 0,
+                      left: 0,
+                      width: '100%',
+                      background: 'linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 0) 100%)',
+                      padding: isMobile ? '2.5rem 1rem 1rem 1rem' : '3.5rem 1.5rem 1.5rem 1.5rem',
+                      boxSizing: 'border-box'
+                    }}>
+                      <h1 style={{
+                        color: 'white',
+                        fontWeight: 700,
+                        fontSize: isMobile ? "1.05rem" : "1.25rem",
+                        lineHeight: '1.3',
+                        textShadow: textShadow,
+                        margin: 0,
+                        display: '-webkit-box',
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis'
+                      }}>
+                        {item.title || item.name}
+                      </h1>
+                    </div>
                   </div>
                 </Link>
               </SwiperSlide>

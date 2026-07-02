@@ -45,17 +45,17 @@ export default function FerryPartners() {
 
 
             {/* Logo Row */}
-            <div className="relative z-10 flex flex-wrap items-center justify-center gap-x-10 gap-y-6 sm:gap-x-16">
+            <div className="relative z-10 flex flex-wrap items-center justify-center gap-4 sm:gap-8 md:gap-10">
                 {ferryLogos.map((ferry, index) => (
                     <div
                         key={index}
-                        className="flex items-center justify-center h-16 min-w-[90px]"
+                        className="flex items-center justify-center h-16 sm:h-24 w-[150px] sm:w-[185px] p-2.5 bg-white/30 hover:bg-white/70 rounded-2xl border border-white/40 shadow-sm transition-all duration-300 ease-in-out"
                     >
                         {ferry.logo ? (
                             <img
                                 src={ferry.logo}
                                 alt={ferry.name}
-                                className="min-h-14 sm:h-20 w-auto object-contain grayscale-[15%] hover:grayscale-0 hover:scale-105 transition-all duration-300 ease-in-out"
+                                className="max-h-full max-w-full object-contain grayscale-[15%] hover:grayscale-0 hover:scale-105 transition-all duration-300 ease-in-out"
                                 onError={(e) => {
                                     e.target.style.display = 'none'
                                     e.target.nextSibling.style.display = 'flex'
@@ -63,7 +63,7 @@ export default function FerryPartners() {
                             />
                         ) : null}
                         <span
-                            className="hidden items-center justify-center text-base font-bold text-gray-700 border-b-2 border-red-500 pb-1 hover:text-red-500 transition-colors duration-200"
+                            className="hidden items-center justify-center text-xs sm:text-sm font-bold text-gray-700 border-b-2 border-red-500 pb-1 hover:text-red-500 transition-colors duration-200"
                             style={{ display: ferry.logo ? 'none' : 'flex' }}
                         >
                             {ferry.name}

@@ -17,6 +17,10 @@ export default function ActivityItemUpdate({ collection, data, allItemData, inde
     const [metaDescription, setMetaDescription] = useState("")
     const [customSlug, setCustomSlug] = useState("")
     const [faqs, setFaqs] = useState([])
+    const [price, setPrice] = useState("")
+    const [rating, setRating] = useState(5)
+    const [duration, setDuration] = useState("")
+    const [place, setPlace] = useState("")
 
     const [messageApi, contextHolder] = message.useMessage();
     const [loading, setLoading] = useState(false)
@@ -40,7 +44,13 @@ export default function ActivityItemUpdate({ collection, data, allItemData, inde
                 metaTitle,
                 metaDescription,
                 slug,
-                faqs
+                faqs,
+                price: price ? Number(price) : null,
+                originalPrice: price ? Math.round(Number(price) * 1.20) : null,
+                discount: 'Save 20%',
+                rating: rating ? Number(rating) : 5,
+                duration: duration || '',
+                place: place || ''
             })
         }).then((e) => {
             messageApi.success("Item Added Successfully!")
@@ -54,7 +64,22 @@ export default function ActivityItemUpdate({ collection, data, allItemData, inde
     function editData() {
         const finalSlugSuffix = customSlug.trim() !== "" ? customSlug.split(" ").join("-") : title.split(" ").join("-")
         const slug = `${allItemData.slug}/${finalSlugSuffix}`
-        allItemData.data[index] = { title, thumbnail, about, headerImage, metaTitle, metaDescription, slug, faqs }
+        allItemData.data[index] = { 
+            title, 
+            thumbnail, 
+            about, 
+            headerImage, 
+            metaTitle, 
+            metaDescription, 
+            slug, 
+            faqs,
+            price: price ? Number(price) : null,
+            originalPrice: price ? Math.round(Number(price) * 1.20) : null,
+            discount: 'Save 20%',
+            rating: rating ? Number(rating) : 5,
+            duration: duration || '',
+            place: place || ''
+        }
         
         setLoading(true)
         db.doc(`${collection}`).update({
@@ -83,6 +108,10 @@ export default function ActivityItemUpdate({ collection, data, allItemData, inde
                 setCustomSlug(data.title.split(" ").join("-"));
             }
             setFaqs(data.faqs || [])
+            setPrice(data.price || "")
+            setRating(data.rating || 5)
+            setDuration(data.duration || "")
+            setPlace(data.place || "")
         }
     }, [data])
 
@@ -110,8 +139,24 @@ export default function ActivityItemUpdate({ collection, data, allItemData, inde
                     <input ref={thumbnailRef} defaultValue={thumbnail} placeholder='Enter Thumbnail Url' onChange={(e) => setthumbnail(e.target.value)} />
                 </Form.Item>
 
+                <Form.Item label="Price (Actual)">
+                    <Input type="number" value={price} placeholder='e.g. 3400' onChange={(e) => setPrice(e.target.value)} />
+                </Form.Item>
+
+                <Form.Item label="Rating (1-5)">
+                    <Input type="number" min={1} max={5} value={rating} placeholder='e.g. 5' onChange={(e) => setRating(e.target.value)} />
+                </Form.Item>
+
+                <Form.Item label="Duration">
+                    <Input value={duration} placeholder='e.g. 3 Hours' onChange={(e) => setDuration(e.target.value)} />
+                </Form.Item>
+
+                <Form.Item label="Place">
+                    <Input value={place} placeholder='e.g. Havelock Island' onChange={(e) => setPlace(e.target.value)} />
+                </Form.Item>
+
                 <div>
-                    <h3 style={{ marginBottom: 10 }}>About Place:</h3>
+                    <p style={{ marginBottom: 10,fontSize:14 }}>About Activity:</p>
                     <JoditEditor value={about} onBlur={e => { setAbout(e) }} />
                 </div>
 

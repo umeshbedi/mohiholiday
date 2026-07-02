@@ -96,14 +96,16 @@ export default function Island() {
 
     // console.log(SID)
 
-    function updatePlace(name, about, metaDescription, thumbnail, slug, title, faqs) {
+    function updatePlace(name, about, metaDescription, thumbnail, slug, title, faqs, order, headerImage) {
         const tempSIPD = SID.data
         const finalSlug = (slug || name.toLowerCase().split(" ").join("-")).replace(new RegExp(`^${SID.slug}/`, "i"), "");
         const editedPlace = {
             about, metaDescription, name, thumbnail,
             slug: `${SID.slug}/${finalSlug}`,
             title,
-            faqs
+            faqs,
+            order: order ? Number(order) : null,
+            headerImage: headerImage || ""
         }
         tempSIPD[SIPI] = editedPlace
         Islanddb.doc(`${selectedIsland}`).update({
@@ -112,6 +114,8 @@ export default function Island() {
             msg.success("updated")
         })
     }
+
+
 
     function deletePlace(i) {
         const tempPlace = SID.data

@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useEffect } from 'react'
-import { HomeOutlined, PlusOutlined, MenuOutlined, MedicineBoxOutlined, BookOutlined, WechatFilled } from '@ant-design/icons';
+import { HomeOutlined, PlusOutlined, MenuOutlined, MedicineBoxOutlined, BookOutlined, WechatFilled, MailOutlined } from '@ant-design/icons';
 import { FaCar, FaEye, FaGoogleDrive, FaImage, FaList, FaMountain, FaNewspaper, FaShip, FaSwimmer, FaHotel } from 'react-icons/fa'
 import { Menu } from 'antd';
 
@@ -106,7 +106,11 @@ const items = [
       icon: <FaList />,
       label: 'Footer Settings',
     },
-    
+    {
+      key: 'enquiries',
+      icon: <MailOutlined />,
+      label: 'Enquiries',
+    },
   ]
 
   return (

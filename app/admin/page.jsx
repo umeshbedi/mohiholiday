@@ -34,6 +34,7 @@ const TestiMonials = dynamic(() => import('../../components/admin/AddTestimonial
 const BlogAdmin = dynamic(() => import('../../components/admin/blog/BlogAdmin'), { ssr: false, loading: () => <Skeleton /> })
 const HotelsAdmin = dynamic(() => import('../../components/admin/hotels/HotelsAdmin'), { ssr: false, loading: () => <Skeleton /> })
 const FooterAdmin = dynamic(() => import('../../components/admin/FooterAdmin'), { ssr: false, loading: () => <Skeleton /> })
+const EnquiriesAdmin = dynamic(() => import('../../components/admin/EnquiriesAdmin'), { ssr: false, loading: () => <Skeleton /> })
 
 
 export default function Admin() {
@@ -135,6 +136,9 @@ export default function Admin() {
 
     else if (e == 'footer') {
       setContent(<FooterAdmin />)
+    }
+    else if (e == 'enquiries') {
+      setContent(<EnquiriesAdmin />)
     }
 
     else {

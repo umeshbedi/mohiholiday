@@ -19,7 +19,7 @@ const sayImages = [
 export default function WhatSay() {
     return (
         <div>
-            <Title title='What they Say' center/>
+            <Title title='Stories made by Mohi Holidays' center/>
 
             <div className={style.SayContainer}>
 

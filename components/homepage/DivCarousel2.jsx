@@ -51,9 +51,9 @@ function ActivityCard({ item }) {
     const [isFavorite, setIsFavorite] = useState(false);
 
     return (
-        <div className="w-[350px] bg-white rounded-[24px] shadow-lg overflow-hidden border border-gray-100 flex flex-col group mb-4 transition-all duration-300 hover:shadow-2xl">
+        <div className="w-full bg-white rounded-[24px] shadow-lg overflow-hidden border border-gray-100 flex flex-col group mb-4 transition-all duration-300 hover:shadow-2xl">
             {/* Image Section */}
-            <div className="relative w-full h-[220px] overflow-hidden">
+            <div className="relative w-full h-[180px] md:h-[220px] overflow-hidden">
                 <Image 
                     src={item.thumbnail || "/images/cabimage2.jpg"} 
                     alt={item.title} 
@@ -101,7 +101,7 @@ function ActivityCard({ item }) {
             <div className="p-5 flex flex-col flex-grow justify-between gap-3 text-left">
                 <div>
                     {/* Title */}
-                    <h3 className="text-gray-950 font-extrabold text-[1.125rem] leading-snug line-clamp-2 h-[2.8rem] group-hover:text-[var(--primaryColor)] transition-colors duration-200" title={item.title}>
+                    <h3 className="text-gray-950 font-extrabold text-[1rem] md:text-[1.125rem] leading-snug line-clamp-2 h-[2.6rem] md:h-[2.8rem] group-hover:text-[var(--primaryColor)] transition-colors duration-200" title={item.title}>
                         {item.title}
                     </h3>
 
@@ -109,7 +109,7 @@ function ActivityCard({ item }) {
                     <div className="flex items-center justify-between mt-3">
                         <div className="flex items-baseline gap-1.5">
                             <span className="text-gray-400 line-through text-xs font-semibold">₹{originalPrice}</span>
-                            <span className="text-gray-900 font-extrabold text-lg">₹{price}</span>
+                            <span className="text-gray-900 font-extrabold text-base md:text-lg">₹{price}</span>
                         </div>
                         {discount && (
                             <span className="bg-black text-white px-2.5 py-1 rounded-full text-[10px] font-bold">
@@ -126,7 +126,7 @@ function ActivityCard({ item }) {
 
                 {/* Book Now Button */}
                 <Link href={item.slug} className="block mt-2">
-                    <button className="w-full bg-[var(--primaryColor)] hover:bg-[#0f9cd3] text-white font-extrabold py-3 px-5 rounded-full flex items-center justify-between transition-all duration-300 shadow-md hover:shadow-lg shadow-blue-500/10">
+                    <button className="w-full bg-[var(--primaryColor)] hover:bg-[#0f9cd3] text-white font-extrabold py-2.5 md:py-3 px-4 md:px-5 rounded-full flex items-center justify-between transition-all duration-300 shadow-md hover:shadow-lg shadow-blue-500/10">
                         <span className="tracking-wider text-[11px] font-black text-white">BOOK NOW</span>
                         <span className="w-6 h-6 rounded-full bg-white flex items-center justify-center text-[var(--primaryColor)] font-bold">
                             <ArrowRightOutlined className="text-[10px] font-black" />
@@ -181,7 +181,7 @@ export default function DivCarousel2({ lightHead, darkHead, backgroundImage, sli
                     <div style={{ width: "90%", marginTop: 20 }}>
                         <Swiper
                             // effect={"coverflow"}
-                            spaceBetween={30}
+                            spaceBetween={isMobile ? 15 : 25}
                             modules={[Navigation]}
                             centeredSlides={false}
                             slidesPerView={"auto"}
@@ -194,13 +194,13 @@ export default function DivCarousel2({ lightHead, darkHead, backgroundImage, sli
                             }}
                             pagination={true}
                             navigation
-                            className="p-2"
-                            style={{ paddingLeft: 25, paddingBottom: 40, paddingRight: 25 }}
+                            // className="p-2"
+                            style={{ paddingLeft: 10, paddingBottom: 40, paddingRight: 10 }}
 
 
                         >
                             {sliderContent.map((item, i) => (
-                                <SwiperSlide key={i} style={{ width: 350 }}>
+                                <SwiperSlide key={i} style={{ width: isMobile ? 280 : 350 }}>
                                     <ActivityCard item={item} />
                                 </SwiperSlide>
                             ))}

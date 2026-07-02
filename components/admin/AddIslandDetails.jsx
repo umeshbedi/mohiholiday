@@ -15,6 +15,8 @@ export default function AddIslandDetails({ IslandId, IslandSlug, SIPD, action, u
     const [about, setAbout] = useState("")
     const [metaDescription, setMetaDescription] = useState("")
     const [faqs, setFaqs] = useState([])
+    const [order, setOrder] = useState("")
+    const [headerImage, setHeaderImage] = useState("")
 
     const [msg, showMsg] = message.useMessage()
 
@@ -27,6 +29,8 @@ export default function AddIslandDetails({ IslandId, IslandSlug, SIPD, action, u
             setMetaDescription(SIPD.metaDescription || "")
             setAbout(SIPD.about || "")
             setFaqs(SIPD.faqs || [])
+            setOrder(SIPD.order || "")
+            setHeaderImage(SIPD.headerImage || "")
         }else{
             setName("")
             setSlug("")
@@ -35,6 +39,8 @@ export default function AddIslandDetails({ IslandId, IslandSlug, SIPD, action, u
             setMetaDescription("")
             setAbout("")
             setFaqs([])
+            setOrder("")
+            setHeaderImage("")
         }
     }, [SIPD, action, IslandSlug])
 
@@ -46,7 +52,9 @@ export default function AddIslandDetails({ IslandId, IslandSlug, SIPD, action, u
                     thumbnail, name, about, metaDescription,
                     slug: `${IslandSlug}/${finalSlug}`,
                     title,
-                    faqs
+                    faqs,
+                    order: order ? Number(order) : null,
+                    headerImage: headerImage || ""
                 })
             }).then(() => {
                 msg.success("Place Added");
@@ -57,6 +65,8 @@ export default function AddIslandDetails({ IslandId, IslandSlug, SIPD, action, u
                 setAbout("")
                 setMetaDescription("")
                 setFaqs([])
+                setOrder("")
+                setHeaderImage("")
             })
         } else {
             msg.error("All fields are required")
@@ -70,6 +80,10 @@ export default function AddIslandDetails({ IslandId, IslandSlug, SIPD, action, u
                 {SIPD!=null&&
                     <h2 style={{color:style.secondaryColor, marginBottom:15}}><i> Edit {SIPD.name}</i></h2>
                 }
+                 <div>
+                    <h3 style={{ marginBottom: 5 }}>Order No:</h3>
+                    <Input type="number" placeholder='Enter Order No' value={order} onChange={(e) => setOrder(e.target.value)} />
+                </div>
                 <div>
                     <h3 style={{ marginBottom: 5 }}>Name of Place:</h3>
                     <Input required placeholder='Enter Name of Place' value={name} onChange={(e) => setName(e.target.value)} />
@@ -81,6 +95,11 @@ export default function AddIslandDetails({ IslandId, IslandSlug, SIPD, action, u
                 <div>
                     <h3 style={{ marginBottom: 5 }}>Thumbnail Url:</h3>
                     <Input required placeholder='Enter Thumbnail Url' value={thumbnail} onChange={(e) => setThumbnail(e.target.value)} />
+                </div>
+               
+                <div>
+                    <h3 style={{ marginBottom: 5 }}>Heading Image Url:</h3>
+                    <Input placeholder='Enter Heading Image Url' value={headerImage} onChange={(e) => setHeaderImage(e.target.value)} />
                 </div>
                 <div>
                     <h3 style={{ marginBottom: 10 }}>About Place:</h3>
@@ -107,7 +126,7 @@ export default function AddIslandDetails({ IslandId, IslandSlug, SIPD, action, u
                         (<Button onClick={addIslandItem} type='primary'><PlusOutlined /> Add Place</Button>)
                         :
                         (<>
-                        <Button onClick={()=>update(name, about, metaDescription, thumbnail, slug, title, faqs)} type='primary'> Submit changes</Button>
+                        <Button onClick={()=>update(name, about, metaDescription, thumbnail, slug, title, faqs, order, headerImage)} type='primary'> Submit changes</Button>
                         <Button onClick={addnewPlace} ><PlusOutlined /> Add New Place</Button>
                         </>)
                     }

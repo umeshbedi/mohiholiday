@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from 'react'
 
 import Head from 'next/head'
-import { Button, Divider, Empty, Modal, Skeleton } from 'antd'
+import { Button, Divider, Empty, Modal, Skeleton, Form, Input, DatePicker, Select, message } from 'antd'
+import firebase from 'firebase/compat/app'
 
 import Link from 'next/link'
 
@@ -46,8 +47,8 @@ function OtherActivityCard({ item }) {
     }
 
     const price = item.price || mock.price;
-    const originalPrice = item.originalPrice || mock.originalPrice;
-    const discount = item.discount || mock.discount;
+    const originalPrice = Math.round(price * 1.20);
+    const discount = "Save 20%";
     const duration = item.duration || mock.duration;
     const rating = item.rating || mock.rating;
     const certified = item.certified !== undefined ? item.certified : mock.certified;
@@ -143,150 +144,346 @@ function OtherActivityCard({ item }) {
 }
 
 export default function SingleActivity({ data, sortedData, parentActivity }) {
-
-  // console.log(data)
   const [open, setOpen] = useState(false)
-
-  const [activityDetails, setActivityDetails] = useState({})
-
   const [isMobile, setIsMobile] = useState(false)
+  const [formLoading, setFormLoading] = useState(false)
+  const [msgApi, contextHolder] = message.useMessage()
 
   useEffect(() => {
     setIsMobile(mobile())
-  }, [isMobile])
+  }, [])
 
   if (data == undefined) return <Skeleton active style={{ marginTop: '3%' }} />
 
+  const price = data.price || 3400
+  const originalPrice = Math.round(price * 1.20)
+  const discount = "Save 20%"
+  const duration = data.duration || "3 Hours"
+  const rating = data.rating || 5
+  const place = data.place || data.location || (data.slug ? data.slug.split('/')[2] : '')
+  const formattedPlace = place ? place.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : 'Andaman'
+
+  const handleBookingSubmit = async (values) => {
+    setFormLoading(true)
+    const submittedAt = new Date().toISOString()
+    const activityDate = values.date ? values.date.format('DD-MM-YYYY') : ''
+    const mobileNo = `${values.countryCode || '+91'} ${values.mobile}`
+
+    const enquiryPayload = {
+      packageName: data.title || '',
+      packageDetail: `Price: ₹${price} | Place: ${formattedPlace} | Duration: ${duration}`,
+      name: values.name || '',
+      mobile: mobileNo || '',
+      email: values.email || '',
+      adults: values.adults || '1',
+      kids: values.kids || '0',
+      infants: '0',
+      date: activityDate || '',
+      message: 'Activity Ride Booking Request',
+      submittedAt: submittedAt,
+      status: 'Pending',
+    }
+
+    try {
+      // 1. Send Email via Brevo API
+      const emailBody = {
+        "sender": { "name": "Mohi Holidays", "email": "no-reply@mohiholidays.com" },
+        "to": [{ "email": "infomohiholidays@gmail.com", "name": "Mohiholidays" }],
+        "htmlContent": `<!DOCTYPE html> 
+        <html> 
+        <body>
+        <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+        <h2 style="color: #007a78;">New Activity Booking Enquiry</h2>
+        <hr style="border: 1px solid #eee;" />
+        <p><strong>Activity Name:</strong> ${data.title}</p>
+        <p><strong>Place:</strong> ${formattedPlace}</p>
+        <p><strong>Name:</strong> ${values.name}</p>
+        <p><strong>Email:</strong> ${values.email}</p>
+        <p><strong>Mobile No:</strong> ${mobileNo}</p>
+        <p><strong>Date of Activity:</strong> ${activityDate}</p>
+        <p><strong>Adults:</strong> ${values.adults}</p>
+        <p><strong>Children:</strong> ${values.kids}</p>
+        <p><strong>Submitted At:</strong> ${new Date().toLocaleString()}</p>
+        </div>
+        </body> </html>`,
+        "subject": `Activity Enquiry: ${data.title}`,
+        "replyTo": { "email": values.email, "name": values.name }
+      }
+
+      await fetch("https://api.sendinblue.com/v3/smtp/email", {
+        method: 'POST',
+        headers: {
+          "api-key": process.env.NEXT_PUBLIC_SEND_EMAIL || '',
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(emailBody)
+      })
+
+      // 2. Save to global Firestore collection enquiry_submissions
+      await db.collection('enquiry_submissions').add({
+        ...enquiryPayload,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      })
+
+      // 3. Post to Google Sheets
+      await fetch('/api/enquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(enquiryPayload),
+      }).catch(sheetErr => console.error('Spreadsheet save failed:', sheetErr))
+
+      msgApi.success('Your booking request has been submitted successfully!')
+      setOpen(false)
+    } catch (err) {
+      console.error(err)
+      msgApi.error('Failed to submit booking: ' + err.message)
+    } finally {
+      setFormLoading(false)
+    }
+  }
+
   return (
     <>
-        <div
-          className='backCurve5'
-          style={{ display: 'flex', justifyContent: 'center', }} id='packageContainer'>
-          <div style={{ width: '90%', display: mobile() ? "block" : "flex", gap: '4%', marginTop: '3%' }}>
-            <div
-              style={{ width: mobile() ? '100%' : "70%", background: 'white', padding: '3%', display: 'flex', flexDirection: 'column', gap: 15 }}>
-              <h1>{data.title}</h1>
-              <Divider style={{ margin: "0", backgroundColor: "var(--lightGreyColor)", height: 1 }} />
-              <String2Html id={'aboutIsland'} string={data.about} />
-              <FAQ faqData={data.faqs} />
+      {contextHolder}
+      <div
+        className='backCurve5'
+        style={{ display: 'flex', justifyContent: 'center', }} id='packageContainer'>
+        <div style={{ width: '90%', display: mobile() ? "block" : "flex", gap: '4%', marginTop: '3%' }}>
+          <div
+            style={{ width: mobile() ? '100%' : "70%", background: 'white', padding: '3%', display: 'flex', flexDirection: 'column', gap: 15 }}>
+            <h1>{data.title}</h1>
+            <Divider style={{ margin: "0", backgroundColor: "var(--lightGreyColor)", height: 1 }} />
+            <String2Html id={'aboutIsland'} string={data.about} />
+            <FAQ faqData={data.faqs} />
+          </div>
+
+          <div style={{ width: mobile() ? '100%' : '30%', background: 'white', padding: '3%', height: 'fit-content', flexDirection: 'column', display: 'flex', alignItems: 'center' }}>
+            
+            {/* Booking Price & Info Card */}
+            <div style={{
+              background: '#fff',
+              borderRadius: '24px',
+              boxShadow: '0 10px 30px rgba(0,0,0,0.08)',
+              border: '1px solid #e2e8ee',
+              overflow: 'hidden',
+              width: '100%',
+              marginBottom: '2rem'
+            }}>
+              <div style={{
+                background: 'var(--primaryColor)',
+                padding: '1.5rem',
+                color: '#fff',
+                position: 'relative',
+                borderRadius: '24px 24px 0 0'
+              }}>
+                <div style={{ fontSize: '0.9rem', fontWeight: 600, opacity: 0.85, marginBottom: '0.25rem', color: 'rgba(255,255,255,0.85)' }}>Starting from</div>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', flexWrap: 'wrap' }}>
+                  {originalPrice && <span style={{ textDecoration: 'line-through', fontSize: '1.1rem', color: 'rgba(255,255,255,0.65)', fontWeight: 500 }}>₹{originalPrice}</span>}
+                  <span style={{ fontSize: '1.8rem', fontWeight: 800 }}>₹{price}</span>
+                  <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>/person</span>
+                </div>
+                <div style={{ fontSize: '0.85rem', fontWeight: 500, marginTop: '0.25rem', color: 'rgba(255,255,255,0.85)' }}>(inclusive 5% GST)</div>
+                
+                {discount && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '1.5rem',
+                    right: '1.5rem',
+                    background: '#fff',
+                    color: 'var(--primaryColor)',
+                    padding: '0.25rem 0.75rem',
+                    borderRadius: '20px',
+                    fontSize: '0.8rem',
+                    fontWeight: 800
+                  }}>
+                    {discount}
+                  </div>
+                )}
+              </div>
+
+              <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.95rem', fontWeight: 500, color: '#333' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <strong style={{ fontWeight: 700 }}>Rating:</strong>
+                    <div style={{ display: 'flex', gap: '2px' }}>
+                      {Array.from({ length: rating }).map((_, idx) => (
+                        <StarFilled key={idx} style={{ color: '#fcb415', fontSize: '0.85rem' }} />
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <strong style={{ fontWeight: 700 }}>Duration:</strong> {duration}
+                  </div>
+                  <div>
+                    <strong style={{ fontWeight: 700 }}>Place:</strong> {formattedPlace}
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setOpen(true)}
+                  style={{
+                    width: '100%',
+                    background: 'var(--primaryColor)',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '50px',
+                    padding: '0.9rem',
+                    fontWeight: 800,
+                    fontSize: '1rem',
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 12px rgba(12, 139, 189, 0.25)',
+                    transition: 'all 0.3s'
+                  }}
+                >
+                  Book Now
+                </button>
+              </div>
             </div>
 
-            <div style={{ width: mobile() ? '100%' : '30%', background: 'white', padding: '3%', height: 'fit-content', flexDirection: 'column', display: 'flex', alignItems: 'center' }}>
-              <h2 style={{ textAlign: 'center', marginBottom: '1rem', fontWeight: 800 }}>Visit Other Activities of {parentActivity}</h2>
-              <Divider style={{ backgroundColor: "var(--lightGreyColor)", height: 1, marginBottom: '1.5rem' }} />
-              {sortedData.map((item, i) => (
-                <div
-                  data-aos="fade-up"
-                  data-aos-anchor-placement="top-bottom"
-                  data-aos-duration="2000"
-                  key={i}>
-                  <OtherActivityCard item={item} />
-                </div>
-              ))}
-            </div>
+            <Divider style={{ backgroundColor: "var(--lightGreyColor)", height: 1, marginBottom: '1.5rem' }} />
+            <h2 style={{ textAlign: 'center', marginBottom: '1rem', fontWeight: 800 }}>Visit Other Activities of {parentActivity}</h2>
+            {sortedData.map((item, i) => (
+              <div
+                data-aos="fade-up"
+                data-aos-anchor-placement="top-bottom"
+                data-aos-duration="2000"
+                key={i}>
+                <OtherActivityCard item={item} />
+              </div>
+            ))}
           </div>
         </div>
+      </div>
 
-      
-
+      {/* Book Your Ride Modal */}
       <Modal
         open={open}
         onCancel={() => setOpen(false)}
-        footer={[]}
+        footer={null}
+        width={isMobile ? '95%' : '650px'}
+        styles={{ body: { padding: 0 } }}
+        centered
       >
-        <h2>Booking:</h2>
-        <Divider style={{ margin: '1%' }} />
-        <h1 style={{ margin: '1% 0', fontSize: '2rem' }}>₹{activityDetails.price}</h1>
-        <ContactForm
-          to={'activity'}
-          packageName={data.name}
-          packageDetail={`
-          <p>Activity Name: ${activityDetails.name}</p>
-          <p>Price: ₹${activityDetails.price}</p>
-          <p>Duration: ${activityDetails.duration}</p>
-        `}
-        />
-      </Modal>
+        <div style={{ background: 'var(--primaryColor)', padding: isMobile ? '1.5rem' : '2.5rem', borderRadius: '8px', position: 'relative' }}>
+          <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#fff', marginBottom: '1.5rem' }}>Book Your Ride</h2>
+          
+          <Form
+            layout="vertical"
+            onFinish={handleBookingSubmit}
+            initialValues={{
+              countryCode: '+91',
+              adults: 1,
+              kids: 0
+            }}
+          >
+            {/* Services You're going to book */}
+            <div style={{ marginBottom: '1.2rem' }}>
+              <label style={{ color: '#fff', fontWeight: 'bold', display: 'block', marginBottom: '0.4rem' }}>
+                <span style={{ color: 'red' }}>*</span> Services You're going to book:
+              </label>
+              <Form.Item name="serviceName" initialValue={data.title} style={{ margin: 0 }}>
+                <Input size="large" readOnly style={{ background: '#fff', border: 'none', borderRadius: '8px', color: '#333' }} />
+              </Form.Item>
+            </div>
 
+            {/* Row 1: Name and Email */}
+            <div style={{ display: 'flex', gap: '1rem', flexDirection: isMobile ? 'column' : 'row', marginBottom: '1.2rem' }}>
+              <div style={{ flex: 1 }}>
+                <label style={{ color: '#fff', fontWeight: 'bold', display: 'block', marginBottom: '0.4rem' }}>
+                  <span style={{ color: 'red' }}>*</span> Name:
+                </label>
+                <Form.Item name="name" style={{ margin: 0 }} rules={[{ required: true, message: 'Please enter your name' }]}>
+                  <Input size="large" placeholder="Enter Your Name" style={{ borderRadius: '8px', border: 'none' }} />
+                </Form.Item>
+              </div>
+              <div style={{ flex: 1 }}>
+                <label style={{ color: '#fff', fontWeight: 'bold', display: 'block', marginBottom: '0.4rem' }}>
+                  <span style={{ color: 'red' }}>*</span> Email:
+                </label>
+                <Form.Item name="email" style={{ margin: 0 }} rules={[{ required: true, type: 'email', message: 'Please enter a valid email' }]}>
+                  <Input size="large" placeholder="Enter Your Email" style={{ borderRadius: '8px', border: 'none' }} />
+                </Form.Item>
+              </div>
+            </div>
+
+            {/* Row 2: Mobile No and Date of Activity */}
+            <div style={{ display: 'flex', gap: '1rem', flexDirection: isMobile ? 'column' : 'row', marginBottom: '1.2rem' }}>
+              <div style={{ flex: 1 }}>
+                <label style={{ color: '#fff', fontWeight: 'bold', display: 'block', marginBottom: '0.4rem' }}>
+                  <span style={{ color: 'red' }}>*</span> Mobile No.
+                </label>
+                <Form.Item style={{ margin: 0 }} required>
+                  <div style={{ display: 'flex', gap: '4px' }}>
+                    <Form.Item name="countryCode" noStyle initialValue="+91">
+                      <Select size="large" style={{ width: '95px' }} dropdownStyle={{ zIndex: 10000 }}>
+                        <Select.Option value="+91">+91 IN</Select.Option>
+                        <Select.Option value="+1">+1 US</Select.Option>
+                        <Select.Option value="+44">+44 UK</Select.Option>
+                        <Select.Option value="+971">+971 AE</Select.Option>
+                      </Select>
+                    </Form.Item>
+                    <Form.Item name="mobile" noStyle rules={[{ required: true, message: 'Please enter mobile number' }]}>
+                      <Input size="large" placeholder="Enter Your Mobile No." style={{ flex: 1, borderRadius: '8px', border: 'none' }} />
+                    </Form.Item>
+                  </div>
+                </Form.Item>
+              </div>
+              <div style={{ flex: 1 }}>
+                <label style={{ color: '#fff', fontWeight: 'bold', display: 'block', marginBottom: '0.4rem' }}>
+                  <span style={{ color: 'red' }}>*</span> Date of Activity
+                </label>
+                <Form.Item name="date" style={{ margin: 0 }} rules={[{ required: true, message: 'Please select date' }]}>
+                  <DatePicker size="large" style={{ width: '100%', borderRadius: '8px', border: 'none' }} format="DD-MM-YYYY" placeholder="Select Date" />
+                </Form.Item>
+              </div>
+            </div>
+
+            {/* Row 3: Adults and Childs */}
+            <div style={{ display: 'flex', gap: '1rem', flexDirection: isMobile ? 'column' : 'row', marginBottom: '1.8rem' }}>
+              <div style={{ flex: 1 }}>
+                <label style={{ color: '#fff', fontWeight: 'bold', display: 'block', marginBottom: '0.4rem' }}>
+                  <span style={{ color: 'red' }}>*</span> Adults (&gt;12 years)
+                </label>
+                <Form.Item name="adults" style={{ margin: 0 }} rules={[{ required: true, message: 'Required' }]}>
+                  <Input size="large" type="number" placeholder="Enter Adult number" min={1} style={{ borderRadius: '8px', border: 'none', width: '100%' }} />
+                </Form.Item>
+              </div>
+              <div style={{ flex: 1 }}>
+                <label style={{ color: '#fff', fontWeight: 'bold', display: 'block', marginBottom: '0.4rem' }}>
+                  Childs (3-12 years)
+                </label>
+                <Form.Item name="kids" style={{ margin: 0 }}>
+                  <Input size="large" type="number" placeholder="Enter Child number" min={0} style={{ borderRadius: '8px', border: 'none', width: '100%' }} />
+                </Form.Item>
+              </div>
+            </div>
+
+            {/* Submit button */}
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={formLoading}
+              style={{
+                width: '100%',
+                background: '#fff',
+                color: 'var(--primaryColor)',
+                border: 'none',
+                borderRadius: '50px',
+                height: '50px',
+                fontSize: '1.1rem',
+                fontWeight: 800,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.15)'
+              }}
+            >
+              Submit Enquiry
+            </Button>
+          </Form>
+        </div>
+      </Modal>
     </>
   )
 }
-
-// export async function getStaticPaths() {
-//   const allpaths = []
-//   db.collection("activityAndaman").get().then((snap) => {
-//     snap.forEach((sndata) => {
-//       sndata.data().data.map(dta => {
-//         allpaths.push(dta.slug)
-//       })
-//     })
-//   })
-//   db.collection("activityBali").get().then((snap) => {
-//     snap.forEach((sndata) => {
-//       sndata.data().data.map(dta => {
-//         allpaths.push(dta.slug)
-//       })
-//     })
-//   })
-
-
-//   return {
-//     paths: allpaths.map((path) => (
-//       { params: { ActivityName: path } }
-//     )),
-//     fallback: true
-//   }
-// }
-
-// export const getStaticProps = async (context) => {
-//   const { activityPlace, ActivityName } = context.params;
-
-//   const res = await db.collection(`activity${activityPlace}`).where("slug", "==", `/activity/${activityPlace}/${ActivityName}`).get()
-//   const entry = res.docs.map((entry) => {
-//     return ({ id: entry.id, ...entry.data() })
-//   });
-
-//   const resAll = await db.collection(`${activityPlace == "Andaman" ? "activityAndaman" : "activityBali"}`).get()
-//   // console.log(resAll.size)
-
-//   const entryAll = resAll.docs.map((entry) => {
-//     return ({ id: entry.id, ...entry.data() })
-//   });
-
-//   let sortedData = []
-
-//   function GetRand(num) {
-//     var ran = Math.floor(Math.random() * num)
-//     if (num > 4 && num - ran >= 4) {
-//       for (let index = 0; index < 4; index++) {
-//         sortedData.push(entryAll[ran])
-//         ran += 1
-
-//       }
-//     }
-//     else if (num <= 4) {
-//       for (let index = 0; index < num; index++) {
-//         sortedData.push(entryAll[index])
-//       }
-//     }
-//     else { GetRand(num) }
-//   }
-
-//   GetRand(entryAll.length)
-
-//   if (entry.length == 0) {
-//     return {
-//       notFound: true
-//     };
-//   }
-
-//   return {
-//     props: {
-//       data: entry[0],
-//       sortedData
-//     },
-//     revalidate: 60,
-
-//   }
-
-// }
